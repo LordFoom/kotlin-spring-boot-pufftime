@@ -28,8 +28,8 @@ dependencies {
 
     implementation ( "org.webjars:bootstrap:4.5.0" )
     implementation ( "org.webjars:webjars-locator:0.40" )
-    compile ("org.webjars:font-awesome:5.11.2")
-    compile ("org.webjars:bootstrap-datepicker:1.9.0")
+    implementation ("org.webjars:font-awesome:5.11.2")
+    implementation ("org.webjars:bootstrap-datepicker:1.9.0")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("mysql:mysql-connector-java")

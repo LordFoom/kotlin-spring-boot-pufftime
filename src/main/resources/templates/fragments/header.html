@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:fragment="head">
+    <title th:text="${title}">PuffTime!</title>
+        <title>Welcome!</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <!--    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css"/>-->
+        <!--    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>-->
+        <!--    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>-->
+        <!-- CSS only -->
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+        <!-- JS, Popper.js, and jQuery -->
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+        <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container" th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
+        <a class="navbar-brand" href="#">PuffTime!</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item" th:classappend="${module == 'home' ? 'active' : ''}">
+                    <a class="nav-link" href="#" th:href="@{/}">Home </a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/user}" th:classappend="${module == 'user' ? 'active' : ''}">Account</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" href="#" th:href="@{/grows}" id="growDropwdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:classappend="${module == 'grow' ? 'active' : ''}">
+                        The Grow
+                    </a>
+                    <a class="dropdown-item" href="#" th:href="@{/grow/current}">Current Grow</a>
+                    <a class="dropdown-item" href="#" th:href="@{/grow}">View Grows</a>
+                    <a class="dropdown-item" href="#" th:href="@{/grow/add}">Add plant</a>
+                </li>
+                <li class="nav-item dropdown" aria-labelledby="navbarDropdown" th:classappend="${module == 'plants' ? 'active' : ''}">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Plants
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#" th:href="@{/plants}">Your plants</a>
+                        <a class="dropdown-item" href="#" th:href="@{/grow/add}">Add plant</a>
+                    </div>
+                </li>
+                <li class="nav-item" th:classappend="${module == 'reviews' ? 'active' : ''}">
+                    <a class="nav-link" href="#" th:href="@{/reviews}" th:title="Plant reviews">Reviews</a>
+                </li>
+                <li class="nav-item dropdown"></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/logout}">Sign Out </a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+</div>
+</body>
+</html>

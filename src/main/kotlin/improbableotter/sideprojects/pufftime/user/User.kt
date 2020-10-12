@@ -16,9 +16,11 @@ class User(
         @Column(nullable=false)
         var password: String = "",
         @Column(unique = true)
-        var email: String = "") {
+        var email: String = "",
+        @Column
+        var role: String = "USER" ) {
     override fun toString(): String {
-        return "User id = $id, name = '$username', email = '$email'"
+        return "User id = $id, name = '$username', email = '$email', role = '$role'"
     }
 }
 
