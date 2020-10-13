@@ -32,4 +32,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+#FOOM's stuff
 /src/main/resources/data.sql
+#/src/main/kotlin/improbableotter/sideprojects/pufftime/util/PasswordPrinter.kt

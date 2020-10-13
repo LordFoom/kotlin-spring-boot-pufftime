@@ -28,6 +28,16 @@ class User(
     }
 }
 
+/**
+ * Dto to hold info when a new user is registered
+ */
+data class UserRegistrationDto(
+        var username: String,
+        var password: String,
+        var confirmPassword: String,
+        var email: String
+)
+
 @Service
 class UserDetailsServiceImpl(val userRepository: UserRepository) : UserDetailsService {
 
