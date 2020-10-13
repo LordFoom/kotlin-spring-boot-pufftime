@@ -13,7 +13,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "users")
 class User(
-        @Id @GeneratedValue(strategy = GenerationType.AUTO)
+        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long = -1,
         @Column(nullable = false, unique = true)
         var username: String = "",
@@ -29,7 +29,7 @@ class User(
 }
 
 /**
- * Dto to hold info when a new user is registered
+ * Dto to hold info when a new user is registered`
  */
 data class UserRegistrationDto(
         var username: String,
