@@ -6,5 +6,5 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 fun main(args: Array<String>) {
     val passwordEncoder = BCryptPasswordEncoder()
     println("Keep it subtle. Keep it safe.")
-    println(passwordEncoder.encode(""))
+    println(passwordEncoder.encode("crazyhippy420blazeit"))
 }

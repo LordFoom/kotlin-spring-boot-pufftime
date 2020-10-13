@@ -35,4 +35,4 @@ out/
 
 #FOOM's stuff
 /src/main/resources/data.sql
-#/src/main/kotlin/improbableotter/sideprojects/pufftime/util/PasswordPrinter.kt
+/src/main/kotlin/improbableotter/sideprojects/pufftime/util/PasswordPrinter.kt
