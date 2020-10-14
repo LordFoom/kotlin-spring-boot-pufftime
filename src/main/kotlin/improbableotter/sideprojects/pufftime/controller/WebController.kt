@@ -13,8 +13,7 @@ class WebController{
 
     @GetMapping
     fun index( principal: Principal?):String{
-        if(null == principal)
-            return "home/home_signed_out"
+        principal?:return "home/home_signed_out"
         return "home/home_signed_in"
     }
     @GetMapping("/login")

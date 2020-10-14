@@ -33,13 +33,15 @@
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" th:href="@{/user}" th:classappend="${module == 'user' ? 'active' : ''}">Account</a>
                 </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link dropdown-toggle" href="#" th:href="@{/grows}" id="growDropwdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:classappend="${module == 'grow' ? 'active' : ''}">
+                <li class="nav-item dropdown" aria-labelledby="growDropdown" th:classappend="${module == 'grow' ? 'active' : ''}">
+                    <a class="nav-link dropdown-toggle" href="#" th:href="@{/grows}" id="growDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                         The Grow
                     </a>
-                    <a class="dropdown-item" href="#" th:href="@{/grow/current}">Current Grow</a>
-                    <a class="dropdown-item" href="#" th:href="@{/grow}">View Grows</a>
-                    <a class="dropdown-item" href="#" th:href="@{/grow/add}">Add plant</a>
+                    <div class="dropdown-menu" aria-labelledby="growDropdown">
+                        <a class="dropdown-item" href="#" th:href="@{/grow/current}">Current Grow</a>
+                        <a class="dropdown-item" href="#" th:href="@{/grow}">View Grows</a>
+                        <a class="dropdown-item" href="#" th:href="@{/grow/add}">Add plant</a>
+                    </div>
                 </li>
                 <li class="nav-item dropdown" aria-labelledby="navbarDropdown" th:classappend="${module == 'plants' ? 'active' : ''}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -51,7 +53,7 @@
                     </div>
                 </li>
                 <li class="nav-item" th:classappend="${module == 'reviews' ? 'active' : ''}">
-                    <a class="nav-link" href="#" th:href="@{/reviews}" th:title="Plant reviews">Reviews</a>
+                    <a class="nav-link" href="#" th:href="@{/reviews}" title="Plant reviews">Reviews</a>
                 </li>
                 <li class="nav-item dropdown"></li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
