@@ -3,25 +3,26 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:fragment="head">
     <title th:text="${title}">PuffTime!</title>
-        <title>Welcome!</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <!--    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css"/>-->
-        <!--    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>-->
-        <!--    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>-->
-        <!-- CSS only -->
-        <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-        <!-- JS, Popper.js, and jQuery -->
-        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-        <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-        <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <title>Welcome!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!--    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css"/>-->
+    <!--    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>-->
+    <!--    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>-->
+    <!-- CSS only -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <!-- JS, Popper.js, and jQuery -->
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 </head>
 <body>
 <div class="container" th:fragment="header">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
-        <a class="navbar-brand" href="#">PuffTime!</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+        <a class="navbar-brand " href="#">PuffTime!</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -31,10 +32,13 @@
                     <a class="nav-link" href="#" th:href="@{/}">Home </a>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link" th:href="@{/user}" th:classappend="${module == 'user' ? 'active' : ''}">Account</a>
+                    <a class="nav-link" th:href="@{/user}"
+                       th:classappend="${module == 'user' ? 'active' : ''}">Account</a>
                 </li>
-                <li class="nav-item dropdown" aria-labelledby="growDropdown" th:classappend="${module == 'grow' ? 'active' : ''}">
-                    <a class="nav-link dropdown-toggle" href="#" th:href="@{/grows}" id="growDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                <li class="nav-item dropdown" aria-labelledby="growDropdown"
+                    th:classappend="${module == 'grow' ? 'active' : ''}">
+                    <a class="nav-link dropdown-toggle" href="#" th:href="@{/grows}" id="growDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         The Grow
                     </a>
                     <div class="dropdown-menu" aria-labelledby="growDropdown">
@@ -43,8 +47,10 @@
                         <a class="dropdown-item" href="#" th:href="@{/grow/add}">Add plant</a>
                     </div>
                 </li>
-                <li class="nav-item dropdown" aria-labelledby="navbarDropdown" th:classappend="${module == 'plants' ? 'active' : ''}">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown" aria-labelledby="navbarDropdown"
+                    th:classappend="${module == 'plants' ? 'active' : ''}">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Plants
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
