@@ -1,6 +1,5 @@
 package improbableotter.sideprojects.pufftime.user
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
@@ -8,7 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
+import java.util.*
 import javax.persistence.*
+import kotlin.collections.HashSet
 
 @Entity
 @Table(name = "users")
@@ -22,9 +23,11 @@ class User(
         @Column(unique = true)
         var email: String = "",
         @Column
-        var role: String = "USER") {
+        var role: String = "USER",
+        @Column
+        var created: Date = Date()) {
     override fun toString(): String {
-        return "User id = $id, name = '$username', email = '$email', role = '$role'"
+        return "User id = $id, name = '$username', email = '$email', role = '$role', created = '$created' "
     }
 }
 
@@ -32,10 +35,10 @@ class User(
  * Dto to hold info when a new user is registered`
  */
 data class UserRegistrationDto(
-        var username: String,
-        var password: String,
-        var confirmPassword: String,
-        var email: String
+        val username: String,
+        val password: String,
+        val confirmPassword: String,
+        val email: String
 )
 
 @Service
