@@ -6,6 +6,13 @@
 <body>
 <div th:replace="fragments/header :: header">&nbsp;</div>
 <div class="container">
+    <div th:if="${param.success}">
+        <div class="alert alert-info">
+            You've successfully registered!
+           <br> <a href="@{/user/{id}/">Your details </a>!
+            <br> <a href="@{/grows}/">Grows</a>!
+        </div>
+    </div>
     <h1>
         Welcome, Grower!
     </h1>
