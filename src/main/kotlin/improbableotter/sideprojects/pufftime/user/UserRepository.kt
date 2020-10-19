@@ -6,11 +6,12 @@ interface UserRepository : JpaRepository<User, Long> {
 
     fun findByUsername(username: String): User?;
 
-    fun save(dto: UserRegistrationDto): User {
+    fun save(dto: UserDto): User {
         val user = User(
-                username = dto.username,
-                password = dto.password,
-                email = dto.email
+                username = dto.username!!,
+                password = dto.password!!,
+                email = dto.email,
+                role = "USER"
         )
         return save(user)
     }

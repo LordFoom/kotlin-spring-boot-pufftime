@@ -1,3 +1,5 @@
+@file:Suppress("WarningOnMainUnusedParameterMigration")
+
 package improbableotter.sideprojects.pufftime.util
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder

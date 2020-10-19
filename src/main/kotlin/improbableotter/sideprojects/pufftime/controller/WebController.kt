@@ -1,6 +1,6 @@
 package improbableotter.sideprojects.pufftime.controller
 
-import improbableotter.sideprojects.pufftime.user.UserRegistrationDto
+import improbableotter.sideprojects.pufftime.user.UserDto
 import improbableotter.sideprojects.pufftime.user.UserRepository
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -15,6 +15,11 @@ import java.security.Principal
 @Controller
 @RequestMapping("/")
 class WebController(val userRepository: UserRepository){
+
+    @ModelAttribute("user")
+    fun userRegistrationDto():UserDto{
+        return UserDto()
+    }
 
     @GetMapping
     fun index( principal: Principal?):String{
@@ -32,24 +37,27 @@ class WebController(val userRepository: UserRepository){
         return "home/login"
     }
 
-    @GetMapping("/register")
-    fun register():String{
+    @GetMapping("/registration")
+    fun register(model: Model):String{
         return "home/registration"
     }
 
-    @GetMapping("/register_error")
+    @GetMapping("/registration_error")
     fun registerError():String{
         return "home/registration"
     }
 
-    @PostMapping("/register")
-    fun createUser(@ModelAttribute("user") userDto: UserRegistrationDto, model: Model, result: BindingResult): String {
-        val user = userRepository.findByUsername(userDto.username)
-        user?:result.reject("username", "Username taken.")
+    @PostMapping("/registration")
+    fun createUser(@ModelAttribute("user") userDto: UserDto, model: Model, result: BindingResult): String {
+        val user = userDto.username?.let { userRepository.findByUsername(it) }
+        if(null == user){
+            val savedUser = userRepository.save(userDto)
+            model["registered"]=savedUser;
+        }else
+            result.reject("username", "Username taken.")
+
         if(result.hasErrors())
-            return "register";
-        val savedUser = userRepository.save(userDto)
-        model["registered"]=savedUser;
+            return "home/registration";
         return "home/home_signed_in"
     }
 

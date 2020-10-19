@@ -31,6 +31,7 @@ class ApplicationSecurityConfig() : WebSecurityConfigurerAdapter() {
                 ?.authorizeRequests()
                 ?.antMatchers(
                         "/registration",
+                        "/register",
                         "/js/**",
                         "/css/**",
                         "/img/**",
