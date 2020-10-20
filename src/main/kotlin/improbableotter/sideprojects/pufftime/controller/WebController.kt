@@ -53,7 +53,10 @@ class WebController(val userRepository: UserRepository) {
     }
 
     @PostMapping("/registration")
-    fun createUser(@ModelAttribute("user") @Validated userDto: UserDto, model: Model, result: BindingResult): String {
+    fun createUser(model: Model, @Valid @ModelAttribute("user") userDto: UserDto, result: BindingResult): String {
+        if(result.hasErrors())
+            return "home/registration"
+
         var user: User? = userDto.username?.let { userRepository.findByUsername(it) }
 
         if(null == user) {
