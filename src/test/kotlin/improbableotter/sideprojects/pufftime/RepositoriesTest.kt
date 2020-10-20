@@ -20,6 +20,5 @@ class RepositoriesTest @Autowired constructor(
         entityManager.flush()
         val user = userRepository.findByUsername("foom")
         assertThat(user).isEqualTo(foom)
-
     }
 }

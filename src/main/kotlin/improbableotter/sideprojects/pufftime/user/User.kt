@@ -12,6 +12,7 @@ import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotEmpty
 import kotlin.collections.HashSet
 
 @Entity
@@ -34,12 +35,20 @@ data class User(
 //        @Column
         val created: Date = Date()) {
 
-    fun toDto():UserDto{
-        return UserDto(
+    fun toDto():UserDto= UserDto(
                 id = this.id,
                 username = this.username,
                 email = this.email
+        )
 
+
+    companion object{
+        fun fromDto(dto:UserDto)= User(
+                id=dto.id,
+                username = dto.username!!,
+                password = dto.password!!,
+                email = dto.email!!,
+                role = dto.role!!
         )
     }
 //    override fun toString(): String {
@@ -50,13 +59,18 @@ data class User(
 /**
  * Dto to hold info when a new user is registered`
  */
-@NoArgsConstructor
+//@NoArgsConstructor
 data class UserDto(
         var id: Long? = null,
+        @get:NotEmpty
         var username: String?=null,
+        @get:NotEmpty
         var password: String?=null,
+        @get:NotEmpty
         var confirmPassword: String?=null,
-        var email: String?=null
+        @get:Email
+        var email: String?=null,
+        var role: String?="USER",
 )
 
 @Service
