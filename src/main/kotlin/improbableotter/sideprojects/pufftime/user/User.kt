@@ -1,6 +1,7 @@
 package improbableotter.sideprojects.pufftime.user
 
-import lombok.NoArgsConstructor
+import improbableotter.sideprojects.pufftime.grow.Grow
+import improbableotter.sideprojects.pufftime.plant.Plant
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
@@ -16,7 +17,7 @@ import javax.validation.constraints.NotEmpty
 import kotlin.collections.HashSet
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 data class User(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long? = null,
@@ -29,6 +30,10 @@ data class User(
 //        @Column(unique = true)
         @get:Email
         val email:String?,
+        @OneToMany(mappedBy="user", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
+        val plants:Set<Plant> = emptySet(),
+        @OneToMany(mappedBy="user", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
+        val grows:Set<Grow> = emptySet(),
 //        @Column
         @get:NotBlank
         val role:String,

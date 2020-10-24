@@ -3,26 +3,22 @@ package improbableotter.sideprojects.pufftime.controller
 import improbableotter.sideprojects.pufftime.user.User
 import improbableotter.sideprojects.pufftime.user.UserDto
 import improbableotter.sideprojects.pufftime.user.UserRepository
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.validation.BindingResult
-import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import java.security.Principal
 import javax.validation.Valid
+import javax.websocket.server.PathParam
 
 @Controller
 @RequestMapping("/")
 class WebController(val userRepository: UserRepository) {
-
-//    @ModelAttribute("user")
-//    fun userRegistrationDto():UserDto{
-//        return UserDto()
-//    }
 
     @GetMapping
     fun index(principal: Principal?): String {
@@ -74,6 +70,14 @@ class WebController(val userRepository: UserRepository) {
         if (result.hasErrors())
             return "home/registration";
         return "home/home_signed_in"
+    }
+
+    @GetMapping("/plants/{userId}")
+    fun viewPlants(model: Model, @PathParam("userId")userId:Long):String{
+        val user = userRepository.findById(userId)!!
+
+
+        return "plants/view";
     }
 
 }
