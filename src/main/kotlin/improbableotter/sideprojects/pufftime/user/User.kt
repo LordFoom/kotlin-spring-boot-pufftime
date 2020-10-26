@@ -64,7 +64,6 @@ data class User(
 /**
  * Dto to hold info when a new user is registered`
  */
-//@NoArgsConstructor
 data class UserDto(
         var id: Long? = null,
         @get:NotEmpty

@@ -5,6 +5,7 @@ import improbableotter.sideprojects.pufftime.user.User
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotEmpty
 
 @Entity
 @Table(name = "plant")
@@ -30,6 +31,8 @@ data class Plant(
 data class Strain(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long? = null,
+        @get:NotBlank
+        val name: String = "",
         @OneToMany(mappedBy = "strain", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
         val plants: Set<Plant> = emptySet(),
         @get:NotBlank

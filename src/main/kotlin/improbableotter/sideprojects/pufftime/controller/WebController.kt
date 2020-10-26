@@ -1,9 +1,12 @@
 package improbableotter.sideprojects.pufftime.controller
 
+import improbableotter.sideprojects.pufftime.grow.GrowRepository
+import improbableotter.sideprojects.pufftime.plant.PlantRepository
+import improbableotter.sideprojects.pufftime.plant.StrainRepository
 import improbableotter.sideprojects.pufftime.user.User
 import improbableotter.sideprojects.pufftime.user.UserDto
 import improbableotter.sideprojects.pufftime.user.UserRepository
-import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
@@ -18,7 +21,7 @@ import javax.websocket.server.PathParam
 
 @Controller
 @RequestMapping("/")
-class WebController(val userRepository: UserRepository) {
+class WebController(val userRepository: UserRepository, val plantRepository: PlantRepository, val growRepository: GrowRepository) {
 
     @GetMapping
     fun index(principal: Principal?): String {
@@ -72,12 +75,19 @@ class WebController(val userRepository: UserRepository) {
         return "home/home_signed_in"
     }
 
-    @GetMapping("/plants/{userId}")
-    fun viewPlants(model: Model, @PathParam("userId")userId:Long):String{
-        val user = userRepository.findById(userId)!!
-
-
+    @GetMapping("/plants/users/{userId}")
+    fun viewUserPlants(model: Model, @PathParam("userId")userId:Long):String{
+        val user = userRepository.findByIdOrNull(userId)!!
+        model["plants"]=plantRepository.findByUserId(userId)
+        model["header"]="Plants for User: ${user.username}"
         return "plants/view";
     }
 
+    @GetMapping("/plants/grows/{growId}")
+    fun viewGrowPlants(model: Model, @PathParam("growId")growId:Long):String{
+        val grow = growRepository.findByIdOrNull(growId)!!
+        model["plants"]=plantRepository.findByGrowId(growId)
+        model["header"]="Plants for Grow: ${grow.id}, started: ${grow.getDisplayCreateDate()}"
+        return "plants/view";
+    }
 }
