@@ -31,9 +31,9 @@ data class User(
         @get:Email
         val email:String?,
         @OneToMany(mappedBy="user", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
-        val plants:Set<Plant> = emptySet(),
+        val plants:MutableList<Plant> = mutableListOf(),
         @OneToMany(mappedBy="user", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
-        val grows:Set<Grow> = emptySet(),
+        val grows:MutableList<Grow> = mutableListOf(),
 //        @Column
         @get:NotBlank
         val role:String,

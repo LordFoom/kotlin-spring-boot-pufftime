@@ -6,6 +6,7 @@ import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "plant")
@@ -20,10 +21,12 @@ data class Plant(
         @ManyToOne
         @JoinColumn(name="strain_id")
         val strain: Strain,
-        @get:NotBlank
+        @get:NotNull
         val createDate: Date = Date(),
-        val plantDate: Date? = Date(),
-        val flowerDate: Date? = Date()
+        var plantDate: Date? = null,
+        var flowerDate: Date? = null,
+        val harvestDate: Date? = null,
+        val cureDate: Date? = null
 )
 
 @Entity
@@ -34,7 +37,7 @@ data class Strain(
         @get:NotBlank
         val name: String = "",
         @OneToMany(mappedBy = "strain", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
-        val plants: Set<Plant> = emptySet(),
-        @get:NotBlank
+        val plants: MutableList<Plant> = mutableListOf(),
+        @get:NotNull
         val createDate: Date = Date()
 )

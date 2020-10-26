@@ -16,7 +16,7 @@ data class Grow(
         @JoinColumn(name = "user_id")
         val user: User,
         @OneToMany(mappedBy="grow", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
-        val plants:Set<Plant> = emptySet(),
+        val plants:MutableList<Plant> = mutableListOf<Plant>(),
         val createDate: Date = Date()
 ) {
 
@@ -29,6 +29,6 @@ data class Grow(
 }
 
 interface GrowRepository:JpaRepository<Grow, Long>{
-        fun findAllByUser(user: User):Set<Grow>
-        fun findAllByUserId(userId: Long):Set<Grow>
+        fun findAllByUser(user: User):List<Grow>
+        fun findAllByUserId(userId: Long):List<Grow>
 }
