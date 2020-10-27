@@ -1,6 +1,7 @@
 package improbableotter.sideprojects.pufftime.plant
 
 import improbableotter.sideprojects.pufftime.grow.Grow
+import improbableotter.sideprojects.pufftime.strain.Strain
 import improbableotter.sideprojects.pufftime.user.User
 import java.util.*
 import javax.persistence.*
@@ -29,15 +30,3 @@ data class Plant(
         val cureDate: Date? = null
 )
 
-@Entity
-@Table(name = "strain")
-data class Strain(
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long? = null,
-        @get:NotBlank
-        val name: String = "",
-        @OneToMany(mappedBy = "strain", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
-        val plants: MutableList<Plant> = mutableListOf(),
-        @get:NotNull
-        val createDate: Date = Date()
-)

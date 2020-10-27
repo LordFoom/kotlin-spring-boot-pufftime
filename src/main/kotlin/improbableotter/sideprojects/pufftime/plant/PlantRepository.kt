@@ -1,6 +1,7 @@
 package improbableotter.sideprojects.pufftime.plant
 
 import improbableotter.sideprojects.pufftime.grow.Grow
+import improbableotter.sideprojects.pufftime.strain.Strain
 import improbableotter.sideprojects.pufftime.user.User
 import org.springframework.data.jpa.repository.JpaRepository
 

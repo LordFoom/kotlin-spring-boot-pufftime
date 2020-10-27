@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::head">
+    <title>View Plants</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <table class="table table-bordered tableMain">
+            <thead>
+            <tr>
+                <th>Strain</th>
+                <th>Created</th>
+                <th>By</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--/*@thymesVar id="review" type="improbableotter.sideprojects.pufftime.strain.S"*/-->
+            <tr th:each="review : ${reviews.content}">
+                <td th:text="${review.movie.name}"></td>
+                <td th:text="${#dates.format(review.created, 'yyyy-MM-dd')}"></td>
+                <td th:text="${review.critic.username}"></td>
+                <td ><a th:href="@{/movies/{id}/reviews(id=${review.movie.id})}">View</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:replace="fragments/footer::footer"></div>
+</body>
+</html>

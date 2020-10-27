@@ -43,7 +43,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="growDropdown">
                         <a class="dropdown-item" href="#" th:href="@{/grows/current}">Current Grow</a>
-                        <a class="dropdown-item" href="#" th:href="@{/grows}">View Grows</a>
+                        <a class="dropdown-item" href="#" th:href="@{/grows}">Your Grows</a>
                         <a class="dropdown-item" href="#" th:href="@{/grows/add}">Add plant</a>
                     </div>
                 </li>
@@ -54,8 +54,11 @@
                         Plants
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#" th:href="@{/plants/grows/current}">Current grow plants</a>
                         <a class="dropdown-item" href="#" th:href="@{/plants}">Your plants</a>
-                        <a class="dropdown-item" href="#" th:href="@{/grow/add}">Add plant</a>
+                        <a class="dropdown-item" href="#" th:href="@{/grows/add}">Add plant</a>
+                        <a class="dropdown-item" href="#" th:href="@{/strains}">Strains</a>
+                        <a class="dropdown-item" href="#" th:href="@{/strains/add}">Add strains</a>
                     </div>
                 </li>
                 <li class="nav-item" th:classappend="${module == 'reviews' ? 'active' : ''}">

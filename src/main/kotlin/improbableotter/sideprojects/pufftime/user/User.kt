@@ -2,6 +2,7 @@ package improbableotter.sideprojects.pufftime.user
 
 import improbableotter.sideprojects.pufftime.grow.Grow
 import improbableotter.sideprojects.pufftime.plant.Plant
+import improbableotter.sideprojects.pufftime.strain.Strain
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
@@ -32,6 +33,8 @@ data class User(
         val email:String?,
         @OneToMany(mappedBy="user", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
         val plants:MutableList<Plant> = mutableListOf(),
+        @OneToMany(mappedBy="createdBy", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
+        val strains:MutableList<Strain> = mutableListOf(),
         @OneToMany(mappedBy="user", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
         val grows:MutableList<Grow> = mutableListOf(),
 //        @Column

@@ -21,7 +21,10 @@ import javax.websocket.server.PathParam
 
 @Controller
 @RequestMapping("/")
-class WebController(val userRepository: UserRepository, val plantRepository: PlantRepository, val growRepository: GrowRepository) {
+class WebController(val userRepository: UserRepository,
+                    val plantRepository: PlantRepository,
+                    val growRepository: GrowRepository,
+                    val strainRepository: StrainRepository) {
 
     @GetMapping
     fun index(principal: Principal?): String {
@@ -53,41 +56,52 @@ class WebController(val userRepository: UserRepository, val plantRepository: Pla
 
     @PostMapping("/registration")
     fun createUser(model: Model, @Valid @ModelAttribute("user") userDto: UserDto, result: BindingResult): String {
-        if(result.hasErrors())
-            return "home/registration"
+        if (result.hasErrors()) {
+        }
+        return "home/registration"
 
         var user: User? = userDto.username?.let { userRepository.findByUsername(it) }
 
-        if(null == user) {
+        if (null == user) {
             if (null != userDto.email) {
-                user = userDto.email?.let{userRepository.findByUsername(it)}
-                if(null==user){
+                user = userDto.email?.let { userRepository.findByUsername(it) }
+                if (null == user) {
                     val fromDto = User.fromDto(userDto)
                     val savedUser: User = userRepository.save(fromDto)
                     model["registered"] = savedUser;
-                } else
-                    result.reject("email", "Email already in use")            }
-        } else
-            result.reject("username", "Username taken.")
+                } else {
+                }
+                result.reject("email", "Email already in use")
+            }
+        } else {
+        }
+        result.reject("username", "Username taken.")
 
-        if (result.hasErrors())
-            return "home/registration";
+        if (result.hasErrors()) {
+        }
+        return "home/registration";
         return "home/home_signed_in"
     }
 
     @GetMapping("/plants/users/{userId}")
-    fun viewUserPlants(model: Model, @PathParam("userId")userId:Long):String{
+    fun viewUserPlants(model: Model, @PathParam("userId") userId: Long): String {
         val user = userRepository.findByIdOrNull(userId)!!
-        model["plants"]=plantRepository.findByUserId(userId)
-        model["header"]="Plants for User: ${user.username}"
+        model["plants"] = plantRepository.findByUserId(userId)
+        model["header"] = "Plants for User: ${user.username}"
         return "plants/view";
     }
 
     @GetMapping("/plants/grows/{growId}")
-    fun viewGrowPlants(model: Model, @PathParam("growId")growId:Long):String{
+    fun viewGrowPlants(model: Model, @PathParam("growId") growId: Long): String {
         val grow = growRepository.findByIdOrNull(growId)!!
-        model["plants"]=plantRepository.findByGrowId(growId)
-        model["header"]="Plants for Grow: ${grow.id}, started: ${grow.getDisplayCreateDate()}"
+        model["plants"] = plantRepository.findByGrowId(growId)
+        model["header"] = "Plants for Grow: ${grow.id}, started: ${grow.getDisplayCreateDate()}"
         return "plants/view";
+    }
+
+    @GetMapping("/strains")
+    fun viewStrains(model: Model):String{
+        model["strains"] = strainRepository.findAll()
+        return "plants/view_strains"
     }
 }
