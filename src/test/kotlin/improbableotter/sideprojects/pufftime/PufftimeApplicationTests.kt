@@ -20,6 +20,5 @@ class PufftimeApplicationTests(@Autowired val restTemplate: TestRestTemplate){
         val entity = restTemplate.getForEntity<String>("/")
         assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(entity.body).contains("Track your grows")
-
     }
 }

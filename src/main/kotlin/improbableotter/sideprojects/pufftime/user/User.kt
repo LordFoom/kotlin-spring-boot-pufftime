@@ -74,7 +74,7 @@ data class UserDto(
         var confirmPassword: String?=null,
         @get:Email
         var email: String?=null,
-        var role: String?="USER",
+        var role: String?="ROLE_USER",
 )
 
 @Service

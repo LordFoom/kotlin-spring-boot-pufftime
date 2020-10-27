@@ -37,7 +37,7 @@ class ApplicationSecurityConfig() : WebSecurityConfigurerAdapter() {
                         "/img/**",
                         "/webjars/**")?.permitAll()
                 ?.antMatchers("/", "/home")?.permitAll()
-                ?.antMatchers("/users/**")?.hasAuthority("ADMIN")
+                ?.antMatchers("/users/**")?.hasAuthority("ROLE_ADMIN")
                 ?.anyRequest()?.authenticated()
                 ?.and()
                     ?.formLogin()
