@@ -15,8 +15,8 @@ data class Grow(
         @ManyToOne
         @JoinColumn(name = "user_id")
         val user: User,
-        @OneToMany(mappedBy="grow", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
-        val plants:MutableList<Plant> = mutableListOf<Plant>(),
+        @OneToMany(mappedBy="grow", cascade = [CascadeType.ALL])
+        val plants: MutableSet<Plant> = mutableSetOf(),
         val createDate: Date = Date()
 ) {
 

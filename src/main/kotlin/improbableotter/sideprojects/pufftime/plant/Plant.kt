@@ -26,7 +26,7 @@ data class Plant(
         val createDate: Date = Date(),
         var plantDate: Date? = null,
         var flowerDate: Date? = null,
-        val harvestDate: Date? = null,
-        val cureDate: Date? = null
+        var harvestDate: Date? = null,
+        var cureDate: Date? = null
 )
 

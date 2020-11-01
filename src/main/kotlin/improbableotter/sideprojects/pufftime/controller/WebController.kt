@@ -3,6 +3,8 @@ package improbableotter.sideprojects.pufftime.controller
 import improbableotter.sideprojects.pufftime.grow.GrowRepository
 import improbableotter.sideprojects.pufftime.plant.PlantRepository
 import improbableotter.sideprojects.pufftime.plant.StrainRepository
+import improbableotter.sideprojects.pufftime.strain.CreateStrainDto
+import improbableotter.sideprojects.pufftime.strain.StrainService
 import improbableotter.sideprojects.pufftime.user.User
 import improbableotter.sideprojects.pufftime.user.UserDto
 import improbableotter.sideprojects.pufftime.user.UserRepository
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import java.lang.IllegalStateException
 import java.security.Principal
 import javax.validation.Valid
 import javax.websocket.server.PathParam
@@ -24,7 +27,8 @@ import javax.websocket.server.PathParam
 class WebController(val userRepository: UserRepository,
                     val plantRepository: PlantRepository,
                     val growRepository: GrowRepository,
-                    val strainRepository: StrainRepository) {
+                    val strainRepository: StrainRepository,
+                    val strainService: StrainService) {
 
     @GetMapping
     fun index(principal: Principal?): String {
@@ -57,8 +61,8 @@ class WebController(val userRepository: UserRepository,
     @PostMapping("/registration")
     fun createUser(model: Model, @Valid @ModelAttribute("user") userDto: UserDto, result: BindingResult): String {
         if (result.hasErrors()) {
+            return "home/registration"
         }
-        return "home/registration"
 
         var user: User? = userDto.username?.let { userRepository.findByUsername(it) }
 
@@ -70,16 +74,16 @@ class WebController(val userRepository: UserRepository,
                     val savedUser: User = userRepository.save(fromDto)
                     model["registered"] = savedUser;
                 } else {
+                    result.reject("email", "Email already in use")
                 }
-                result.reject("email", "Email already in use")
             }
         } else {
+            result.reject("username", "Username taken.")
         }
-        result.reject("username", "Username taken.")
 
         if (result.hasErrors()) {
+            return "home/registration";
         }
-        return "home/registration";
         return "home/home_signed_in"
     }
 
@@ -102,6 +106,20 @@ class WebController(val userRepository: UserRepository,
     @GetMapping("/strains")
     fun viewStrains(model: Model):String{
         model["strains"] = strainRepository.findAll()
-        return "plants/view_strains"
+        return "strains/view_strains"
+    }
+
+    @GetMapping("/strains/{strainId}")
+    fun viewStrains(@PathParam("strainId") strainId:Long, model: Model):String{
+        model["strain"] = strainRepository.findByIdOrNull(strainId) ?: return "redirect:/?error"
+        return "strains/view_strain"
+    }
+
+    @PostMapping("/strains")
+    fun addStrain(@ModelAttribute @Valid dto:CreateStrainDto, result: BindingResult):String {
+       if(result.hasErrors())
+           return "strains/add";
+        val strain = strainService.create(dto)
+        return "redirect:/strains/${strain.id}?success"
     }
 }

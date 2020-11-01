@@ -19,7 +19,7 @@ import kotlin.collections.HashSet
 
 @Entity
 @Table(name = "user")
-data class User(
+class User(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long? = null,
 //        @Column(nullable = false, unique = true)
@@ -43,7 +43,7 @@ data class User(
 //        @Column
         val created: Date = Date()) {
 
-    fun toDto():UserDto= UserDto(
+    fun toDto():UserDto = UserDto(
                 id = this.id,
                 username = this.username,
                 email = this.email
