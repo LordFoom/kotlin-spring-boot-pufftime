@@ -108,6 +108,11 @@ class WebController(val userRepository: UserRepository,
         model["strains"] = strainRepository.findAll()
         return "strains/view_strains"
     }
+    @GetMapping("/strains/add")
+    fun getAddStrainForm(model: Model):String{
+        model["strain"] = CreateStrainDto()
+        return "strains/add_strain"
+    }
 
     @GetMapping("/strains/{strainId}")
     fun viewStrains(@PathParam("strainId") strainId:Long, model: Model):String{

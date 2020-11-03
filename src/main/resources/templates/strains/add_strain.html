@@ -15,7 +15,7 @@
                 </div>
             </div>
 
-            <h1>Registration</h1>
+            <h1>Add strain</h1>
             <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.Strain"*/-->
             <form th:action="@{/strains}" th:object="${strain}" method="post">
 
@@ -24,7 +24,7 @@
                    th:each="error : ${#fields.errors('global')}"
                    th:text="${error}">Validation error</p>
 
-                <div class="form-group"
+                <div class="form-group row"
                      th:classappend="${#fields.hasErrors('name')}? 'has-error':''">
                     <label for="name" class="control-label">Name</label>
                     <input id="name"
@@ -50,6 +50,6 @@
         </div>
     </div>
 </div>
-
+<div th:replace="fragments/footer::footer"></div>
 </body>
 </html>

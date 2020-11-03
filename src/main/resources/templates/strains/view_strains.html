@@ -20,12 +20,15 @@
             <!--/*@thymesVar id="strains" type="java.util.List<Strain>"*/-->
             <tr th:each="strain : ${strains}">
                 <td th:text="${strain.name}"></td>
-                <td th:text="${#dates.format(strain.created, 'yyyy-MM-dd')}"></td>
-                <td th:text="${strain.user.username}"></td>
-                <td ><a th:href="@{/movies/{id}/reviews(id=${review.movie.id})}">View</a></td>
+                <td th:text="${#dates.format(strain.createDate, 'yyyy-MM-dd')}"></td>
+                <td th:text="${strain.createdBy.username}"></td>
+                <td ><a th:href="@{/strains/{id}(id=${strain.id})}">View</a></td>
             </tr>
             </tbody>
         </table>
+    </div>
+    <div class="row">
+       <a type="button" class="btn btn-outline-success" th:href="@{/strains/add}" >Add Strain</a>
     </div>
 </div>
 

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::head">
+    <title >Add Strain</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+       <h1>Strain <span th:text="${strain.name}"></span> </h1>
+    </div>
+    <div class="row">
+        <span th:text="${strain.description}"></span>
+    </div>
+</div>
+<div th:replace="fragments/footer::footer"></div>
+</body>
