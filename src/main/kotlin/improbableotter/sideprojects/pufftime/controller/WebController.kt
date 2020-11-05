@@ -109,9 +109,18 @@ class WebController(val userRepository: UserRepository,
         return "strains/view_strains"
     }
     @GetMapping("/strains/add")
-    fun getAddStrainForm(model: Model):String{
-        model["strain"] = CreateStrainDto()
+    fun getAddStrainForm(model: Model, principal: Principal):String{
+//        model["strain"] = CreateStrainDto()
+        model["strain"] = CreateStrainDto(userName = principal.name)
         return "strains/add_strain"
+    }
+
+    @PostMapping("/strains/add")
+    fun addStrain(@ModelAttribute @Valid dto:CreateStrainDto, result: BindingResult):String {
+       if(result.hasErrors())
+           return "strains/add_strain";
+        val strain = strainService.create(dto)
+        return "redirect:/strains/${strain.id}?success"
     }
 
     @GetMapping("/strains/{strainId}")
@@ -120,11 +129,4 @@ class WebController(val userRepository: UserRepository,
         return "strains/view_strain"
     }
 
-    @PostMapping("/strains")
-    fun addStrain(@ModelAttribute @Valid dto:CreateStrainDto, result: BindingResult):String {
-       if(result.hasErrors())
-           return "strains/add";
-        val strain = strainService.create(dto)
-        return "redirect:/strains/${strain.id}?success"
-    }
 }

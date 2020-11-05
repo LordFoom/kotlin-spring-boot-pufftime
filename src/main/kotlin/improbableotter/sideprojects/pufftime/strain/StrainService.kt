@@ -13,8 +13,8 @@ class StrainService {
     @Autowired
     lateinit var userRepository: UserRepository
     fun create(dto: CreateStrainDto): Strain {
-        val user = userRepository.findByIdOrNull(dto.userId)
-        user ?: throw IllegalStateException("No such user: " + dto.userId)
+        val user = userRepository.findByUsername(dto.userName)
+        user ?: throw IllegalStateException("No such user: " + dto.userName)
         dto.user = user
         return strainRepository.save(Strain.fromDto(dto))
     }

@@ -45,6 +45,6 @@ data class CreateStrainDto(
         @get:NotBlank
         var name: String = "",
         var description: String = "",
-        var userId: Long = 0,
+        var userName: String = "",
         var user: User? = null
 )

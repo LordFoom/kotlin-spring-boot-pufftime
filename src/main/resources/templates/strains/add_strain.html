@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:replace="fragments/header::head">
     <title >Add Strain</title>
 </head>
@@ -17,8 +18,9 @@
             </div>
 
             <h1>Add strain</h1>
-            <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.Strain"*/-->
-            <form th:action="@{/strains}" th:object="${strain}" method="post">
+            <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.CreateStrainDto"*/-->
+            <form th:action="@{/strains/add}" th:object="${strain}" method="post">
+                <input type="hidden" id="userName" th:field="*{userName}" >
 
                 <p class="error-message"
                    th:if="${#fields.hasGlobalErrors()}"
