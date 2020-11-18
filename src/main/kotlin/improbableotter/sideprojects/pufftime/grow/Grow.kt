@@ -6,12 +6,16 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.persistence.*
+import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name="grow")
 data class Grow(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long? = null,
+        @NotNull
+        val name:String,
+        val description: String?,
         @ManyToOne
         @JoinColumn(name = "user_id")
         val user: User,
@@ -26,6 +30,24 @@ data class Grow(
         fun getDisplayCreateDate():String{
                 return dateFormatter.format(createDate)
         }
+        companion object {
+                fun fromDto(dto:GrowDto):Grow = Grow(dto.id,
+                        name = dto.name!!,
+                        user = dto.user!!,
+                        description = dto.description,
+                        createDate = dto.createDate?:Date())
+        }
+}
+
+data class GrowDto(
+        var id: Long? = -1,
+        var user: User? = null,
+        var username: String? = "",
+        var name: String? = "",
+        var description: String? = "",
+        var userId: Long? = -1,
+        var createDate: Date? = Date()
+){
 }
 
 interface GrowRepository:JpaRepository<Grow, Long>{

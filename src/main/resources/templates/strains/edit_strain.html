@@ -12,15 +12,15 @@
 
             <div th:if="${param.success}">
                 <div class="alert alert-info">
-                    Strain successfully created!
+                    Strain successfully edited! <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.Strain"*/-->
                     <span th:text="${strain.name}"></span>
                 </div>
             </div>
 
             <h1>Add strain</h1>
-            <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.StrainDto"*/-->
-            <form th:action="@{/strains/add}" th:object="${strain}" method="post">
-                <input type="hidden" id="userName" th:field="*{userName}" >
+            <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.EditStrainDto"*/-->
+            <form th:action="@{/strains/{strainId}(straindId=strain.id)/add}" th:object="${strain}" method="post">
+                <input type="hidden" id="userName" th:field="*{user.username}" >
 
                 <p class="error-message"
                    th:if="${#fields.hasGlobalErrors()}"
@@ -47,7 +47,7 @@
                           th:errors="*{description}"></span>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success">Create</button>
+                    <button type="submit" class="btn btn-success">Update</button>
                 </div>
             </form>
         </div>

@@ -3,7 +3,6 @@ package improbableotter.sideprojects.pufftime.strain
 import improbableotter.sideprojects.pufftime.plant.StrainRepository
 import improbableotter.sideprojects.pufftime.user.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -12,10 +11,23 @@ class StrainService {
     lateinit var strainRepository: StrainRepository
     @Autowired
     lateinit var userRepository: UserRepository
-    fun create(dto: CreateStrainDto): Strain {
+    fun create(dto: StrainDto): Strain {
         val user = userRepository.findByUsername(dto.userName)
         user ?: throw IllegalStateException("No such user: " + dto.userName)
         dto.user = user
+
+        val strain = strainRepository.findByName(dto.name)
+
+        strain?.let{
+            throw IllegalStateException("Strain already exists: "+dto.name);
+        }
+
+        return strainRepository.save(Strain.fromDto(dto))
+    }
+
+    fun updateStrain(dto: StrainDto):Strain {
+        val strain = strainRepository.findByName(dto.name)
+        strain?:throw IllegalStateException("No such strain: "+dto.name)
         return strainRepository.save(Strain.fromDto(dto))
     }
 }

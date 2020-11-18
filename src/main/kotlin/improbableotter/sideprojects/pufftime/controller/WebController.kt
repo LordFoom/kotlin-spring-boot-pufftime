@@ -1,9 +1,11 @@
 package improbableotter.sideprojects.pufftime.controller
 
+import improbableotter.sideprojects.pufftime.grow.GrowDto
 import improbableotter.sideprojects.pufftime.grow.GrowRepository
+import improbableotter.sideprojects.pufftime.grow.GrowService
 import improbableotter.sideprojects.pufftime.plant.PlantRepository
 import improbableotter.sideprojects.pufftime.plant.StrainRepository
-import improbableotter.sideprojects.pufftime.strain.CreateStrainDto
+import improbableotter.sideprojects.pufftime.strain.StrainDto
 import improbableotter.sideprojects.pufftime.strain.StrainService
 import improbableotter.sideprojects.pufftime.user.User
 import improbableotter.sideprojects.pufftime.user.UserDto
@@ -13,11 +15,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.validation.BindingResult
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import java.lang.IllegalStateException
+import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import javax.validation.Valid
 import javax.websocket.server.PathParam
@@ -27,6 +25,7 @@ import javax.websocket.server.PathParam
 class WebController(val userRepository: UserRepository,
                     val plantRepository: PlantRepository,
                     val growRepository: GrowRepository,
+                    val growService: GrowService,
                     val strainRepository: StrainRepository,
                     val strainService: StrainService) {
 
@@ -71,8 +70,7 @@ class WebController(val userRepository: UserRepository,
                 user = userDto.email?.let { userRepository.findByUsername(it) }
                 if (null == user) {
                     val fromDto = User.fromDto(userDto)
-                    val savedUser: User = userRepository.save(fromDto)
-                    model["registered"] = savedUser;
+                    model["registered"] = userRepository.save(fromDto)
                 } else {
                     result.reject("email", "Email already in use")
                 }
@@ -82,25 +80,25 @@ class WebController(val userRepository: UserRepository,
         }
 
         if (result.hasErrors()) {
-            return "home/registration";
+            return "home/registration"
         }
         return "home/home_signed_in"
     }
 
     @GetMapping("/plants/users/{userId}")
-    fun viewUserPlants(model: Model, @PathParam("userId") userId: Long): String {
+    fun viewUserPlants(model: Model, @PathVariable("userId") userId: Long): String {
         val user = userRepository.findByIdOrNull(userId)!!
         model["plants"] = plantRepository.findByUserId(userId)
         model["header"] = "Plants for User: ${user.username}"
-        return "plants/view";
+        return "plants/view_plants"
     }
 
     @GetMapping("/plants/grows/{growId}")
-    fun viewGrowPlants(model: Model, @PathParam("growId") growId: Long): String {
+    fun viewGrowPlants(model: Model, @PathVariable("growId") growId: Long): String {
         val grow = growRepository.findByIdOrNull(growId)!!
         model["plants"] = plantRepository.findByGrowId(growId)
         model["header"] = "Plants for Grow: ${grow.id}, started: ${grow.getDisplayCreateDate()}"
-        return "plants/view";
+        return "plants/view_plants"
     }
 
     @GetMapping("/strains")
@@ -108,25 +106,55 @@ class WebController(val userRepository: UserRepository,
         model["strains"] = strainRepository.findAll()
         return "strains/view_strains"
     }
+
     @GetMapping("/strains/add")
     fun getAddStrainForm(model: Model, principal: Principal):String{
 //        model["strain"] = CreateStrainDto()
-        model["strain"] = CreateStrainDto(userName = principal.name)
+        model["strain"] = StrainDto(userName = principal.name)
         return "strains/add_strain"
     }
 
     @PostMapping("/strains/add")
-    fun addStrain(@ModelAttribute @Valid dto:CreateStrainDto, result: BindingResult):String {
-       if(result.hasErrors())
-           return "strains/add_strain";
+    fun addStrain(@ModelAttribute @Valid dto:StrainDto, result: BindingResult):String {
+        if(result.hasErrors())
+            return "strains/add_strain"
         val strain = strainService.create(dto)
         return "redirect:/strains/${strain.id}?success"
     }
 
+    @GetMapping("/strains/{strainId}/edit")
+    fun getEditStrainForm(@PathVariable("strainId") strainId: Long, model: Model, principal: Principal):String{
+//        model["strain"] = CreateStrainDto()
+        val existingStrain = strainRepository.findByIdOrNull(strainId)!!
+        model["strain"] = StrainDto(existingStrain.id!!,existingStrain.name, existingStrain.description,
+                         user = existingStrain.createdBy, userName = existingStrain.createdBy.username )
+        return "strains/edit_strain"
+    }
+
+    @PostMapping("/strains/{strainId}/edit")
+    fun postStrainEdit(@PathVariable("strainId") strainId: Long, @ModelAttribute @Valid dto:StrainDto, result: BindingResult):String{
+        dto.id=strainId
+        strainService.updateStrain(dto)
+        return "redirect:/strains/${strainId}?success_edit"
+    }
+
     @GetMapping("/strains/{strainId}")
-    fun viewStrains(@PathParam("strainId") strainId:Long, model: Model):String{
+    fun viewStrain(@PathVariable("strainId") strainId:Long, model: Model):String{
         model["strain"] = strainRepository.findByIdOrNull(strainId) ?: return "redirect:/?error"
         return "strains/view_strain"
     }
+    @GetMapping("/grows/add")
+    fun getAddGrowForm(model: Model, principal: Principal):String{
+//        model["strain"] = CreateStrainDto()
+        model["strain"] = GrowDto(username = principal.name )
+        return "grows/add_grow"
+    }
 
+    @PostMapping("/grows/add")
+    fun addGrow(@ModelAttribute @Valid dto:GrowDto, result: BindingResult):String {
+        if(result.hasErrors())
+            return "grows/add_grow"
+        val grow = growService.create(dto)
+        return "redirect:/grows/${grow.id}?success"
+    }
 }

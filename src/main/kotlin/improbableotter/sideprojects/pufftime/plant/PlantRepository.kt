@@ -16,4 +16,5 @@ interface PlantRepository: JpaRepository<Plant, Long> {
 
 interface StrainRepository: JpaRepository<Strain, Long>{
     fun findByName(name: String):Strain?
+    fun update(strain: Strain):Strain
 }

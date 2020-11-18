@@ -12,14 +12,14 @@
 
             <div th:if="${param.success}">
                 <div class="alert alert-info">
-                    Strain successfully created!
+                    Grow successfully created!
                     <span th:text="${strain.name}"></span>
                 </div>
             </div>
 
             <h1>Add strain</h1>
-            <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.StrainDto"*/-->
-            <form th:action="@{/strains/add}" th:object="${strain}" method="post">
+            <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.GrowDto"*/-->
+            <form th:action="@{/grows/add}" th:object="${grow}" method="post">
                 <input type="hidden" id="userName" th:field="*{userName}" >
 
                 <p class="error-message"

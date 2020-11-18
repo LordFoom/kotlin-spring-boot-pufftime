@@ -12,6 +12,12 @@
     <div class="row">
         <span th:text="${strain.description}"></span>
     </div>
+    <div class="row">
+        <span th:text="${strain.createDate}"></span>
+    </div>
+    <div class="row">
+        <span th:text=""><a th:href="@{/strains/{id}(id=strain.id)/edit}">Edit</a></span>
+    </div>
 </div>
 <div th:replace="fragments/footer::footer"></div>
 </body>

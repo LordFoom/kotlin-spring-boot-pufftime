@@ -1,13 +1,7 @@
 package improbableotter.sideprojects.pufftime.strain
 
 import improbableotter.sideprojects.pufftime.plant.Plant
-import improbableotter.sideprojects.pufftime.plant.StrainRepository
 import improbableotter.sideprojects.pufftime.user.User
-import improbableotter.sideprojects.pufftime.user.UserRepository
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.repository.findByIdOrNull
-import org.springframework.stereotype.Service
-import java.lang.IllegalStateException
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
@@ -31,20 +25,22 @@ data class Strain(
 ) {
 
     companion object {
-        fun fromDto(dto: CreateStrainDto) = Strain(
-                id = dto.id,
-                name = dto.name,
-                description = dto.description,
-                createdBy = dto.user!!
+        fun fromDto(dto: StrainDto) = Strain(
+                 dto.id,
+                 dto.name,
+                 dto.description,
+                 createdBy = dto.user!!
                 )
     }
 }
 
-data class CreateStrainDto(
+data class StrainDto(
         var id: Long? = null,
         @get:NotBlank
         var name: String = "",
         var description: String = "",
         var userName: String = "",
-        var user: User? = null
+        var user: User? = null,
+        var createDate: Date? = null,
 )
+
