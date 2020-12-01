@@ -20,7 +20,7 @@
             <h1>Add strain</h1>
             <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.StrainDto"*/-->
             <form th:action="@{/strains/add}" th:object="${strain}" method="post">
-                <input type="hidden" id="userName" th:field="*{userName}" >
+                <input type="hidden" id="username" th:field="*{username}" >
 
                 <p class="error-message"
                    th:if="${#fields.hasGlobalErrors()}"

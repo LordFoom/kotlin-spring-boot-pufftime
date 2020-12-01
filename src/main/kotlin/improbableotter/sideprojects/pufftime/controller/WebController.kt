@@ -4,8 +4,8 @@ import improbableotter.sideprojects.pufftime.grow.GrowDto
 import improbableotter.sideprojects.pufftime.grow.GrowRepository
 import improbableotter.sideprojects.pufftime.grow.GrowService
 import improbableotter.sideprojects.pufftime.plant.PlantRepository
-import improbableotter.sideprojects.pufftime.plant.StrainRepository
 import improbableotter.sideprojects.pufftime.strain.StrainDto
+import improbableotter.sideprojects.pufftime.strain.StrainRepository
 import improbableotter.sideprojects.pufftime.strain.StrainService
 import improbableotter.sideprojects.pufftime.user.User
 import improbableotter.sideprojects.pufftime.user.UserDto
@@ -18,7 +18,6 @@ import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import javax.validation.Valid
-import javax.websocket.server.PathParam
 
 @Controller
 @RequestMapping("/")
@@ -110,7 +109,7 @@ class WebController(val userRepository: UserRepository,
     @GetMapping("/strains/add")
     fun getAddStrainForm(model: Model, principal: Principal):String{
 //        model["strain"] = CreateStrainDto()
-        model["strain"] = StrainDto(userName = principal.name)
+        model["strain"] = StrainDto(username = principal.name)
         return "strains/add_strain"
     }
 
@@ -127,7 +126,7 @@ class WebController(val userRepository: UserRepository,
 //        model["strain"] = CreateStrainDto()
         val existingStrain = strainRepository.findByIdOrNull(strainId)!!
         model["strain"] = StrainDto(existingStrain.id!!,existingStrain.name, existingStrain.description,
-                         user = existingStrain.createdBy, userName = existingStrain.createdBy.username )
+                         user = existingStrain.createdBy, username = existingStrain.createdBy.username )
         return "strains/edit_strain"
     }
 

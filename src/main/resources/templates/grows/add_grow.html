@@ -13,14 +13,14 @@
             <div th:if="${param.success}">
                 <div class="alert alert-info">
                     Grow successfully created!
-                    <span th:text="${strain.name}"></span>
+                    <span th:text="${grow.name}"></span>
                 </div>
             </div>
 
             <h1>Add strain</h1>
             <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.GrowDto"*/-->
             <form th:action="@{/grows/add}" th:object="${grow}" method="post">
-                <input type="hidden" id="userName" th:field="*{userName}" >
+                <input type="hidden" id="username" th:field="*{username}" >
 
                 <p class="error-message"
                    th:if="${#fields.hasGlobalErrors()}"

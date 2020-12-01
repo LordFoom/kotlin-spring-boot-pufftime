@@ -2,6 +2,7 @@ package improbableotter.sideprojects.pufftime.strain
 
 import improbableotter.sideprojects.pufftime.plant.Plant
 import improbableotter.sideprojects.pufftime.user.User
+import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
@@ -39,8 +40,12 @@ data class StrainDto(
         @get:NotBlank
         var name: String = "",
         var description: String = "",
-        var userName: String = "",
+        var username: String = "",
         var user: User? = null,
         var createDate: Date? = null,
 )
+
+interface StrainRepository: JpaRepository<Strain, Long> {
+    fun findByName(name: String):Strain?
+}
 

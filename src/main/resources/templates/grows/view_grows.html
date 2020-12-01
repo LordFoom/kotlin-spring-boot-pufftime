@@ -22,6 +22,7 @@
             <tr th:each="grow : ${grows}">
                 <td th:text="${grow.name}"></td>
                 <td th:text="${#dates.format(grow.createDate, 'yyyy-MM-dd')}"></td>
+                <td th:text="${grow.status}"></td>
                 <td ><a th:href="@{/grows/{id}(id=${grow.id})}">View</a></td>
                 <td ><a th:href="@{/grows/{id}(id=${grow.id})/plants}">Add plant</a></td>
             </tr>

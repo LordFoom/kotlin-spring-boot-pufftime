@@ -16,6 +16,7 @@ data class Grow(
         @NotNull
         val name:String,
         val description: String?,
+        val status: GrowStatus = GrowStatus.CREATED,
         @ManyToOne
         @JoinColumn(name = "user_id")
         val user: User,
@@ -30,6 +31,7 @@ data class Grow(
         fun getDisplayCreateDate():String{
                 return dateFormatter.format(createDate)
         }
+
         companion object {
                 fun fromDto(dto:GrowDto):Grow = Grow(dto.id,
                         name = dto.name!!,
@@ -37,6 +39,11 @@ data class Grow(
                         description = dto.description,
                         createDate = dto.createDate?:Date())
         }
+}
+
+enum class GrowStatus {
+    CREATED, IN_PROGRESS, COMPLETED
+
 }
 
 data class GrowDto(
