@@ -106,6 +106,12 @@ class WebController(val userRepository: UserRepository,
         return "strains/view_strains"
     }
 
+    @GetMapping("/strains/{strainId}")
+    fun viewStrain(@PathVariable("strainId") strainId:Long, model: Model):String{
+        model["strain"] = strainRepository.findByIdOrNull(strainId) ?: return "redirect:/?error"
+        return "strains/view_strain"
+    }
+
     @GetMapping("/strains/add")
     fun getAddStrainForm(model: Model, principal: Principal):String{
 //        model["strain"] = CreateStrainDto()
@@ -137,11 +143,6 @@ class WebController(val userRepository: UserRepository,
         return "redirect:/strains/${strainId}?success_edit"
     }
 
-    @GetMapping("/strains/{strainId}")
-    fun viewStrain(@PathVariable("strainId") strainId:Long, model: Model):String{
-        model["strain"] = strainRepository.findByIdOrNull(strainId) ?: return "redirect:/?error"
-        return "strains/view_strain"
-    }
     @GetMapping("/grows/add")
     fun getAddGrowForm(model: Model, principal: Principal):String{
 //        model["strain"] = CreateStrainDto()
