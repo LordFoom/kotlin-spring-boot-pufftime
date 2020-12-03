@@ -39,24 +39,20 @@
                     th:classappend="${module == 'grow' ? 'active' : ''}">
                     <a class="nav-link dropdown-toggle" href="#" th:href="@{/grows}" id="growDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        The Grow
+                        Grow
                     </a>
                     <div class="dropdown-menu" aria-labelledby="growDropdown">
-                        <a class="dropdown-item" href="#" th:href="@{/grows/current}">Current Grow</a>
-                        <a class="dropdown-item" href="#" th:href="@{/grows}">Your Grows</a>
-                        <a class="dropdown-item" href="#" th:href="@{/grows/add}">Add plant</a>
+                        <a class="dropdown-item" href="#" th:href="@{/grows}">Grows</a>
+                        <a class="dropdown-item" href="#" th:href="@{/grows/add}">Add grow</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown" aria-labelledby="navbarDropdown"
                     th:classappend="${module == 'plants' ? 'active' : ''}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Plants
+                        Strains
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#" th:href="@{/plants/grows/current}">Current grow plants</a>
-                        <a class="dropdown-item" href="#" th:href="@{/plants}">Your plants</a>
-                        <a class="dropdown-item" href="#" th:href="@{/plants/add}">Add plant</a>
                         <a class="dropdown-item" href="#" th:href="@{/strains}">Strains</a>
                         <a class="dropdown-item" href="#" th:href="@{/strains/add}">Add strains</a>
                     </div>

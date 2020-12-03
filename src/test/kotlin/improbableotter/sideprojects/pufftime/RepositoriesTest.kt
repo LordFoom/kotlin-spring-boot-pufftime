@@ -40,7 +40,7 @@ class RepositoriesTest @Autowired constructor(
         entityManager.persist(foom)
         entityManager.flush()
         val user = userRepository.findByUsername(user_name)!!
-        val grow = Grow(user = user)
+        val grow = Grow(user = user, name = "test_grow", description = "test_description")
         entityManager.persist(grow)
         val strain = Strain(name = "Pollygoggle", createdBy = user)
         entityManager.persist(strain)

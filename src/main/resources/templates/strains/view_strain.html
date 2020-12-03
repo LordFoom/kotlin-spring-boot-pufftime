@@ -8,9 +8,9 @@
 <div class="container">
     <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.Strain"*/-->
     <div class="row">
-       <h1>Strain <span th:text="${strain.name}"></span> </h1>
+       <h1>Strain <span th:text="${strain.name}" class="alert-info"></span> </h1>
     </div>
-    <div class="row">
+    <div class="row border-dark">
         <span th:text="${strain.description}"></span>
     </div>
     <div class="row">
@@ -18,7 +18,7 @@
     </div>
     <div class="row">
         <span ><a th:href="@{/strains/{id}/edit(id=${strain.id})}">Edit</a></span>
-        <span ><a th:href="@{/strains/{id}/plants/add(id=${strain.id})}">Edit</a></span>
+        <span ><a th:href="@{/strains/{id}/plants(id=${strain.id})}">View Plants</a></span>
     </div>
 </div>
 <div th:replace="fragments/footer::footer"></div>
