@@ -22,7 +22,10 @@ data class Grow(
         val user: User,
         @OneToMany(mappedBy="grow", cascade = [CascadeType.ALL])
         val plants: MutableSet<Plant> = mutableSetOf(),
-        val createDate: Date = Date()
+        val createDate: Date = Date(),
+        val startDate: Date = Date(),
+        val flowerDate: Date = Date(),
+        val harvestDate: Date = Date()
 ) {
 
         @Transient
@@ -34,10 +37,11 @@ data class Grow(
 
         companion object {
                 fun fromDto(dto:GrowDto):Grow = Grow(dto.id,
-                        name = dto.name!!,
+                        name = dto.name,
                         user = dto.user!!,
                         description = dto.description,
-                        createDate = dto.createDate?:Date())
+                        createDate = dto.createDate?:Date(),
+                        startDate = dto.startDate?:Date())
         }
 }
 
@@ -50,10 +54,12 @@ data class GrowDto(
         var id: Long? = -1,
         var user: User? = null,
         var username: String? = "",
-        var name: String? = "",
+        @NotNull
+        var name: String,
         var description: String? = "",
         var userId: Long? = -1,
-        var createDate: Date? = Date()
+        var createDate: Date? = Date(),
+        var startDate: Date? = Date(),
 ){
 }
 

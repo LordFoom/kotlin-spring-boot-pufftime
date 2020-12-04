@@ -145,7 +145,7 @@ class WebController(val userRepository: UserRepository,
 
     @GetMapping("/grows/add")
     fun getAddGrowForm(model: Model, principal: Principal):String{
-        model["grow"] = GrowDto(username = principal.name )
+        model["grow"] = GrowDto(username = principal.name, name="" )
         return "grows/add_grow"
     }
 
