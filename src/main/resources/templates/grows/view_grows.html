@@ -12,6 +12,9 @@
             <tr>
                 <th>Grow</th>
                 <th>Created</th>
+                <th>Start Date</th>
+                <th>Flower Date</th>
+                <th>Status</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -22,6 +25,8 @@
             <tr th:each="grow : ${grows}">
                 <td th:text="${grow.name}"></td>
                 <td th:text="${#dates.format(grow.createDate, 'yyyy-MM-dd')}"></td>
+                <td th:text="${#dates.format(grow.startDate, 'yyyy-MM-dd')}"></td>
+                <td th:text="${#dates.format(grow.flowerDate, 'yyyy-MM-dd')}"></td>
                 <td th:text="${grow.status}"></td>
                 <td ><a th:href="@{/grows/{id}(id=${grow.id})}">View</a></td>
                 <td ><a th:href="@{/grows/{id}(id=${grow.id})/plants}">Add plant</a></td>

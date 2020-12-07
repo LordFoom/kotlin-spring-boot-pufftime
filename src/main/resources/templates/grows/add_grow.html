@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:replace="fragments/header::head">
-    <title >Add Strain</title>
+    <title >Add Grow</title>
 </head>
 <body>
 <div th:replace="fragments/header :: header">&nbsp;</div>
@@ -48,17 +48,21 @@
                 </div>
 
                 <div class="form-group row"
-                     th:classappend="${#fields.hasErrors('name')}? 'has-error':''">
+                     th:classappend="${#fields.hasErrors('startDate')}? 'has-error':''">
                     <label for="startDate" class="control-label">Start date</label>
                     <div class="input-group date" data-provider="datepicker">
                         <input id="startDate"
                                class="form-control small-width"
                                th:field="*{startDate}"/>
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
                     </div>
                     <p class="error-message"
                        th:each="error: ${#fields.errors('startDate')}"
                        th:text="${error}">Validation error</p>
                 </div>
+
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-success">Create</button>
@@ -67,6 +71,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('.input-group.date').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy-mm-dd'
+    });
+</script>
+
 <div th:replace="fragments/footer::footer"></div>
 </body>
 </html>

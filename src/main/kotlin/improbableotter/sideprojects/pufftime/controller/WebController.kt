@@ -143,6 +143,20 @@ class WebController(val userRepository: UserRepository,
         return "redirect:/strains/${strainId}?success_edit"
     }
 
+    @GetMapping("/grows")
+    fun viewAllGrows(model: Model, principal: Principal):String{
+        val user = userRepository.findByUsername(principal.name)!!
+        model["grows"] = growRepository.findAllByUser(user);
+
+        return "grows/view_grows"
+    }
+
+    @GetMapping("/grows/{growId}/view")
+    fun viewGrow(@PathVariable growId: Long, model: Model):String{
+        model["grow"] = growRepository.findById(growId);
+        return "grows/view_grow"
+    }
+
     @GetMapping("/grows/add")
     fun getAddGrowForm(model: Model, principal: Principal):String{
         model["grow"] = GrowDto(username = principal.name, name="" )
