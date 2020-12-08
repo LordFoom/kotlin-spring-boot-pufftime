@@ -151,9 +151,9 @@ class WebController(val userRepository: UserRepository,
         return "grows/view_grows"
     }
 
-    @GetMapping("/grows/{growId}/view")
+    @GetMapping("/grows/{growId}")
     fun viewGrow(@PathVariable growId: Long, model: Model):String{
-        model["grow"] = growRepository.findById(growId);
+        model["grow"] = growRepository.findByIdOrNull(growId)!!;
         return "grows/view_grow"
     }
 

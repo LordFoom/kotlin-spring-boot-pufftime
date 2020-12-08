@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragments/header::head">
+    <title >View Grow</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <div th:if="${param.success}">
+                <div class="alert alert-info">
+                    Grow successfully created!
+                </div>
+            </div>
+
+            <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.GrowDto"*/-->
+            <h1>Grow: "<span th:text="${grow.name}"></span>"</h1>
+                <div class="border-dark row">
+                    <label for="name" class="control-label ">Name</label><br/>
+                    <span id="name" class="form-control" th:text="${grow.name}"/>
+                </div>
+
+                <div class="border-dark row" >
+                    <label for="description" class="control-label">Description</label>
+                    <span id="description" class="form-control" th:text="${grow.description}" />
+                </div>
+
+            <div class="border-dark row" >
+                <label for="startDate" class="control-label">Start Date</label>
+                <span id="startDate" class="form-control" th:text="${#dates.format(grow.startDate, 'yyyy-MM-dd')}" />
+            </div>
+
+            <div class="border-dark row" >
+                <label for="flowerDate" class="control-label">Flower Date</label>
+                <span id="flowerDate" class="form-control" th:text="${#dates.format(grow.flowerDate, 'yyyy-MM-dd')}" />
+            </div>
+
+            <div class="border-dark row" >
+                <label for="flowerDate" class="control-label">Harvest Date</label>
+                <span id="flowerDate" class="form-control" th:text="${#dates.format(grow.harvestDate, 'yyyy-MM-dd')}" />
+            </div>
+
+
+            <div class="row">
+                <span ><a th:href="@{/grows/{id}/edit(id=${grow.id})}">Edit</a></span>
+                <span ><a th:href="@{/grows/{id}/plants/add(id=${grow.id})}">Add Plants</a></span>
+            </div>
+            //in here we will put some plants
+            <div class="row">
+                <span ><a th:href="@{/grows/{id}/edit(id=${grow.id})}">Edit</a></span>
+                <span ><a th:href="@{/grows/{id}/plants/add(id=${grow.id})}">Add Plants</a></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.input-group.date').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy-mm-dd'
+    });
+</script>
+
+<div th:replace="fragments/footer::footer"></div>
+</body>
+</html>
