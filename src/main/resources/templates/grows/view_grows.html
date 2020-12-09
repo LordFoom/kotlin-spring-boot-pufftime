@@ -29,7 +29,7 @@
                 <td th:text="${#dates.format(grow.flowerDate, 'yyyy-MM-dd')}"></td>
                 <td th:text="${grow.status}"></td>
                 <td ><a th:href="@{/grows/{id}(id=${grow.id})}">View</a></td>
-                <td ><a th:href="@{/grows/{id}(id=${grow.id})/plants}">Add plant</a></td>
+                <td ><a th:href="@{/grows/{id}/plants/add(id=${grow.id})}">Add plant</a></td>
             </tr>
             </tbody>
         </table>
