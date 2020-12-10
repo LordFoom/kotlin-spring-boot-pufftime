@@ -1,5 +1,6 @@
 package improbableotter.sideprojects.pufftime.strain
 
+import improbableotter.sideprojects.pufftime.common.Status
 import improbableotter.sideprojects.pufftime.plant.Plant
 import improbableotter.sideprojects.pufftime.user.User
 import org.springframework.data.jpa.repository.JpaRepository
@@ -22,7 +23,8 @@ data class Strain(
         @OneToMany(mappedBy = "strain", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
         val plants: MutableList<Plant> = mutableListOf(),
         @get:NotNull
-        val createDate: Date = Date()
+        val createDate: Date = Date(),
+        val statusId: Int = Status.ACTIVE.ordinal
 ) {
 
     companion object {
@@ -47,5 +49,6 @@ data class StrainDto(
 
 interface StrainRepository: JpaRepository<Strain, Long> {
     fun findByName(name: String):Strain?
+    fun findByStatusIdEquals(statusId: Int):List<Strain>
 }
 

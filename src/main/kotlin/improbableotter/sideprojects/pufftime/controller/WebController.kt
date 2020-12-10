@@ -1,8 +1,10 @@
 package improbableotter.sideprojects.pufftime.controller
 
+import improbableotter.sideprojects.pufftime.common.Status
 import improbableotter.sideprojects.pufftime.grow.GrowDto
 import improbableotter.sideprojects.pufftime.grow.GrowRepository
 import improbableotter.sideprojects.pufftime.grow.GrowService
+import improbableotter.sideprojects.pufftime.plant.PlantDto
 import improbableotter.sideprojects.pufftime.plant.PlantRepository
 import improbableotter.sideprojects.pufftime.strain.StrainDto
 import improbableotter.sideprojects.pufftime.strain.StrainRepository
@@ -173,7 +175,10 @@ class WebController(val userRepository: UserRepository,
 
     @GetMapping("/grows/{growId}/plants/add")
     fun getAddPlantToGrowForm(@PathVariable growId: Long, model: Model, principal: Principal):String{
-        model["grow"] = GrowDto(username = principal.name, name="" )
-        return "grows/add_grow"
+        model["grow"] = growRepository.findByIdOrNull(growId)!!
+        model["plant"] = PlantDto(username=principal.name)
+        model["strains"] = strainRepository.findByStatusIdEquals(Status.ACTIVE.ordinal)
+
+        return "plants/add_plant"
     }
 }

@@ -29,12 +29,16 @@
                    th:text="${error}">Validation error</p>
 
                 <div class="form-group row"
-                     th:classappend="${#fields.hasErrors('name')}? 'has-error':''">
+                     th:classappend="${#fields.hasErrors('strainId')}? 'has-error':''">
                     <label for="name" class="control-label">Strain</label>
 
-                    <input id="name" class="form-control" th:field="*{name}"/>
+                    <select id="name" class="form-control" th:field="*{strainId}">
+                        <th:block th:each="strain: ${strains}">
+                            <option th:value="${strain.id}" th:text="${strain.name}"></option>
+                        </th:block>
+                    </select>
                     <p class="error-message"
-                       th:each="error: ${#fields.errors('name')}"
+                       th:each="error: ${#fields.errors('strainId')}"
                        th:text="${error}">Validation error</p>
                 </div>
 
