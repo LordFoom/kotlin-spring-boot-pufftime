@@ -30,3 +30,15 @@ data class Plant(
         var cureDate: Date? = null
 )
 
+data class PlantDto(
+        var id: Long? = null,
+        var username: String? = null,
+        var userid: String? = null,
+        var growId: Long? = 0,
+        var strainId: Long? = null,
+        var createDate: Date = Date(),
+        var plantDate: Date? = null,
+        var flowerDate: Date? = null,
+        var harvestDate: Date? = null,
+        var cureDate: Date? = null
+)

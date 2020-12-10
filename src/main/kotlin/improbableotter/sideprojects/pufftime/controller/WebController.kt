@@ -170,4 +170,10 @@ class WebController(val userRepository: UserRepository,
         val grow = growService.create(dto)
         return "redirect:/grows/${grow.id}?success"
     }
+
+    @GetMapping("/grows/{growId}/plants/add")
+    fun getAddPlantToGrowForm(@PathVariable growId: Long, model: Model, principal: Principal):String{
+        model["grow"] = GrowDto(username = principal.name, name="" )
+        return "grows/add_grow"
+    }
 }
