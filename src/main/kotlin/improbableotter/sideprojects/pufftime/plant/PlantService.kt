@@ -4,17 +4,28 @@ import improbableotter.sideprojects.pufftime.grow.GrowRepository
 import improbableotter.sideprojects.pufftime.strain.StrainRepository
 import improbableotter.sideprojects.pufftime.user.UserRepository
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.stereotype.Service
 
+@Service
 class PlantService(private val growRepository: GrowRepository,
                    private val strainRepository: StrainRepository,
                    private val userRepository: UserRepository,
                    private val plantRepository: PlantRepository) {
 
-    fun createPlant(dto: PlantDto): Plant {
+    /**
+     * A grow can easily have multiple plants, so dtos contain a field expressing a number of plants they should
+     * be turned into
+     */
+    fun createPlants(dto: PlantDto): List<Plant> {
         dto.grow = dto.grow ?: growRepository.findByIdOrNull(dto.growId)!!
-        dto.strain = dto.strain ?: strainRepository.findByIdOrNull(dto.strainId)!!
+        val strain = strainRepository.findByIdOrNull(dto.strainId)!!
         dto.user = dto.user ?: userRepository.findByIdOrNull(dto.userId)!!
 
-        return plantRepository.save(Plant.fromDto(dto))
+        val numPlants = dto.numPlants?:1
+        var lstPlants = ArrayList<Plant>()
+        for (i in 1..numPlants) {
+            lstPlants.add(plantRepository.save(Plant.fromDto(dto, strain)))
+        }
+        return lstPlants
     }
 }

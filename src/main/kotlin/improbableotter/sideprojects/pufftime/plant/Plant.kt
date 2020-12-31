@@ -6,13 +6,11 @@ import improbableotter.sideprojects.pufftime.user.User
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 import javax.persistence.*
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "plant")
-data class Plant(
+class Plant(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long? = null,
         @ManyToOne
@@ -31,10 +29,10 @@ data class Plant(
         var cureDate: Date? = null
 ){
         companion object{
-                fun fromDto(dto: PlantDto)=Plant(
+                fun fromDto(dto: PlantDto, strain: Strain)=Plant(
                         user = dto.user!!,
                         grow = dto.grow!!,
-                        strain = dto.strain!!,
+                        strain = strain,
                         createDate = dto.createDate,
                         plantDate = dto.plantDate,
                         flowerDate = dto.flowerDate,
@@ -52,12 +50,13 @@ data class PlantDto(
         var growId: Long? = 0,
         var grow: Grow? = null,
         var strainId: Long? = null,
-        var strain: Strain? = null,
+//        var strain: Strain? = null,
         var createDate: Date = Date(),
         var plantDate: Date? = null,
         var flowerDate: Date? = null,
         var harvestDate: Date? = null,
-        var cureDate: Date? = null
+        var cureDate: Date? = null,
+        var numPlants: Int? = 1
 )
 
 
@@ -68,5 +67,9 @@ interface PlantRepository: JpaRepository<Plant, Long> {
         fun findByGrow(grow: Grow):List<Plant>
         fun findByUserId(userId: Long):List<Plant>
         fun findByUser(user: User):List<Plant>
+//        @Query("SELECT p FROM Plant p where growId = ?1")
+        fun findByGrowIdOrderByStrainDesc(growId: Long): List<Plant>
 }
+
+
 

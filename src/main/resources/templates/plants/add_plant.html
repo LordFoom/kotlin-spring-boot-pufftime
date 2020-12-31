@@ -21,7 +21,8 @@
 
             <h1>Add plant to <span th:text="${grow.name}"></span> </h1>
             <form th:action="@{/grows/{growId}/plants/add(growId=${grow.id})}" th:object="${plant}" method="post">
-                <input type="hidden" id="username" th:field="*{username}" >
+                <input type="hidden" id="userId" th:field="*{userId}" >
+                <input type="hidden" id="growId" th:field="*{growId}" >
 
                 <p class="error-message"
                    th:if="${#fields.hasGlobalErrors()}"
@@ -29,10 +30,21 @@
                    th:text="${error}">Validation error</p>
 
                 <div class="form-group row"
-                     th:classappend="${#fields.hasErrors('strainId')}? 'has-error':''">
-                    <label for="name" class="control-label">Strain</label>
+                     th:classappend="${#fields.hasErrors('numPlants')}? 'has-error':''">
+                    <label for="numPlants" class="control-label">Number of this kind of plant:</label>
 
-                    <select id="name" class="form-control" th:field="*{strainId}">
+                    <input type="number" class="form-control" th:field="*{numPlants}"/>
+                    <p class="error-message"
+                       th:each="error: ${#fields.errors('numPlants')}"
+                       th:text="${error}">Validation error</p>
+                </div>
+
+                <div class="form-group row"
+
+                     th:classappend="${#fields.hasErrors('strainId')}? 'has-error':''">
+                    <label for="strainId" class="control-label">Strain</label>
+
+                    <select id="strainId" class="form-control" th:field="*{strainId}">
                         <th:block th:each="strain: ${strains}">
                             <option th:value="${strain.id}" th:text="${strain.name}"></option>
                         </th:block>

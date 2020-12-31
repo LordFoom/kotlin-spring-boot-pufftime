@@ -48,7 +48,31 @@
                 <span ><a th:href="@{/grows/{id}/edit(id=${grow.id})}">Edit</a></span>&nbsp;
                 <span ><a th:href="@{/grows/{id}/plants/add(id=${grow.id})}">Add Plant</a></span>
             </div>
-            //in here we will put some plants
+            <table class="table table-bordered tableMain">
+                <thead>
+                <tr>
+                    <th>Strain</th>
+                    <th>Created</th>
+                    <th>Flower Date</th>
+                    <th>Harvest Date</th>
+                    <th>Cure Date</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="plant : ${plants}">
+                    <!--/*@thymesVar id="plant" type="improbableotter.sideprojects.pufftime.plant.Plant"*/-->
+                    <td th:text="${plant.strain.name}"></td>
+                    <td th:text="${#dates.format(plant.createDate, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${#dates.format(plant.flowerDate, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${#dates.format(plant.harvestDate, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${#dates.format(plant.cureDate, 'yyyy-MM-dd')}"></td>
+                    <td><a th:href="@{/grows/{id}/plants/{plantId}/delete(id=${grow.id}, plantId=${plant.id})}">Delete</a></td>
+
+                </tr>
+                </tbody>
+            </table>
             <div class="row">
                 <span ><a th:href="@{/grows/{id}/edit(id=${grow.id})}">Edit</a></span>
                 <span ><a th:href="@{/grows/{id}/plants/add(id=${grow.id})}">Add Plant</a></span>

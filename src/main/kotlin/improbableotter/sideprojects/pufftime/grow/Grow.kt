@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name="grow")
-data class Grow(
+class Grow(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long? = null,
         @get:NotBlank

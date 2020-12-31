@@ -6,6 +6,7 @@ import improbableotter.sideprojects.pufftime.grow.GrowRepository
 import improbableotter.sideprojects.pufftime.grow.GrowService
 import improbableotter.sideprojects.pufftime.plant.PlantDto
 import improbableotter.sideprojects.pufftime.plant.PlantRepository
+import improbableotter.sideprojects.pufftime.plant.PlantService
 import improbableotter.sideprojects.pufftime.strain.StrainDto
 import improbableotter.sideprojects.pufftime.strain.StrainRepository
 import improbableotter.sideprojects.pufftime.strain.StrainService
@@ -25,6 +26,7 @@ import javax.validation.Valid
 @RequestMapping("/")
 class WebController(val userRepository: UserRepository,
                     val plantRepository: PlantRepository,
+                    val plantService: PlantService,
                     val growRepository: GrowRepository,
                     val growService: GrowService,
                     val strainRepository: StrainRepository,
@@ -103,82 +105,100 @@ class WebController(val userRepository: UserRepository,
     }
 
     @GetMapping("/strains")
-    fun viewStrains(model: Model):String{
+    fun viewStrains(model: Model): String {
         model["strains"] = strainRepository.findAll()
         return "strains/view_strains"
     }
 
     @GetMapping("/strains/{strainId}")
-    fun viewStrain(@PathVariable("strainId") strainId:Long, model: Model):String{
+    fun viewStrain(@PathVariable("strainId") strainId: Long, model: Model): String {
         model["strain"] = strainRepository.findByIdOrNull(strainId) ?: return "redirect:/?error"
         return "strains/view_strain"
     }
 
     @GetMapping("/strains/add")
-    fun getAddStrainForm(model: Model, principal: Principal):String{
+    fun getAddStrainForm(model: Model, principal: Principal): String {
 //        model["strain"] = CreateStrainDto()
         model["strain"] = StrainDto(username = principal.name)
         return "strains/add_strain"
     }
 
     @PostMapping("/strains/add")
-    fun addStrain(@ModelAttribute @Valid dto:StrainDto, result: BindingResult):String {
-        if(result.hasErrors())
+    fun addStrain(@ModelAttribute @Valid dto: StrainDto, result: BindingResult): String {
+        if (result.hasErrors()) {
             return "strains/add_strain"
+        }
         val strain = strainService.create(dto)
         return "redirect:/strains/${strain.id}?success"
     }
 
     @GetMapping("/strains/{strainId}/edit")
-    fun getEditStrainForm(@PathVariable("strainId") strainId: Long, model: Model, principal: Principal):String{
+    fun getEditStrainForm(@PathVariable("strainId") strainId: Long, model: Model, principal: Principal): String {
 //        model["strain"] = CreateStrainDto()
         val existingStrain = strainRepository.findByIdOrNull(strainId)!!
-        model["strain"] = StrainDto(existingStrain.id!!,existingStrain.name, existingStrain.description,
-                         user = existingStrain.createdBy, username = existingStrain.createdBy.username )
+        model["strain"] = StrainDto(existingStrain.id!!, existingStrain.name, existingStrain.description,
+                user = existingStrain.createdBy, username = existingStrain.createdBy.username)
         return "strains/edit_strain"
     }
 
     @PostMapping("/strains/{strainId}/edit")
-    fun postStrainEdit(@PathVariable("strainId") strainId: Long, @ModelAttribute @Valid dto:StrainDto, result: BindingResult):String{
-        dto.id=strainId
+    fun postStrainEdit(@PathVariable("strainId") strainId: Long, @ModelAttribute @Valid dto: StrainDto, result: BindingResult): String {
+        dto.id = strainId
         strainService.updateStrain(dto)
         return "redirect:/strains/${strainId}?success_edit"
     }
 
     @GetMapping("/grows")
-    fun viewAllGrows(model: Model, principal: Principal):String{
+    fun viewAllGrows(model: Model, principal: Principal): String {
         val user = userRepository.findByUsername(principal.name)!!
-        model["grows"] = growRepository.findAllByUser(user);
+        model["grows"] = growRepository.findAllByUser(user)
 
         return "grows/view_grows"
     }
 
     @GetMapping("/grows/{growId}")
-    fun viewGrow(@PathVariable growId: Long, model: Model):String{
-        model["grow"] = growRepository.findByIdOrNull(growId)!!;
+    fun viewGrow(@PathVariable growId: Long, model: Model): String {
+        model["grow"] = growRepository.findByIdOrNull(growId)!!
+        model["plants"] = plantRepository.findByGrowIdOrderByStrainDesc(growId)
         return "grows/view_grow"
     }
 
     @GetMapping("/grows/add")
-    fun getAddGrowForm(model: Model, principal: Principal):String{
-        model["grow"] = GrowDto(username = principal.name, name="" )
+    fun getAddGrowForm(model: Model, principal: Principal): String {
+        model["grow"] = GrowDto(username = principal.name, name = "")
         return "grows/add_grow"
     }
 
     @PostMapping("/grows/add")
-    fun addGrow(@ModelAttribute @Valid dto:GrowDto, result: BindingResult):String {
-        if(result.hasErrors())
+    fun addGrow(@ModelAttribute @Valid dto: GrowDto, result: BindingResult): String {
+        if (result.hasErrors()) {
             return "grows/add_grow"
+        }
         val grow = growService.create(dto)
         return "redirect:/grows/${grow.id}?success"
     }
 
     @GetMapping("/grows/{growId}/plants/add")
-    fun getAddPlantToGrowForm(@PathVariable growId: Long, model: Model, principal: Principal):String{
+    fun getAddPlantToGrowForm(@PathVariable growId: Long, model: Model, principal: Principal): String {
+        val user = userRepository.findByUsername(principal.name)!!
         model["grow"] = growRepository.findByIdOrNull(growId)!!
-        model["plant"] = PlantDto(username=principal.name)
         model["strains"] = strainRepository.findByStatusIdEquals(Status.ACTIVE.ordinal)
+        model["plant"] = PlantDto(userId = user.id, growId = growId)
 
         return "plants/add_plant"
+    }
+
+    @PostMapping("/grows/{growId}/plants/add")
+    fun addPlantToGrow(@PathVariable growId: Long, @ModelAttribute @Valid dto: PlantDto, result: BindingResult, model: Model): String {
+        plantService.createPlants(dto)
+        return "redirect:/grows/$growId"
+    }
+
+    @GetMapping("/grows/{growId}/plants/{plantId}/delete")
+    fun deletePlant(@PathVariable growId: Long, @PathVariable plantId: Long, model: Model):String {
+        model["grow"] = growRepository.findByIdOrNull(growId)!!
+        plantRepository.deleteById(plantId)
+        return "redirect:/grows/$growId"
+//        return "grows/view_grow"
     }
 }

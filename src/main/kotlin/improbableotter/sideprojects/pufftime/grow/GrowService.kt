@@ -1,7 +1,6 @@
 package improbableotter.sideprojects.pufftime.grow
 
 import improbableotter.sideprojects.pufftime.user.UserRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
