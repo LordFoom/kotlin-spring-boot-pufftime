@@ -20,6 +20,8 @@ import org.springframework.ui.set
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
+import java.time.Instant
+import java.time.ZoneId
 import javax.validation.Valid
 
 @Controller
@@ -142,7 +144,7 @@ class WebController(val userRepository: UserRepository,
     }
 
     @PostMapping("/strains/{strainId}/edit")
-    fun postStrainEdit(@PathVariable("strainId") strainId: Long, @ModelAttribute @Valid dto: StrainDto, result: BindingResult): String {
+    fun editStrain(@PathVariable("strainId") strainId: Long, @ModelAttribute @Valid dto: StrainDto, result: BindingResult): String {
         dto.id = strainId
         strainService.updateStrain(dto)
         return "redirect:/strains/${strainId}?success_edit"
@@ -161,6 +163,21 @@ class WebController(val userRepository: UserRepository,
         model["grow"] = growRepository.findByIdOrNull(growId)!!
         model["plants"] = plantRepository.findByGrowIdOrderByStrainDesc(growId)
         return "grows/view_grow"
+    }
+
+    @GetMapping("/grows/{growId}/edit")
+    fun getGrowEditForm(@PathVariable growId: Long, model: Model): String {
+        val existingGrow = growRepository.findByIdOrNull(growId)!!
+        model["grow"] = existingGrow.toDto()
+        return "grows/edit_grow"
+    }
+
+    @PostMapping("/grows/{growId}/edit")
+    fun editGrow(@PathVariable growId: Long, @ModelAttribute @Valid grow:GrowDto, result: BindingResult, model: Model, principal: Principal): String {
+        grow.id=growId
+        grow.user=userRepository.findByUsername(principal.name)
+        model["grow"]=growService.update(grow).toDto()
+        return "redirect:/grows/$growId?success_edit"
     }
 
     @GetMapping("/grows/add")

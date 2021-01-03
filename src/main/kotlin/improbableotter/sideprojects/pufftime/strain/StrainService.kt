@@ -2,6 +2,7 @@ package improbableotter.sideprojects.pufftime.strain
 
 import improbableotter.sideprojects.pufftime.user.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -25,8 +26,8 @@ class StrainService {
     }
 
     fun updateStrain(dto: StrainDto):Strain {
-        val strain = strainRepository.findByName(dto.name)
-        strain?:throw IllegalStateException("No such strain: "+dto.name)
+        strainRepository.findByIdOrNull(dto.id!!)
+                ?:throw IllegalStateException("No such strain: "+dto.name)
         return strainRepository.save(Strain.fromDto(dto))
     }
 }

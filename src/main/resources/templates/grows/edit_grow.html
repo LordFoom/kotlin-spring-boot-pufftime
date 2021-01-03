@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragments/header::head">
+    <title >Edit Grow</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <div th:if="${param.success}">
+                <div class="alert alert-info">
+                    Grow successfully edited!
+<!--                    <span th:text="${grow.name}"></span>-->
+                </div>
+            </div>
+
+            <h1>Edit Grow</h1>
+            <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.GrowDto"*/-->
+            <form th:action="@{/grows/{growId}/edit(growId=${grow.id})}" th:object="${grow}" method="post">
+<!--                <input type="hidden" id="username" th:field="*{username}" >-->
+
+                <p class="error-message"
+                   th:if="${#fields.hasGlobalErrors()}"
+                   th:each="error : ${#fields.errors('global')}"
+                   th:text="${error}">Validation error</p>
+
+                <div class="form-group row"
+                     th:classappend="${#fields.hasErrors('name')}? 'has-error':''">
+                    <label for="name" class="control-label">Name</label>
+                    <input id="name"
+                           class="form-control"
+                           th:field="*{name}"/>
+                    <p class="error-message"
+                       th:each="error: ${#fields.errors('name')}"
+                       th:text="${error}">Validation error</p>
+                </div>
+
+                <div class="form-group row" >
+                    <label for="description" class="control-label">Description</label>
+                    <textarea id="description"
+                              class="form-control"
+                              th:field="*{description}"></textarea>
+                    <span class="red" th:if="${#fields.hasErrors('description')}"
+                          th:errors="*{description}"></span>
+                </div>
+
+                <div class="form-group row"
+                     th:classappend="${#fields.hasErrors('startDate')}? 'has-error':''">
+                    <label for="startDate" class="control-label">Start date</label>
+                    <div class="input-group date" data-provider="datepicker">
+                        <input id="startDate"
+                               class="form-control small-width"
+                               th:field="*{startDate}"/>
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                    <p class="error-message"
+                       th:each="error: ${#fields.errors('startDate')}"
+                       th:text="${error}">Validation error</p>
+                </div>
+
+                <div class="form-group row"
+                     th:classappend="${#fields.hasErrors('flowerDate')}? 'has-error':''">
+                    <label for="startDate" class="control-label">Flower date</label>
+                    <div class="input-group date" data-provider="datepicker">
+                        <input id="flowerDate"
+                               class="form-control small-width"
+                               th:field="*{flowerDate}"/>
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                    <p class="error-message"
+                       th:each="error: ${#fields.errors('flowerDate')}"
+                       th:text="${error}">Validation error</p>
+                </div>
+
+                <div class="form-group row"
+                     th:classappend="${#fields.hasErrors('harvestDate')}? 'has-error':''">
+                    <label for="startDate" class="control-label">Harvest date</label>
+                    <div class="input-group date" data-provider="datepicker">
+                        <input id="flowerDate"
+                               class="form-control small-width"
+                               th:field="*{harvestDate}"/>
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                    <p class="error-message"
+                       th:each="error: ${#fields.errors('flowerDate')}"
+                       th:text="${error}">Validation error</p>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.input-group.date').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy-mm-dd'
+    });
+</script>
+
+<div th:replace="fragments/footer::footer"></div>
+</body>
+</html>

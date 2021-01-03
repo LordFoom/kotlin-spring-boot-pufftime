@@ -3,8 +3,10 @@ package improbableotter.sideprojects.pufftime.grow
 import improbableotter.sideprojects.pufftime.plant.Plant
 import improbableotter.sideprojects.pufftime.user.User
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.format.annotation.DateTimeFormat
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
@@ -45,7 +47,28 @@ class Grow(
                         user = dto.user!!,
                         description = dto.description,
                         createDate = dto.createDate?:Date(),
-                        startDate = dto.getConvertedStartDate())
+                        startDate = dto.getConvertedStartDate(),
+                        harvestDate = dto.getConvertedHarvestDate(),
+                        flowerDate = dto.getConvertedFlowerDate(),
+                )
+
+        }
+
+        fun toDto(): GrowDto {
+                val startDate = Instant.ofEpochMilli(startDate?.time!!)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate();
+                val flowerDate = flowerDate?.let {
+                        Instant.ofEpochMilli(it.time)
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate()
+                }
+                val harvestDate = harvestDate?.let {
+                        Instant.ofEpochMilli(it.time)
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate()
+                }
+                return GrowDto(id, name = name, description = description, startDate = startDate, harvestDate = harvestDate, flowerDate = flowerDate)
         }
 }
 
@@ -65,10 +88,26 @@ data class GrowDto(
         var createDate: Date? = Date(),
         @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         var startDate: LocalDate? = null,
+        @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        var flowerDate: LocalDate? = null,
+        @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        var harvestDate: LocalDate? = null,
 )
 {
         fun getConvertedStartDate():Date{
                 return Date.from(startDate?.atStartOfDay()?.atZone(ZoneId.systemDefault())?.toInstant()) ?:Date()
+        }
+
+        fun getConvertedFlowerDate():Date?{
+                return flowerDate?.let{
+                        Date.from(it.atStartOfDay()?.atZone(ZoneId.systemDefault())?.toInstant())
+                }
+
+        }
+        fun getConvertedHarvestDate():Date?{
+                return harvestDate?.let{
+                        Date.from(it.atStartOfDay()?.atZone(ZoneId.systemDefault())?.toInstant())
+                }
         }
 }
 

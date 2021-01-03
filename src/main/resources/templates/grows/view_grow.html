@@ -15,7 +15,11 @@
                     Grow successfully created!
                 </div>
             </div>
-
+            <div th:if="${param.success_edit}">
+                <div class="alert alert-info">
+                    Grow successfully edited!
+                </div>
+            </div>
             <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.GrowDto"*/-->
             <h1>Grow: "<span th:text="${grow.name}"></span>"</h1>
                 <div class="border-dark row">
