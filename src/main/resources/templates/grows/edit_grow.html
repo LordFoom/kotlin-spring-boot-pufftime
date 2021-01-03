@@ -65,7 +65,7 @@
 
                 <div class="form-group row"
                      th:classappend="${#fields.hasErrors('flowerDate')}? 'has-error':''">
-                    <label for="startDate" class="control-label">Flower date</label>
+                    <label for="flowerDate" class="control-label">Flower date</label>
                     <div class="input-group date" data-provider="datepicker">
                         <input id="flowerDate"
                                class="form-control small-width"
@@ -81,9 +81,9 @@
 
                 <div class="form-group row"
                      th:classappend="${#fields.hasErrors('harvestDate')}? 'has-error':''">
-                    <label for="startDate" class="control-label">Harvest date</label>
+                    <label for="harvestDate" class="control-label">Harvest date</label>
                     <div class="input-group date" data-provider="datepicker">
-                        <input id="flowerDate"
+                        <input id="harvestDate"
                                class="form-control small-width"
                                th:field="*{harvestDate}"/>
                         <div class="input-group-addon">
