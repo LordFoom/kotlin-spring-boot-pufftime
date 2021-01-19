@@ -4,6 +4,7 @@ import improbableotter.sideprojects.pufftime.grow.Grow
 import improbableotter.sideprojects.pufftime.strain.Strain
 import improbableotter.sideprojects.pufftime.user.User
 import org.springframework.data.jpa.repository.JpaRepository
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
@@ -23,24 +24,49 @@ class Plant(
         val strain: Strain,
         @get:NotNull
         val createDate: Date = Date(),
-        var plantDate: Date? = null,
+        var startDate: Date? = null,
         var flowerDate: Date? = null,
         var harvestDate: Date? = null,
         var cureDate: Date? = null
 ){
+        @Transient val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+
+        override fun toString(): String {
+                return "${id}(${displayStartDate()})${strain.name}"
+        }
+
+        fun getDisplayName():String{
+                return toString()
+        }
+
+        fun displayStartDate():String{
+                return startDate?.let { simpleDateFormat.format(it)  } ?: ""
+        }
+
         companion object{
                 fun fromDto(dto: PlantDto, strain: Strain)=Plant(
                         user = dto.user!!,
                         grow = dto.grow!!,
                         strain = strain,
                         createDate = dto.createDate,
-                        plantDate = dto.plantDate,
+                        startDate = dto.plantDate,
                         flowerDate = dto.flowerDate,
                         harvestDate = dto.harvestDate,
                         cureDate = dto.cureDate
                 )
         }
 }
+
+@Entity
+@Table(name= "plant_pictures")
+class PlantPicture(
+        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+        val id: Long? = null,
+        val file_path:String? = null,
+        val notes:String? = null,
+        @NotNull
+        val createDate: Date = Date()
+)
 
 data class PlantDto(
         var id: Long? = null,
@@ -70,6 +96,8 @@ interface PlantRepository: JpaRepository<Plant, Long> {
 //        @Query("SELECT p FROM Plant p where growId = ?1")
         fun findByGrowIdOrderByStrainDesc(growId: Long): List<Plant>
 }
+
+interface PlantPicRepository: JpaRepository<PlantPicture, Long>
 
 
 

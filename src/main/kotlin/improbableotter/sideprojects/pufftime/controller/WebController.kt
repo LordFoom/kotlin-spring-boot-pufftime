@@ -4,9 +4,8 @@ import improbableotter.sideprojects.pufftime.common.Status
 import improbableotter.sideprojects.pufftime.grow.GrowDto
 import improbableotter.sideprojects.pufftime.grow.GrowRepository
 import improbableotter.sideprojects.pufftime.grow.GrowService
-import improbableotter.sideprojects.pufftime.plant.PlantDto
-import improbableotter.sideprojects.pufftime.plant.PlantRepository
-import improbableotter.sideprojects.pufftime.plant.PlantService
+import improbableotter.sideprojects.pufftime.plant.*
+import improbableotter.sideprojects.pufftime.storage.StorageService
 import improbableotter.sideprojects.pufftime.strain.StrainDto
 import improbableotter.sideprojects.pufftime.strain.StrainRepository
 import improbableotter.sideprojects.pufftime.strain.StrainService
@@ -19,20 +18,22 @@ import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.security.Principal
-import java.time.Instant
-import java.time.ZoneId
 import javax.validation.Valid
 
 @Controller
 @RequestMapping("/")
-class WebController(val userRepository: UserRepository,
-                    val plantRepository: PlantRepository,
+class WebController(val userRepo: UserRepository,
+                    val plantRepo: PlantRepository,
+                    val plantPicRepo: PlantPicRepository,
                     val plantService: PlantService,
-                    val growRepository: GrowRepository,
+                    val growRepo: GrowRepository,
                     val growService: GrowService,
-                    val strainRepository: StrainRepository,
-                    val strainService: StrainService) {
+                    val strainRepo: StrainRepository,
+                    val strainService: StrainService,
+                    val storageService: StorageService) {
 
     @GetMapping
     fun index(principal: Principal?): String {
@@ -68,14 +69,14 @@ class WebController(val userRepository: UserRepository,
             return "home/registration"
         }
 
-        var user: User? = userDto.username?.let { userRepository.findByUsername(it) }
+        var user: User? = userDto.username?.let { userRepo.findByUsername(it) }
 
         if (null == user) {
             if (null != userDto.email) {
-                user = userDto.email?.let { userRepository.findByUsername(it) }
+                user = userDto.email?.let { userRepo.findByUsername(it) }
                 if (null == user) {
                     val fromDto = User.fromDto(userDto)
-                    model["registered"] = userRepository.save(fromDto)
+                    model["registered"] = userRepo.save(fromDto)
                 } else {
                     result.reject("email", "Email already in use")
                 }
@@ -92,29 +93,29 @@ class WebController(val userRepository: UserRepository,
 
     @GetMapping("/plants/users/{userId}")
     fun viewUserPlants(model: Model, @PathVariable("userId") userId: Long): String {
-        val user = userRepository.findByIdOrNull(userId)!!
-        model["plants"] = plantRepository.findByUserId(userId)
+        val user = userRepo.findByIdOrNull(userId)!!
+        model["plants"] = plantRepo.findByUserId(userId)
         model["header"] = "Plants for User: ${user.username}"
         return "plants/view_plants"
     }
 
     @GetMapping("/plants/grows/{growId}")
     fun viewGrowPlants(model: Model, @PathVariable("growId") growId: Long): String {
-        val grow = growRepository.findByIdOrNull(growId)!!
-        model["plants"] = plantRepository.findByGrowId(growId)
+        val grow = growRepo.findByIdOrNull(growId)!!
+        model["plants"] = plantRepo.findByGrowId(growId)
         model["header"] = "Plants for Grow: ${grow.id}, started: ${grow.getDisplayCreateDate()}"
         return "plants/view_plants"
     }
 
     @GetMapping("/strains")
     fun viewStrains(model: Model): String {
-        model["strains"] = strainRepository.findAll()
+        model["strains"] = strainRepo.findAll()
         return "strains/view_strains"
     }
 
     @GetMapping("/strains/{strainId}")
     fun viewStrain(@PathVariable("strainId") strainId: Long, model: Model): String {
-        model["strain"] = strainRepository.findByIdOrNull(strainId) ?: return "redirect:/?error"
+        model["strain"] = strainRepo.findByIdOrNull(strainId) ?: return "redirect:/?error"
         return "strains/view_strain"
     }
 
@@ -137,7 +138,7 @@ class WebController(val userRepository: UserRepository,
     @GetMapping("/strains/{strainId}/edit")
     fun getEditStrainForm(@PathVariable("strainId") strainId: Long, model: Model, principal: Principal): String {
 //        model["strain"] = CreateStrainDto()
-        val existingStrain = strainRepository.findByIdOrNull(strainId)!!
+        val existingStrain = strainRepo.findByIdOrNull(strainId)!!
         model["strain"] = StrainDto(existingStrain.id!!, existingStrain.name, existingStrain.description,
                 user = existingStrain.createdBy, username = existingStrain.createdBy.username)
         return "strains/edit_strain"
@@ -152,22 +153,22 @@ class WebController(val userRepository: UserRepository,
 
     @GetMapping("/grows")
     fun viewAllGrows(model: Model, principal: Principal): String {
-        val user = userRepository.findByUsername(principal.name)!!
-        model["grows"] = growRepository.findAllByUser(user)
+        val user = userRepo.findByUsername(principal.name)!!
+        model["grows"] = growRepo.findAllByUser(user)
 
         return "grows/view_grows"
     }
 
     @GetMapping("/grows/{growId}")
     fun viewGrow(@PathVariable growId: Long, model: Model): String {
-        model["grow"] = growRepository.findByIdOrNull(growId)!!
-        model["plants"] = plantRepository.findByGrowIdOrderByStrainDesc(growId)
+        model["grow"] = growRepo.findByIdOrNull(growId)!!
+        model["plants"] = plantRepo.findByGrowIdOrderByStrainDesc(growId)
         return "grows/view_grow"
     }
 
     @GetMapping("/grows/{growId}/edit")
     fun getGrowEditForm(@PathVariable growId: Long, model: Model): String {
-        val existingGrow = growRepository.findByIdOrNull(growId)!!
+        val existingGrow = growRepo.findByIdOrNull(growId)!!
         model["grow"] = existingGrow.toDto()
         return "grows/edit_grow"
     }
@@ -175,7 +176,7 @@ class WebController(val userRepository: UserRepository,
     @PostMapping("/grows/{growId}/edit")
     fun editGrow(@PathVariable growId: Long, @ModelAttribute @Valid grow:GrowDto, result: BindingResult, model: Model, principal: Principal): String {
         grow.id=growId
-        grow.user=userRepository.findByUsername(principal.name)
+        grow.user=userRepo.findByUsername(principal.name)
         model["grow"]=growService.update(grow).toDto()
         return "redirect:/grows/$growId?success_edit"
     }
@@ -197,9 +198,9 @@ class WebController(val userRepository: UserRepository,
 
     @GetMapping("/grows/{growId}/plants/add")
     fun getAddPlantToGrowForm(@PathVariable growId: Long, model: Model, principal: Principal): String {
-        val user = userRepository.findByUsername(principal.name)!!
-        model["grow"] = growRepository.findByIdOrNull(growId)!!
-        model["strains"] = strainRepository.findByStatusIdEquals(Status.ACTIVE.ordinal)
+        val user = userRepo.findByUsername(principal.name)!!
+        model["grow"] = growRepo.findByIdOrNull(growId)!!
+        model["strains"] = strainRepo.findByStatusIdEquals(Status.ACTIVE.ordinal)
         model["plant"] = PlantDto(userId = user.id, growId = growId)
 
         return "plants/add_plant"
@@ -208,14 +209,47 @@ class WebController(val userRepository: UserRepository,
     @PostMapping("/grows/{growId}/plants/add")
     fun addPlantToGrow(@PathVariable growId: Long, @ModelAttribute @Valid dto: PlantDto, result: BindingResult, model: Model): String {
         plantService.createPlants(dto)
-        return "redirect:/grows/$growId"
+        return "redirect:/grows/$growId?plantSuccess"
     }
 
     @GetMapping("/grows/{growId}/plants/{plantId}/delete")
     fun deletePlant(@PathVariable growId: Long, @PathVariable plantId: Long, model: Model):String {
-        model["grow"] = growRepository.findByIdOrNull(growId)!!
-        plantRepository.deleteById(plantId)
+        model["grow"] = growRepo.findByIdOrNull(growId)!!
+        plantRepo.deleteById(plantId)
         return "redirect:/grows/$growId"
 //        return "grows/view_grow"
+    }
+
+    @GetMapping("/grows/{growId}/plants/{plantId}/pics")
+    fun getPlantGallery(@PathVariable growId: Long, @PathVariable plantId: Long, model: Model):String {
+        model["grow"] = growRepo.findByIdOrNull(growId)!!
+        model["plant"] = plantRepo.findByIdOrNull(plantId)!!
+
+        return "plants/view_plant"
+//        return "grows/view_grow"
+    }
+
+//    @GetMapping("/grows/{growId}/plants/{plantId}/pics/upload")
+//    fun getPlantPicUploadForm(@PathVariable growId: Long, @PathVariable plantId: Long, model: Model):String {
+//        model["grow"] = growRepo.findByIdOrNull(growId)!!
+//        model["plant"] = plantRepo.findByIdOrNull(plantId)!!
+//
+//        return "plants/upload_plant_pic"
+//    }
+
+    @PostMapping("/grows/{growId}/plants/pics/upload")
+    fun uploadPic(@PathVariable growId: Long, @RequestParam("plantId")plantId: Long, @RequestParam("file") file: MultipartFile, @RequestParam("notes")notes:String?, attributes: RedirectAttributes):String {
+        if (file.isEmpty) {
+            attributes.addFlashAttribute("error_message", "Please select file to upload.")
+            return "redirect:/grows/${growId}/plants/${plantId}/pics/upload"
+        }
+
+        val picFilePath = storageService.store(file)
+        attributes.addFlashAttribute("message", "Sucessfully uploaded pic!")
+        val plantPic = PlantPicture(file_path = picFilePath, notes = notes )
+        val savedPlantPic = plantPicRepo.save(plantPic)
+        attributes["plantPic"] = savedPlantPic;
+        return "redirect:/grows/${growId}/plants/${plantId}?picUploadModal"
+
     }
 }

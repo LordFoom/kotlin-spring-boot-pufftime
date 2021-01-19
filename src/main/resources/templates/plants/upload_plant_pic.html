@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<section class="my-5">
+
+    <div class="container">
+        <div th:if="${param.picSuccess}">
+            <div class="alert alert-info">
+                Successfully added pic.
+            </div>
+        </div>
+
+        <form th:action="@{/grows/{growId}/plants/{plantId}/pics/upload(growId=${grow.id}, plantId=${plant.id})}"
+              method="post" enctype="multipart/form-data">
+            <div class="row border-dark">
+                <label for="file" class="control-label">File</label>
+                <input type="file" name="file" class="form-control-file">
+            </div>
+
+            <div class="row border-dark">
+                <label for="notes" class="control-label">Notes</label>
+                <textarea id="notes" class="form-control" ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Upload File</button>
+        </form>
+
+    </div>
+</section>
+</body>
+</html>

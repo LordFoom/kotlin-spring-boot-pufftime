@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="fragments/header::head">
+    <title>Plant deets</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.Grow"*/-->
+            <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.Strain"*/-->
+            <!--/*@thymesVar id="plant" type="improbableotter.sideprojects.pufftime.plant.PlantDto"*/-->
+            <div th:if="${param.success}">
+                <div class="alert alert-info">
+                    <span th:text="${strain.name}"></span> plant successfully added to <span
+                        th:text="${grow.name}"></span>
+                </div>
+            </div>
+
+            <div th:if="${param.picSuccess}">
+                <div class="alert alert-info">
+                    Successfully added pic.
+                </div>
+
+            </div>
+            <h1>'<span th:text="${strain.name}"></span>' plant in <span th:text="${grow.name}"></span></h1>
+            <input type="hidden" id="userId" th:field="*{userId}">
+            <input type="hidden" id="growId" th:field="*{grow.id}">
+
+            <div class="border-dark row">
+                <label for="strain" class="control-label">Strain</label>
+                <span id="strain" class="form-control" th:text="${strain.name}"/>
+            </div>
+
+            <div class="border-dark row">
+                <label for="startDate" class="control-label">Start date</label>
+                <span id="startDate" class="form-control" th:text="${#dates.format(plant.startDate, 'yyyy-MM-dd')}"/>
+            </div>
+
+            <div class="border-dark row">
+                <label for="flowerDate" class="control-label">Flower date</label>
+                <span id="flowerDate" class="form-control" th:text="${#dates.format(plant.flowerDate, 'yyyy-MM-dd')}"></span>
+            </div>
+
+            <div class="border-dark row">
+                <label for="harvestDate" class="control-label">Harvest date</label>
+                <span id="harvestDate" class="form-control"
+                      th:text="${#dates.format(plant.harvestDate, 'yyyy-MM-dd')}"></span>
+            </div>
+
+            <div class="border-dark row">
+                <label for="cureDate" class="control-label">Cure date</label>
+                <span id="cureDate" class="form-control" th:text="${#dates.format(plant.cureDate, 'yyyy-MM-dd')}"></span>
+            </div>
+            <div class="form-group">
+                <button type="button" th:href="@{/grows/{id}(id=${grow.id})}" value="Back"></button>
+<!--                <a th:href="@{/grows/{id}(id=${grow.id})}">Back</a>-->
+            </div>
+
+            <div class="form-group">
+                <button type="button" th:href="@{/grows/{id}(id=${grow.id})}" value="Edit"></button>
+<!--                <a th:href="@{/grows/{id}(id=${grow.id})}">Edit</a>-->
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#picUploadModal"></button>
+<!--                <a th:href="@{/grows/{id}(id=${grow.id})}">Upload Pic</a>-->
+            </div>
+            <table class="table table-bordered tableMain">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="plant: ${plant.pics}">
+                    <td></td>
+                </tr>
+                </tbody>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="picUploadModal" tabindex="-1"  role="form">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span></button>
+                <h5 class="modal-title">Upload Pic</h5>
+            </div>
+            <div class="modal-body">
+
+                <form th:action="@{/grows/{growId}/plants/{plantId}/pics/upload(growId=${grow.id}, plantId=${plant.id})}"
+                      method="post" enctype="multipart/form-data">
+                    <div class="row border-dark">
+                        <label for="file" class="control-label">File</label>
+                        <input type="file" id="file" name="file" class="form-control-file">
+                    </div>
+
+                    <div class="row border-dark">
+                        <label for="notes" class="control-label">Notes</label>
+                        <textarea id="notes" name="notes" class="form-control" ></textarea>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-primary pull-left" >Upload</button>
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.input-group.date').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy-mm-dd'
+    });
+</script>
+
+<div th:replace="fragments/footer::footer"></div>
+</body>
+</html>
