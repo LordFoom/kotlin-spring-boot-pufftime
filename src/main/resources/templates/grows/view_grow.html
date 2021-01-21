@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns="http://www.w3.org/1999/html">
 <head th:replace="fragments/header::head">
     <title >View Grow</title>
 </head>
@@ -109,15 +109,15 @@
 <div class="modal fade in" id="picUploadModal" tabindex="-1"  role="form">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <form action="#" th:action="@{/grows/{growId}/plants/pics/upload(growId=${grow.id})}"
+                  method="post" enctype="multipart/form-data">
+                <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span></button>
                 <h5 class="modal-title">Upload Pic</h5>
             </div>
             <div class="modal-body">
 
-                <form action="#" th:action="@{/grows/{growId}/plants/pics/upload(growId=${grow.id})}"
-                      method="post" enctype="multipart/form-data">
 <!--                    <input type="hidden" id="plantId" name="plantId">-->
                     <div>
                         <select id="plantId" name="plantId">
@@ -126,20 +126,19 @@
                     </div>
                     <div class="row border-dark">
                         <label for="file" class="control-label">File</label>
-                        <input type="file" id="file" name="file" class="form-control-file">
+                        <input type="file" id="file" name="file" class="form-control-file"/>
                     </div>
 
                     <div class="row border-dark">
                         <label for="notes" class="control-label">Notes</label>
                         <textarea id="notes" name="notes" class="form-control" ></textarea>
                     </div>
-                </form>
-
             </div>
             <div class="modal-footer">
                 <input type="submit" class="btn btn-outline-primary pull-left" value="Upload"/>
                 <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
             </div>
+        </form>
         </div>
     </div>
 </div>
@@ -152,9 +151,7 @@
     });
 
     $('#picUploadModal').on('show.bs.modal', function(e) {
-        console.log(e);
         let plantId= $(e.relatedTarget).data('plant-id');
-        console.log('We done found this plantId: ' + plantId);
         $('#plantId').val(plantId);
     });
 
