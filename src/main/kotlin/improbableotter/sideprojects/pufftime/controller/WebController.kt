@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import java.lang.IllegalStateException
 import java.security.Principal
 import javax.validation.Valid
 
@@ -27,7 +28,7 @@ import javax.validation.Valid
 @RequestMapping("/")
 class WebController(val userRepo: UserRepository,
                     val plantRepo: PlantRepository,
-                    val plantPicRepo: PlantPicRepository,
+                    val plantPicRepo: PlantPictureRepository,
                     val plantService: PlantService,
                     val growRepo: GrowRepository,
                     val growService: GrowService,
@@ -246,10 +247,11 @@ class WebController(val userRepo: UserRepository,
 
         val picFilePath = storageService.store(file)
         attributes.addFlashAttribute("message", "Sucessfully uploaded pic!")
-        val plantPic = PlantPicture(file_path = picFilePath, notes = notes )
+        val plant = plantRepo.findByIdOrNull(plantId)?:throw IllegalStateException("No plant found for id $plantId")
+        val plantPic = PlantPicture(filePath = picFilePath, plant = plant,  notes = notes )
         val savedPlantPic = plantPicRepo.save(plantPic)
         attributes["plantPic"] = savedPlantPic;
-        return "redirect:/grows/${growId}/plants/${plantId}?picUploadModal"
+        return "redirect:/grows/${growId}?pic_success"
 
     }
 }

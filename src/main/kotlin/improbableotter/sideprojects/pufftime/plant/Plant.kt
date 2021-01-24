@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
+import kotlin.collections.ArrayList
 
 @Entity
 @Table(name = "plant")
@@ -22,6 +23,9 @@ class Plant(
         @ManyToOne
         @JoinColumn(name="strain_id")
         val strain: Strain,
+        @OneToMany(mappedBy="plant", cascade = [CascadeType.ALL])
+        @OrderBy("picDate DESC")
+        var pictures: List<PlantPicture>? = ArrayList(),
         @get:NotNull
         val createDate: Date = Date(),
         var startDate: Date? = null,
@@ -43,6 +47,7 @@ class Plant(
                 return startDate?.let { simpleDateFormat.format(it)  } ?: ""
         }
 
+
         companion object{
                 fun fromDto(dto: PlantDto, strain: Strain)=Plant(
                         user = dto.user!!,
@@ -57,16 +62,6 @@ class Plant(
         }
 }
 
-@Entity
-@Table(name= "plant_pictures")
-class PlantPicture(
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long? = null,
-        val file_path:String? = null,
-        val notes:String? = null,
-        @NotNull
-        val createDate: Date = Date()
-)
 
 data class PlantDto(
         var id: Long? = null,
@@ -97,7 +92,6 @@ interface PlantRepository: JpaRepository<Plant, Long> {
         fun findByGrowIdOrderByStrainDesc(growId: Long): List<Plant>
 }
 
-interface PlantPicRepository: JpaRepository<PlantPicture, Long>
 
 
 

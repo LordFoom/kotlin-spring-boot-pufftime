@@ -8,6 +8,7 @@ import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
+import java.time.LocalDate
 
 
 @Service
@@ -23,15 +24,23 @@ class StorageService {
      */
     fun store(file: MultipartFile): String {
         val fileName = file.originalFilename?.let { StringUtils.cleanPath(it) }
-        File(uploadDir).mkdir()
+        val dirPath = createUploadDirIfNeeded()
         try {
-            val path = Paths.get(uploadDir + fileName)
+            val path = Paths.get("$dirPath/$fileName")
             Files.copy(file.inputStream, path, StandardCopyOption.REPLACE_EXISTING)
-            return path.toString()
+            return path.toString().removePrefix(".")
         } catch (ioe: IOException) {
             ioe.printStackTrace()
             throw RuntimeException(ioe)
         }
+    }
+
+    private fun createUploadDirIfNeeded():String {
+        val now = LocalDate.now()
+        val pathname = "$uploadDir${now.year}/${now.monthValue}/"
+        val mkdir = File(pathname).mkdirs()
+        //chop off the first . so we can correctly display it
+        return pathname
     }
 
 //    fun loadAll(): Stream<Path?>?{

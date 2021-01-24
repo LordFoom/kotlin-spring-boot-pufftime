@@ -71,11 +71,14 @@
                     <th>Flower Date</th>
                     <th>Harvest Date</th>
                     <th>Cure Date</th>
+                    <th>Most recent pic</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
+<!--                TODO Paginate this-->
                 <tr th:each="plant : ${plants}">
                     <!--/*@thymesVar id="plant" type="improbableotter.sideprojects.pufftime.plant.Plant"*/-->
                     <td th:text="${plant.strain.name}"></td>
@@ -83,6 +86,9 @@
                     <td th:text="${#dates.format(plant.flowerDate, 'yyyy-MM-dd')}"></td>
                     <td th:text="${#dates.format(plant.harvestDate, 'yyyy-MM-dd')}"></td>
                     <td th:text="${#dates.format(plant.cureDate, 'yyyy-MM-dd')}"></td>
+                    <td>
+                        <img th:unless="${#lists.isEmpty(plant.pictures)}" th:src="@{${plant?.pictures[0]?.filePath}}" style="widows: 80px; height: 80px">
+                    </td>
                     <td><a data-toggle="modal" data-target="#picUploadModal" th:data-plant-id="${plant.id}" href="" >Add pic</a></td>
                     <td><a th:href="@{/grows/{id}/plants/{plantId}(id=${grow.id}, plantId=${plant.id})}">Deets</a></td>
                     <td><a th:href="@{/grows/{id}/plants/{plantId}/delete(id=${grow.id}, plantId=${plant.id})}">Delete</a></td>
@@ -93,16 +99,8 @@
 
             <div class="row">
                 <button type="button" class="btn btn-primary" th:href="@{/grows/{id}/edit(id=${grow.id})}" value="Edit">Edit</button>&nbsp;
-                <!--                <span ><a th:href="@{/grows/{id}/edit(id=${grow.id})}">Edit</a></span>&nbsp;-->
                 <button type="button"  class="btn btn-primary" th:href="@{/grows/{id}/plants/add(id=${grow.id})}" value="Add Plant">Add Plant</button>
-                <!--                <span ><a th:href="@{/grows/{id}/plants/add(id=${grow.id})}">Add Plant</a></span>-->
             </div>
-
-<!--            <div class="row">-->
-<!--                <span ><a th:href="@{/grows/{id}/edit(id=${grow.id})}">Edit</a></span>-->
-<!--                <span ><a th:href="@{/grows/{id}/plants/add(id=${grow.id})}">Add Plant</a></span>-->
-<!--            </div>-->
-
         </div>
     </div>
 </div>
@@ -117,8 +115,6 @@
                 <h5 class="modal-title">Upload Pic</h5>
             </div>
             <div class="modal-body">
-
-<!--                    <input type="hidden" id="plantId" name="plantId">-->
                     <div>
                         <select id="plantId" name="plantId">
                             <option th:each="plant_sel : ${ plants}" th:value="${plant_sel.id}" th:text="${plant_sel.displayName}"></option>
@@ -128,7 +124,6 @@
                         <label for="file" class="control-label">File</label>
                         <input type="file" id="file" name="file" class="form-control-file"/>
                     </div>
-
                     <div class="row border-dark">
                         <label for="notes" class="control-label">Notes</label>
                         <textarea id="notes" name="notes" class="form-control" ></textarea>
