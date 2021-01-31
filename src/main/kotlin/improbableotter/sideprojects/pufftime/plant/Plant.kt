@@ -1,6 +1,8 @@
 package improbableotter.sideprojects.pufftime.plant
 
 import improbableotter.sideprojects.pufftime.grow.Grow
+import improbableotter.sideprojects.pufftime.note.Note
+import improbableotter.sideprojects.pufftime.picture.Picture
 import improbableotter.sideprojects.pufftime.strain.Strain
 import improbableotter.sideprojects.pufftime.user.User
 import org.springframework.data.jpa.repository.JpaRepository
@@ -25,7 +27,9 @@ class Plant(
         val strain: Strain,
         @OneToMany(mappedBy="plant", cascade = [CascadeType.ALL])
         @OrderBy("picDate DESC")
-        var pictures: List<PlantPicture>? = ArrayList(),
+        var pictures: List<Picture>? = ArrayList(),
+        @OneToMany(mappedBy = "plant", cascade = [CascadeType.ALL] )
+        var notes: List<Note>? = ArrayList(),
         @get:NotNull
         val createDate: Date = Date(),
         var startDate: Date? = null,

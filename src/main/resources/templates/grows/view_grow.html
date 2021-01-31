@@ -29,6 +29,10 @@
                 <div class="alert alert-info">Successfully added pic!</div>
             </div>            <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.GrowDto"*/-->
 
+            <div th:if="${param.note_success}">
+                <div class="alert alert-info">Successfully added note!</div>
+            </div>
+
             <h1>Grow: "<span th:text="${grow.name}"></span>"</h1>
                 <div class="border-dark row">
                     <label for="name" class="control-label ">Name</label><br/>
@@ -57,9 +61,11 @@
 
 
             <div class="row">
-                <button type="button" class="btn btn-success"><a th:href="@{/grows/{id}/edit(id=${grow.id})}" class="btn-success">Edit</a></button>&nbsp;
-<!--                <span ><a th:href="@{/grows/{id}/edit(id=${grow.id})}">Edit</a></span>&nbsp;-->
+                <button type="button" class="btn btn-success"><a th:href="@{/grows/{id}/edit(id=${grow.id})}" class="btn-success">Edit</a></button>
+                 &nbsp;
                 <button type="button" class="btn btn-success" ><a th:href="@{/grows/{id}/plants/add(id=${grow.id})}" class="btn btn-success" >Add Plant</a></button>
+                &nbsp;
+                <button type="button" class="btn btn-success" ><a data-toggle="modal" data-target="#picUploadModal" href="" class="btn btn-success">Add pic</a></button>
 <!--                <span ><a th:href="@{/grows/{id}/plants/add(id=${grow.id})}">Add Plant</a></span>-->
             </div>
 
@@ -90,6 +96,7 @@
                         <img th:unless="${#lists.isEmpty(plant.pictures)}" th:src="@{${plant?.pictures[0]?.filePath}}" style="widows: 80px; height: 80px">
                     </td>
                     <td><a data-toggle="modal" data-target="#picUploadModal" th:data-plant-id="${plant.id}" href="" >Add pic</a></td>
+                    <td><a data-toggle="modal" data-target="#noteUploadModal" th:data-note-plant-id="${plant.id}" href="" >Add note</a></td>
                     <td><a th:href="@{/grows/{id}/plants/{plantId}(id=${grow.id}, plantId=${plant.id})}">Deets</a></td>
                     <td><a th:href="@{/grows/{id}/plants/{plantId}/delete(id=${grow.id}, plantId=${plant.id})}">Delete</a></td>
 
@@ -107,7 +114,7 @@
 <div class="modal fade in" id="picUploadModal" tabindex="-1"  role="form">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="#" th:action="@{/grows/{growId}/plants/pics/upload(growId=${grow.id})}"
+            <form action="#" th:action="@{/grows/{growId}/pics(growId=${grow.id})}"
                   method="post" enctype="multipart/form-data">
                 <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -117,6 +124,7 @@
             <div class="modal-body">
                     <div>
                         <select id="plantId" name="plantId">
+                            <option value="0">Grow Pic</option>
                             <option th:each="plant_sel : ${ plants}" th:value="${plant_sel.id}" th:text="${plant_sel.displayName}"></option>
                         </select>
                     </div>
@@ -138,6 +146,37 @@
     </div>
 </div>
 
+<div class="modal fade in" id="noteUploadModal" tabindex="-1"  role="form">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="#" th:action="@{/grows/{growId}/notes(growId=${grow.id})}"
+                  method="post" >
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h5 class="modal-title">Save Note</h5>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <select id="notePlantId" name="notePlantId">
+                            <option value="0">Grow Note</option>
+                            <option th:each="plant_sel : ${ plants}" th:value="${plant_sel.id}" th:text="${plant_sel.displayName}"></option>
+                        </select>
+                    </div>
+                    <div class="row border-dark">
+                        <label for="notes" class="control-label">Notes</label>
+                        <textarea id="notes" name="notes" class="form-control" ></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-outline-primary pull-left" value="Save"/>
+                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     $('.input-group.date').datepicker({
         autoclose: true,
@@ -148,6 +187,11 @@
     $('#picUploadModal').on('show.bs.modal', function(e) {
         let plantId= $(e.relatedTarget).data('plant-id');
         $('#plantId').val(plantId);
+    });
+
+    $('#noteUploadModal').on('show.bs.modal', function(e) {
+        let plantId= $(e.relatedTarget).data('note-plant-id');
+        $('#notePlantId').val(plantId);
     });
 
 </script>

@@ -1,5 +1,7 @@
 package improbableotter.sideprojects.pufftime.grow
 
+import improbableotter.sideprojects.pufftime.note.Note
+import improbableotter.sideprojects.pufftime.picture.Picture
 import improbableotter.sideprojects.pufftime.plant.Plant
 import improbableotter.sideprojects.pufftime.user.User
 import org.springframework.data.jpa.repository.JpaRepository
@@ -28,6 +30,10 @@ class Grow(
         val user: User,
         @OneToMany(mappedBy="grow", cascade = [CascadeType.ALL])
         val plants: MutableSet<Plant> = mutableSetOf(),
+        @OneToMany(mappedBy="grow", cascade = [CascadeType.ALL])
+        val pictures: MutableSet<Picture> = mutableSetOf(),
+        @OneToMany(mappedBy="grow", cascade = [CascadeType.ALL])
+        val notes: MutableSet<Note> = mutableSetOf(),
         val createDate: Date = Date(),
         val startDate: Date? = null,
         val flowerDate: Date? = null,

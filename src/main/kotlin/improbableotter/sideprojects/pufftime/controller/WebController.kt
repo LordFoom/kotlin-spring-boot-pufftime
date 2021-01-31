@@ -4,7 +4,13 @@ import improbableotter.sideprojects.pufftime.common.Status
 import improbableotter.sideprojects.pufftime.grow.GrowDto
 import improbableotter.sideprojects.pufftime.grow.GrowRepository
 import improbableotter.sideprojects.pufftime.grow.GrowService
-import improbableotter.sideprojects.pufftime.plant.*
+import improbableotter.sideprojects.pufftime.note.Note
+import improbableotter.sideprojects.pufftime.note.NoteRepository
+import improbableotter.sideprojects.pufftime.picture.Picture
+import improbableotter.sideprojects.pufftime.picture.PictureRepository
+import improbableotter.sideprojects.pufftime.plant.PlantDto
+import improbableotter.sideprojects.pufftime.plant.PlantRepository
+import improbableotter.sideprojects.pufftime.plant.PlantService
 import improbableotter.sideprojects.pufftime.storage.StorageService
 import improbableotter.sideprojects.pufftime.strain.StrainDto
 import improbableotter.sideprojects.pufftime.strain.StrainRepository
@@ -20,21 +26,23 @@ import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.lang.IllegalStateException
 import java.security.Principal
 import javax.validation.Valid
 
 @Controller
 @RequestMapping("/")
-class WebController(val userRepo: UserRepository,
-                    val plantRepo: PlantRepository,
-                    val plantPicRepo: PlantPictureRepository,
-                    val plantService: PlantService,
-                    val growRepo: GrowRepository,
-                    val growService: GrowService,
-                    val strainRepo: StrainRepository,
-                    val strainService: StrainService,
-                    val storageService: StorageService) {
+class WebController(
+    val userRepo: UserRepository,
+    val plantRepo: PlantRepository,
+    val plantPicRepo: PictureRepository,
+    val plantService: PlantService,
+    val growRepo: GrowRepository,
+    val growService: GrowService,
+    val strainRepo: StrainRepository,
+    val strainService: StrainService,
+    val storageService: StorageService,
+    val noteRepo: NoteRepository,
+) {
 
     @GetMapping
     fun index(principal: Principal?): String {
@@ -140,13 +148,19 @@ class WebController(val userRepo: UserRepository,
     fun getEditStrainForm(@PathVariable("strainId") strainId: Long, model: Model, principal: Principal): String {
 //        model["strain"] = CreateStrainDto()
         val existingStrain = strainRepo.findByIdOrNull(strainId)!!
-        model["strain"] = StrainDto(existingStrain.id!!, existingStrain.name, existingStrain.description,
-                user = existingStrain.createdBy, username = existingStrain.createdBy.username)
+        model["strain"] = StrainDto(
+            existingStrain.id!!, existingStrain.name, existingStrain.description,
+            user = existingStrain.createdBy, username = existingStrain.createdBy.username
+        )
         return "strains/edit_strain"
     }
 
     @PostMapping("/strains/{strainId}/edit")
-    fun editStrain(@PathVariable("strainId") strainId: Long, @ModelAttribute @Valid dto: StrainDto, result: BindingResult): String {
+    fun editStrain(
+        @PathVariable("strainId") strainId: Long,
+        @ModelAttribute @Valid dto: StrainDto,
+        result: BindingResult
+    ): String {
         dto.id = strainId
         strainService.updateStrain(dto)
         return "redirect:/strains/${strainId}?success_edit"
@@ -175,10 +189,16 @@ class WebController(val userRepo: UserRepository,
     }
 
     @PostMapping("/grows/{growId}/edit")
-    fun editGrow(@PathVariable growId: Long, @ModelAttribute @Valid grow:GrowDto, result: BindingResult, model: Model, principal: Principal): String {
-        grow.id=growId
-        grow.user=userRepo.findByUsername(principal.name)
-        model["grow"]=growService.update(grow).toDto()
+    fun editGrow(
+        @PathVariable growId: Long,
+        @ModelAttribute @Valid grow: GrowDto,
+        result: BindingResult,
+        model: Model,
+        principal: Principal
+    ): String {
+        grow.id = growId
+        grow.user = userRepo.findByUsername(principal.name)
+        model["grow"] = growService.update(grow).toDto()
         return "redirect:/grows/$growId?success_edit"
     }
 
@@ -208,13 +228,18 @@ class WebController(val userRepo: UserRepository,
     }
 
     @PostMapping("/grows/{growId}/plants/add")
-    fun addPlantToGrow(@PathVariable growId: Long, @ModelAttribute @Valid dto: PlantDto, result: BindingResult, model: Model): String {
+    fun addPlantToGrow(
+        @PathVariable growId: Long,
+        @ModelAttribute @Valid dto: PlantDto,
+        result: BindingResult,
+        model: Model
+    ): String {
         plantService.createPlants(dto)
         return "redirect:/grows/$growId?plantSuccess"
     }
 
     @GetMapping("/grows/{growId}/plants/{plantId}/delete")
-    fun deletePlant(@PathVariable growId: Long, @PathVariable plantId: Long, model: Model):String {
+    fun deletePlant(@PathVariable growId: Long, @PathVariable plantId: Long, model: Model): String {
         model["grow"] = growRepo.findByIdOrNull(growId)!!
         plantRepo.deleteById(plantId)
         return "redirect:/grows/$growId"
@@ -222,7 +247,7 @@ class WebController(val userRepo: UserRepository,
     }
 
     @GetMapping("/grows/{growId}/plants/{plantId}/pics")
-    fun getPlantGallery(@PathVariable growId: Long, @PathVariable plantId: Long, model: Model):String {
+    fun getPlantGallery(@PathVariable growId: Long, @PathVariable plantId: Long, model: Model): String {
         model["grow"] = growRepo.findByIdOrNull(growId)!!
         model["plant"] = plantRepo.findByIdOrNull(plantId)!!
 
@@ -238,20 +263,39 @@ class WebController(val userRepo: UserRepository,
 //        return "plants/upload_plant_pic"
 //    }
 
-    @PostMapping("/grows/{growId}/plants/pics/upload")
-    fun uploadPic(@PathVariable growId: Long, @RequestParam("plantId")plantId: Long, @RequestParam("file") file: MultipartFile, @RequestParam("notes")notes:String?, attributes: RedirectAttributes):String {
+    @PostMapping("/grows/{growId}/pics")
+    fun uploadPic(
+        @PathVariable growId: Long, @RequestParam("plantId", required = false) plantId: Long,
+        @RequestParam("file") file: MultipartFile, @RequestParam("notes") notes: String?,
+        attributes: RedirectAttributes ): String {
         if (file.isEmpty) {
             attributes.addFlashAttribute("error_message", "Please select file to upload.")
-            return "redirect:/grows/${growId}/plants/${plantId}/pics/upload"
+            return "redirect:/grows/${growId}"
         }
 
         val picFilePath = storageService.store(file)
         attributes.addFlashAttribute("message", "Sucessfully uploaded pic!")
-        val plant = plantRepo.findByIdOrNull(plantId)?:throw IllegalStateException("No plant found for id $plantId")
-        val plantPic = PlantPicture(filePath = picFilePath, plant = plant,  notes = notes )
-        val savedPlantPic = plantPicRepo.save(plantPic)
-        attributes["plantPic"] = savedPlantPic;
+        //could be a pic for either the entire grow or just a plant
+        val plant = plantRepo.findByIdOrNull(plantId)
+        //but we have to have a grow
+        val grow = growRepo.findByIdOrNull(growId) ?: throw IllegalStateException("No grow found for id $growId")
+        val pic = Picture(filePath = picFilePath, plant = plant, grow = grow, notes = notes)
+        val savedPic = plantPicRepo.save(pic)
+        attributes["pic"] = savedPic;
         return "redirect:/grows/${growId}?pic_success"
 
     }
+
+    @PostMapping("/grows/{growId}/notes")
+    fun uploadNote(
+    @PathVariable growId: Long, @RequestParam("notePlantId", required = false) plantId: Long,
+    @RequestParam("notes") note:String, attributes: RedirectAttributes ):String{
+        val plant = plantRepo.findByIdOrNull(plantId)
+        //but we have to have a grow
+        val grow = growRepo.findByIdOrNull(growId) ?: throw IllegalStateException("No grow found for id $growId")
+        val noteEntity = Note(plant = plant, grow = grow, note = note)
+        noteRepo.save(noteEntity)
+        return "redirect:/grows/${growId}?note_success"
+    }
+
 }
