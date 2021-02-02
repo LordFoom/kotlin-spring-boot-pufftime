@@ -63,12 +63,31 @@
             <div class="row">
                 <button type="button" class="btn btn-success"><a th:href="@{/grows/{id}/edit(id=${grow.id})}" class="btn-success">Edit</a></button>
                  &nbsp;
-                <button type="button" class="btn btn-success" ><a th:href="@{/grows/{id}/plants/add(id=${grow.id})}" class="btn btn-success" >Add Plant</a></button>
+                <button type="button" class="btn btn-success" th:if="${grow.flowerDate eq null}"><a th:href="@{/grows/{id}/edit(id=${grow.id})}" class="btn-success">Switch to flower</a></button>
                 &nbsp;
-                <button type="button" class="btn btn-success" ><a data-toggle="modal" data-target="#picUploadModal" href="" class="btn btn-success">Add pic</a></button>
-<!--                <span ><a th:href="@{/grows/{id}/plants/add(id=${grow.id})}">Add Plant</a></span>-->
+                <button type="button" class="btn btn-success" th:if="${grow.flowerDate ne null and grow.harvestDate eq null}"><a th:href="@{/grows/{id}/edit(id=${grow.id})}" class="btn-success">Harvest</a></button>
+
+            </div>
+            <div class="row"></div>
+            <div class="row">
+                <button type="button" class="btn btn-success" ><a th:href="@{/grows/{id}/plants/add(id=${grow.id})}" class="btn btn-info" >Add Plant</a></button>
+                &nbsp;
+                <button type="button" class="btn btn-success" ><a data-toggle="modal" data-target="#picUploadModal" data-plant-id="0" href="" class="btn btn-info">Add pic</a></button>
+                &nbsp;
+                <button type="button" class="btn btn-success" ><a data-toggle="modal" data-target="#noteUploadModal" data-note-plant-id="0" href="" class="btn btn-info">Add note</a></button>
+
             </div>
 
+            <!--/*@thymesVar id="note" type="improbableotter.sideprojects.pufftime.note.Note"*/-->
+            <br/>
+            <div class="row" th:if="${note}">
+                <div class="border-dark border ">
+                    &nbsp;
+                   <span th:text="${note.note}" class="" ></span>
+                    &nbsp;
+                </div>
+            </div>
+            <br/>
             <table class="table table-bordered tableMain">
                 <thead>
                 <tr>
@@ -87,6 +106,7 @@
 <!--                TODO Paginate this-->
                 <tr th:each="plant : ${plants}">
                     <!--/*@thymesVar id="plant" type="improbableotter.sideprojects.pufftime.plant.Plant"*/-->
+                    <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.Strain"*/-->
                     <td th:text="${plant.strain.name}"></td>
                     <td th:text="${#dates.format(plant.createDate, 'yyyy-MM-dd')}"></td>
                     <td th:text="${#dates.format(plant.flowerDate, 'yyyy-MM-dd')}"></td>
