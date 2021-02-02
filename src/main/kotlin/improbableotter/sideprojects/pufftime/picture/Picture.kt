@@ -33,5 +33,6 @@ interface PictureRepository : JpaRepository<Picture, Long> {
      * Most recent grow pic
      */
     fun findTopByGrowIdOrderByCreateDateDesc(plantId: Long): Picture?
+    fun findTopByGrowOrderByCreateDateDesc(plant: Plant): Picture?
 
 }

@@ -94,6 +94,7 @@ interface PlantRepository: JpaRepository<Plant, Long> {
         fun findByUser(user: User):List<Plant>
 //        @Query("SELECT p FROM Plant p where growId = ?1")
         fun findByGrowIdOrderByStrainDesc(growId: Long): List<Plant>
+        fun findByGrowOrderByStrainDesc(grow: Grow): List<Plant>
 }
 
 

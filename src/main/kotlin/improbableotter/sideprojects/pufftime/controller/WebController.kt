@@ -178,6 +178,7 @@ class WebController(
     fun viewGrow(@PathVariable growId: Long, model: Model): String {
         model["grow"] = growRepo.findByIdOrNull(growId)!!
         model["plants"] = plantRepo.findByGrowIdOrderByStrainDesc(growId)
+        noteRepo.findTopByGrowIdOrderByIdDesc(growId)?.let { model["note"] = it }
         return "grows/view_grow"
     }
 
