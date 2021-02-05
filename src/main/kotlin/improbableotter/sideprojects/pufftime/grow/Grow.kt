@@ -24,7 +24,7 @@ class Grow(
         @get:NotBlank
         val name:String,
         val description: String?,
-        val status: GrowStatus = GrowStatus.CREATED,
+        var status: GrowStatus = GrowStatus.CREATED,
         @ManyToOne
         @JoinColumn(name = "user_id")
         val user: User,
@@ -35,9 +35,10 @@ class Grow(
         @OneToMany(mappedBy="grow", cascade = [CascadeType.ALL])
         val notes: MutableSet<Note> = mutableSetOf(),
         val createDate: Date = Date(),
-        val startDate: Date? = null,
-        val flowerDate: Date? = null,
-        val harvestDate: Date? = null
+        var startDate: Date? = null,
+        var flowerDate: Date? = null,
+        var harvestDate: Date? = null,
+        var type:  GrowType = GrowType.INDOOR//a default that suits me, don'cha know
 ) {
 
         @Transient
@@ -79,8 +80,11 @@ class Grow(
 }
 
 enum class GrowStatus {
-    NONE, CREATED, IN_PROGRESS, COMPLETED
+    NONE, CREATED, FLOWERING, HARVESTING, COMPLETED
+}
 
+enum class GrowType {
+        NONE, INDOOR, OUTDOOR
 }
 
 data class GrowDto(

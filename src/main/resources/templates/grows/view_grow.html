@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns="http://www.w3.org/1999/html">
+      xmlns="http://www.w3.org/1999/html">
 <head th:replace="fragments/header::head">
     <title >View Grow</title>
 </head>
@@ -33,6 +33,17 @@
                 <div class="alert alert-info">Successfully added note!</div>
             </div>
 
+
+            <div th:if="${param.flowering_success}">
+                <div class="alert alert-info">Flowering!!</div>
+            </div>
+
+            <div th:if="${param.already_flowering}">
+                <div class="alert alert-info">
+                    Grow is already flowering
+                </div>
+            </div>
+
             <h1>Grow: "<span th:text="${grow.name}"></span>"</h1>
                 <div class="border-dark row">
                     <label for="name" class="control-label ">Name</label><br/>
@@ -60,21 +71,39 @@
             </div>
 
 
+            <br>
             <div class="row">
-                <button type="button" class="btn btn-success"><a th:href="@{/grows/{id}/edit(id=${grow.id})}" class="btn-success">Edit</a></button>
-                 &nbsp;
-                <button type="button" class="btn btn-success" th:if="${grow.flowerDate eq null}"><a th:href="@{/grows/{id}/edit(id=${grow.id})}" class="btn-success">Switch to flower</a></button>
+                <button type="button" class="btn btn-success">
+                    <a th:href="@{/grows/{id}/edit(id=${grow.id})}" class="btn-success">Edit</a>
+                </button>
                 &nbsp;
-                <button type="button" class="btn btn-success" th:if="${grow.flowerDate ne null and grow.harvestDate eq null}"><a th:href="@{/grows/{id}/edit(id=${grow.id})}" class="btn-success">Harvest</a></button>
+                <button type="button" class="btn btn-success" th:if="${grow.flowerDate eq null}">
+                    <a th:href="@{/grows/{id}/flower(id=${grow.id})}" class="btn-success"
+                        title="Use 'Edit' for a different day">Switch to flower</a>
+                </button>
+                &nbsp;
+                <button type="button" class="btn btn-success"
+                        th:if="${grow.flowerDate ne null and grow.harvestDate eq null}">
+                    <a th:href="@{/grows/{id}/edit(id=${grow.id})}" class="btn-success">Harvest</a>
+                </button>
 
             </div>
-            <div class="row"></div>
+            <br>
             <div class="row">
-                <button type="button" class="btn btn-success" ><a th:href="@{/grows/{id}/plants/add(id=${grow.id})}" class="btn btn-info" >Add Plant</a></button>
+                <button type="button" class="btn btn-info">
+                    <a th:href="@{/grows/{id}/plants/add(id=${grow.id})}" class="btn btn-info">Add Plant</a>
+                </button>
                 &nbsp;
-                <button type="button" class="btn btn-success" ><a data-toggle="modal" data-target="#picUploadModal" data-plant-id="0" href="" class="btn btn-info">Add pic</a></button>
+                <button type="button" class="btn btn-info">
+                    <a data-toggle="modal" data-target="#picUploadModal"
+                                                              data-plant-id="0" href="" class="btn btn-info">Add pic</a>
+                </button>
                 &nbsp;
-                <button type="button" class="btn btn-success" ><a data-toggle="modal" data-target="#noteUploadModal" data-note-plant-id="0" href="" class="btn btn-info">Add note</a></button>
+                <button type="button" class="btn btn-info">
+                    <a data-toggle="modal"
+                       data-target="#noteUploadModal"
+                      data-note-plant-id="0" href="" class="btn btn-info">Add note</a>
+                </button>
 
             </div>
 
