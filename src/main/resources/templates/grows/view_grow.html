@@ -34,13 +34,25 @@
             </div>
 
 
+
+
             <div th:if="${param.flowering_success}">
                 <div class="alert alert-info">Flowering!!</div>
+            </div>
+
+            <div th:if="${param.harvesting_success}">
+                <div class="alert alert-info">Harvested!!</div>
             </div>
 
             <div th:if="${param.already_flowering}">
                 <div class="alert alert-info">
                     Grow is already flowering
+                </div>
+            </div>
+
+            <div th:if="${param.already_harvested}">
+                <div class="alert alert-info">
+                    Grow is already harvested
                 </div>
             </div>
 

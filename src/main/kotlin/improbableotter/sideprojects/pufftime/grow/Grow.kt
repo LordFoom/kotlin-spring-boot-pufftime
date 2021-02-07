@@ -35,6 +35,7 @@ class Grow(
         @OneToMany(mappedBy="grow", cascade = [CascadeType.ALL])
         val notes: MutableSet<Note> = mutableSetOf(),
         val createDate: Date = Date(),
+        var lastUpdate: Date = Date(),
         var startDate: Date? = null,
         var flowerDate: Date? = null,
         var harvestDate: Date? = null,

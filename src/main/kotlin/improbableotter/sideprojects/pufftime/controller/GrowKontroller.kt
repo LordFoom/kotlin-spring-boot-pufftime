@@ -204,19 +204,19 @@ class GrowKontroller(
     }
 
 
-    @GetMapping("/{growId}/flower")
+    @GetMapping("/{growId}/harvest")
     fun switchToHarvested(
         @PathVariable("growId") growId: Long, @RequestParam(required = false) strHarvestDate: String? ): String {
         val harvestDate = strHarvestDate?.let { simpleDateFormat.parse(it) } ?: Date()
 
         val grow = growRepo.findByIdOrNull(growId)!!
         //bale out if
-        grow.flowerDate?.let {
-            return "redirect:/grows/${growId}?already_flowering"
+        grow.harvestDate?.let {
+            return "redirect:/grows/${growId}?already_harvested"
         }
 
-        grow.flowerDate = harvestDate
+        grow.harvestDate = harvestDate
         growRepo.save(grow)
-        return "redirect:/grows/${growId}?flowering_success"
+        return "redirect:/grows/${growId}?harvesting_success"
     }
 }
