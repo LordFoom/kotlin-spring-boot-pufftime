@@ -51,18 +51,30 @@
                         <a class="dropdown-item" href="#" th:href="@{/grows/add}">Add grow</a>
                     </div>
                 </li>
-                <li class="nav-item dropdown" aria-labelledby="navbarDropdown"
-                    th:classappend="${module == 'plants' ? 'active' : ''}">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                <li class="nav-item dropdown" aria-labelledby="strainDropdown"
+                    th:classappend="${module == 'strain' ? 'active' : ''}">
+                    <a class="nav-link dropdown-toggle" href="#" id="strainDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Strains
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu" aria-labelledby="strainDropdown">
                         <a class="dropdown-item" href="#" th:href="@{/strains}">Strains</a>
-                        <a class="dropdown-item" href="#" th:href="@{/strains/add}">Add strains</a>
+                        <a class="dropdown-item" href="#" th:href="@{/strains/add}">Add Strain</a>
                     </div>
                 </li>
-                <li class="nav-item" th:classappend="${module == 'reviews' ? 'active' : ''}">
+
+                <li class="nav-item dropdown" aria-labelledby="nutesDropdown"
+                    th:classappend="${module == 'nute' ? 'active' : ''}">
+                    <a class="nav-link dropdown-toggle" href="#" id="nutesDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Nutes
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="nutesDropdown">
+                        <a class="dropdown-item" href="#" th:href="@{/strains}">Nutes</a>
+                        <a class="dropdown-item" href="#" th:href="@{/strains/add}">Add Nutrient</a>
+                    </div>
+                </li>
+                <li class="nav-item" th:classappend="${module == 'review' ? 'active' : ''}">
                     <a class="nav-link" href="#" th:href="@{/reviews}" title="Plant reviews">Reviews</a>
                 </li>
                 <li class="nav-item dropdown"></li>
