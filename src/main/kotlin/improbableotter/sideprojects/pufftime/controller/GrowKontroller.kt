@@ -16,6 +16,8 @@ import improbableotter.sideprojects.pufftime.storage.StorageService
 import improbableotter.sideprojects.pufftime.strain.StrainRepository
 import improbableotter.sideprojects.pufftime.strain.StrainService
 import improbableotter.sideprojects.pufftime.user.UserRepository
+import improbableotter.sideprojects.pufftime.water.WateringHistory
+import improbableotter.sideprojects.pufftime.water.WateringHistoryRepo
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -45,6 +47,7 @@ class GrowKontroller(
     val strainService: StrainService,
     val storageService: StorageService,
     val noteRepo: NoteRepository,
+    val wateringHistoryRepo: WateringHistoryRepo,
 ) {
 
     @GetMapping("")
@@ -210,7 +213,6 @@ class GrowKontroller(
         val harvestDate = strHarvestDate?.let { simpleDateFormat.parse(it) } ?: Date()
 
         val grow = growRepo.findByIdOrNull(growId)!!
-        //bale out if
         grow.harvestDate?.let {
             return "redirect:/grows/${growId}?already_harvested"
         }
@@ -218,5 +220,20 @@ class GrowKontroller(
         grow.harvestDate = harvestDate
         growRepo.save(grow)
         return "redirect:/grows/${growId}?harvesting_success"
+    }
+
+    @GetMapping("/{growId}/watering")
+    fun waterPlants(@PathVariable("growId") growId: Long,
+                   @RequestParam(required = false) strWateringDate:String?,
+                   @RequestParam(required = false) notes: String?):String {
+
+        val wateringDate = strWateringDate?.let { simpleDateFormat.parse(it) } ?: Date()
+        val grow = growRepo.findByIdOrNull(growId)!!
+
+        //TODO get the feed in here
+        wateringHistoryRepo.save(WateringHistory(wateringDate = wateringDate, grow = grow, notes = notes))
+
+        return "redirect:/grows/${growId}?watering_success"
+
     }
 }

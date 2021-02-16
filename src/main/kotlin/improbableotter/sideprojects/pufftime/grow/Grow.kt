@@ -4,6 +4,7 @@ import improbableotter.sideprojects.pufftime.note.Note
 import improbableotter.sideprojects.pufftime.picture.Picture
 import improbableotter.sideprojects.pufftime.plant.Plant
 import improbableotter.sideprojects.pufftime.user.User
+import improbableotter.sideprojects.pufftime.water.WateringHistory
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.format.annotation.DateTimeFormat
@@ -15,6 +16,7 @@ import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
+import kotlin.collections.ArrayList
 
 @Entity
 @Table(name="grow")
@@ -28,6 +30,8 @@ class Grow(
         @ManyToOne
         @JoinColumn(name = "user_id")
         val user: User,
+        @OneToMany(mappedBy = "grow", cascade = [CascadeType.ALL])
+        val wateringHistory:MutableSet<WateringHistory> = mutableSetOf(),
         @OneToMany(mappedBy="grow", cascade = [CascadeType.ALL])
         val plants: MutableSet<Plant> = mutableSetOf(),
         @OneToMany(mappedBy="grow", cascade = [CascadeType.ALL])

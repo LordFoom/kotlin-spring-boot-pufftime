@@ -1,6 +1,7 @@
 package improbableotter.sideprojects.pufftime.feed
 
 import improbableotter.sideprojects.pufftime.grow.Grow
+import improbableotter.sideprojects.pufftime.water.WateringHistory
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 import javax.persistence.*
@@ -11,11 +12,9 @@ import kotlin.collections.ArrayList
 class Feed(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-    @ManyToOne
-    @JoinColumn(name = "grow_id")
-    var grow: Grow? = null,
-
-
+    @OneToOne
+    @JoinColumn(name="watering_history_id")
+    var wateringHistory: WateringHistory,
     var notes: String? = null,
     @OneToMany(mappedBy = "feed", cascade = [CascadeType.ALL])
     var nutes: List<Nute> = ArrayList(),
@@ -23,9 +22,10 @@ class Feed(
     var lastUpdate: Date = Date(),
 )
 
-interface FeedRepository : JpaRepository<Feed, Long> {
-    fun findAllByGrowOrderByCreateDateDesc(grow: Grow?)
-}
+//go via wateringhistopry
+//interface FeedRepository : JpaRepository<Feed, Long> {
+//    fun findAllBy(grow: Grow?)
+//}
 
 /**
  * Intended to be loosy goosy  - maybe it has a nuteType, maybe it doesn't
