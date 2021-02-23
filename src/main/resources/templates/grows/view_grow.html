@@ -44,6 +44,10 @@
                 <div class="alert alert-info">Harvested!!</div>
             </div>
 
+            <div th:if="${param.watering_success}">
+                <div class="alert alert-info">Watered!!</div>
+            </div>
+
             <div th:if="${param.already_flowering}">
                 <div class="alert alert-info">
                     Grow is already flowering
@@ -268,8 +272,13 @@
 <!--                    </div>-->
 <!--                    here we put the pH-->
                     <!--                    here we put feed option? how that going to work...? -->
-
                     <div class="form-group row">
+                        <label for="amount" title="Liter is what I had in mind">Amount in liter</label>
+                            <input id="amount" name="amount" class="form-control small-width" type="number" min="0"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="strWateringDate" title="Defaults to now">Watering date</label>
                         <div class="input-group date" data-provider="datepicker">
                             <input id="strWateringDate" name="strWateringDate" class="form-control small-width" />
                             <div class="input-group-addon">

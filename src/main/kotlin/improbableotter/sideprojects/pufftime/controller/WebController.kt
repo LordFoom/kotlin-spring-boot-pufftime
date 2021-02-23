@@ -93,71 +93,8 @@ class WebController(
         return "home/home_signed_in"
     }
 
-    @GetMapping("/plants/users/{userId}")
-    fun viewUserPlants(model: Model, @PathVariable("userId") userId: Long): String {
-        val user = userRepo.findByIdOrNull(userId)!!
-        model["plants"] = plantRepo.findByUserId(userId)
-        model["header"] = "Plants for User: ${user.username}"
-        return "plants/view_plants"
-    }
 
-    @GetMapping("/plants/grows/{growId}")
-    fun viewGrowPlants(model: Model, @PathVariable("growId") growId: Long): String {
-        val grow = growRepo.findByIdOrNull(growId)!!
-        model["plants"] = plantRepo.findByGrowId(growId)
-        model["header"] = "Plants for Grow: ${grow.id}, started: ${grow.getDisplayCreateDate()}"
-        return "plants/view_plants"
-    }
 
-    @GetMapping("/strains")
-    fun viewStrains(model: Model): String {
-        model["strains"] = strainRepo.findAll()
-        return "strains/view_strains"
-    }
-
-    @GetMapping("/strains/{strainId}")
-    fun viewStrain(@PathVariable("strainId") strainId: Long, model: Model): String {
-        model["strain"] = strainRepo.findByIdOrNull(strainId) ?: return "redirect:/?error"
-        return "strains/view_strain"
-    }
-
-    @GetMapping("/strains/add")
-    fun getAddStrainForm(model: Model, principal: Principal): String {
-//        model["strain"] = CreateStrainDto()
-        model["strain"] = StrainDto(username = principal.name)
-        return "strains/add_strain"
-    }
-
-    @PostMapping("/strains/add")
-    fun addStrain(@ModelAttribute @Valid dto: StrainDto, result: BindingResult): String {
-        if (result.hasErrors()) {
-            return "strains/add_strain"
-        }
-        val strain = strainService.create(dto)
-        return "redirect:/strains/${strain.id}?success"
-    }
-
-    @GetMapping("/strains/{strainId}/edit")
-    fun getEditStrainForm(@PathVariable("strainId") strainId: Long, model: Model, principal: Principal): String {
-//        model["strain"] = CreateStrainDto()
-        val existingStrain = strainRepo.findByIdOrNull(strainId)!!
-        model["strain"] = StrainDto(
-            existingStrain.id!!, existingStrain.name, existingStrain.description,
-            user = existingStrain.createdBy, username = existingStrain.createdBy.username
-        )
-        return "strains/edit_strain"
-    }
-
-    @PostMapping("/strains/{strainId}/edit")
-    fun editStrain(
-        @PathVariable("strainId") strainId: Long,
-        @ModelAttribute @Valid dto: StrainDto,
-        result: BindingResult
-    ): String {
-        dto.id = strainId
-        strainService.updateStrain(dto)
-        return "redirect:/strains/${strainId}?success_edit"
-    }
 
 
 }

@@ -1,6 +1,6 @@
 package improbableotter.sideprojects.pufftime.water
 
-import improbableotter.sideprojects.pufftime.feed.Feed
+import improbableotter.sideprojects.pufftime.nute.Feed
 import improbableotter.sideprojects.pufftime.grow.Grow
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
@@ -15,6 +15,7 @@ class WateringHistory(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id:Long? = null,
         var wateringDate: Date? = null,
+        var literAmount:Double? = 0.0,
         /** optional feed, bruv*/
         @OneToOne
         @JoinColumn(name = "feed_id")
@@ -23,6 +24,7 @@ class WateringHistory(
         @JoinColumn(name="grow_id")
         var grow: Grow? = null,
         var notes: String? = null,
+        var pH: Double? = 7.0,
         var createDate: Date = Date(),
 
         )

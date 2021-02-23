@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::head">
+    <title>View Nutes</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <div class="row">
+        <table class="table table-bordered tableMain">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Manufacturer</th>
+                <th>Created</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--/*@thymesVar id="nute" type="improbableotter.sideprojects.pufftime.nute.Nute"*/-->
+            <!--/*@thymesVar id="grows" type="java.util.List<Grow>"*/-->
+            <tr th:each="nute: ${nutes}">
+                <td th:text="${nute.description}"></td>
+                <td th:text="${#dates.format(nute.createDate, 'yyyy-MM-dd')}"></td>
+                <td th:text="${nute.status}"></td>
+                <td ><a th:href="@{/nutes/{id}(id=${nute.id})}">View</a></td>
+                <td ><a th:href="@{/nutes/{id}/delete(id=${nute.id})}">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <a type="button" class="btn btn-outline-success" th:href="@{/nutes/add}" >Add Nute</a>
+    </div>
+</div>
+
+<div th:replace="fragments/footer::footer"></div>
+</body>
+</html>

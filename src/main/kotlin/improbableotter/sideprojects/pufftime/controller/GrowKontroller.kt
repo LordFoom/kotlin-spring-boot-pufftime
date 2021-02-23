@@ -44,7 +44,6 @@ class GrowKontroller(
     val growRepo: GrowRepository,
     val growService: GrowService,
     val strainRepo: StrainRepository,
-    val strainService: StrainService,
     val storageService: StorageService,
     val noteRepo: NoteRepository,
     val wateringHistoryRepo: WateringHistoryRepo,
@@ -222,12 +221,17 @@ class GrowKontroller(
         return "redirect:/grows/${growId}?harvesting_success"
     }
 
-    @GetMapping("/{growId}/watering")
+    @PostMapping("/{growId}/watering")
     fun waterPlants(@PathVariable("growId") growId: Long,
                    @RequestParam(required = false) strWateringDate:String?,
                    @RequestParam(required = false) notes: String?):String {
 
-        val wateringDate = strWateringDate?.let { simpleDateFormat.parse(it) } ?: Date()
+        val wateringDate = strWateringDate?.let {
+            if(strWateringDate.length>8)
+                simpleDateFormat.parse(it)
+            else
+                Date()
+        } ?: Date()
         val grow = growRepo.findByIdOrNull(growId)!!
 
         //TODO get the feed in here
