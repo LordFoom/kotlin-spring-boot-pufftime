@@ -44,7 +44,7 @@ class Nute(
     @JoinColumn(name = "user_id")
     var user: User,
     var createDate: Date = Date(),
-    var statusId: NuteStatus = NuteStatus.AVAILABLE,
+    var status: NuteStatus = NuteStatus.AVAILABLE,
 
     ) {
 
@@ -56,7 +56,7 @@ class Nute(
             manufacturer = dto.manufacturer,
             user = dto.user!!,
             createDate = dto.createDate,
-            statusId = dto.statusId,
+            status = dto.status,
         )
 
     }
@@ -72,7 +72,7 @@ data class NuteDto(
     var userId: Long? = null,
     var user: User? = null,
     var createDate: Date = Date(),
-    var statusId: NuteStatus = NuteStatus.AVAILABLE,
+    var status: NuteStatus = NuteStatus.AVAILABLE,
 )
 
 interface NuteRepository : JpaRepository<Nute, Long> {

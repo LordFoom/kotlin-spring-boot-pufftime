@@ -90,7 +90,7 @@ class Grow(
 }
 
 enum class GrowStatus {
-    NONE, CREATED, FLOWERING, HARVESTING, COMPLETED
+    NONE, CREATED, FLOWERING, HARVESTED, COMPLETED
 }
 
 enum class GrowType {

@@ -14,7 +14,6 @@ import improbableotter.sideprojects.pufftime.plant.PlantRepository
 import improbableotter.sideprojects.pufftime.plant.PlantService
 import improbableotter.sideprojects.pufftime.storage.StorageService
 import improbableotter.sideprojects.pufftime.strain.StrainRepository
-import improbableotter.sideprojects.pufftime.strain.StrainService
 import improbableotter.sideprojects.pufftime.user.UserRepository
 import improbableotter.sideprojects.pufftime.water.WateringHistory
 import improbableotter.sideprojects.pufftime.water.WateringHistoryRepo
@@ -217,6 +216,7 @@ class GrowKontroller(
         }
 
         grow.harvestDate = harvestDate
+        grow.status = GrowStatus.HARVESTED
         growRepo.save(grow)
         return "redirect:/grows/${growId}?harvesting_success"
     }

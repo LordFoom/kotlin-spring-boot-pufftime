@@ -4,14 +4,12 @@ import improbableotter.sideprojects.pufftime.nute.NuteDto
 import improbableotter.sideprojects.pufftime.nute.NuteRepository
 import improbableotter.sideprojects.pufftime.nute.NuteService
 import improbableotter.sideprojects.pufftime.user.UserRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.validation.BindingResult
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import javax.validation.Valid
 
@@ -28,6 +26,13 @@ class NuteKontroller(
         val user = userRepo.findByUsername(principal.name)!!
         model["nutes"] = nuteRepo.findByUser(user)
         return "nutes/view_nutes"
+
+    }
+
+    @GetMapping("/{nuteId}")
+    fun viewNute(@PathVariable("nuteId") nuteId:Long, model: Model): String {
+        model["nute"] = nuteRepo.findByIdOrNull(nuteId)!!
+        return "nutes/view_nute"
 
     }
 

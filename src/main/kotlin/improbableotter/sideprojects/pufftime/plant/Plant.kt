@@ -35,8 +35,10 @@ class Plant(
         var startDate: Date? = null,
         var flowerDate: Date? = null,
         var harvestDate: Date? = null,
-        var cureDate: Date? = null
-){
+        var cureDate: Date? = null,
+        val status: PlantStatus = PlantStatus.VEGGING,
+
+        ){
         @Transient val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
         override fun toString(): String {
@@ -64,6 +66,10 @@ class Plant(
                         cureDate = dto.cureDate
                 )
         }
+}
+
+enum class PlantStatus{
+        NONE, PLANTED, SPROUTED, VEGGING, FLOWERING, HARVESTED, DRYING, CURING, SMOKED, SOLD, SPOILED, DONE
 }
 
 

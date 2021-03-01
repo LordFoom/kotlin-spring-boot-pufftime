@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::head">
+    <title >View Nute</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <!--/*@thymesVar id="nute" type="improbableotter.sideprojects.pufftime.nute.Nute"*/-->
+    <div class="row">
+        <h1>Nute <span th:text="${nute.name}" class="alert-info"></span> </h1>
+    </div>
+    <div class="row border-dark">
+        <span th:text="${nute.description}"></span>
+    </div>
+    <div class="row border-dark">
+        <label for="manufacturer">Manufacturer</label>
+        <span id="manufacturer" th:text="${nute.manufacturer}"></span>
+    </div>
+    <div class="row">
+        <label for="createDate">Create Date</label>
+        <span id='createDate' th:text="${#dates.format(nute.createDate, 'yyyy-MM-dd')}"></span>
+    </div>
+    <div class="row">
+        <span ><a th:href="@{/nutes/{id}/edit(id=${nute.id})}">Edit</a></span>
+    </div>
+</div>
+<div th:replace="fragments/footer::footer"></div>
+</body>

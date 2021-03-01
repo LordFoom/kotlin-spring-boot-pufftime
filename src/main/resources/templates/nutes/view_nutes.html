@@ -21,7 +21,9 @@
             <!--/*@thymesVar id="nute" type="improbableotter.sideprojects.pufftime.nute.Nute"*/-->
             <!--/*@thymesVar id="grows" type="java.util.List<Grow>"*/-->
             <tr th:each="nute: ${nutes}">
-                <td th:text="${nute.description}"></td>
+                <td th:text="${nute.name}"></td>
+                <td th:text="${#strings.abbreviate(nute.description, 30)}"></td>
+                <td th:text="${nute.manufacturer}"></td>
                 <td th:text="${#dates.format(nute.createDate, 'yyyy-MM-dd')}"></td>
                 <td th:text="${nute.status}"></td>
                 <td ><a th:href="@{/nutes/{id}(id=${nute.id})}">View</a></td>

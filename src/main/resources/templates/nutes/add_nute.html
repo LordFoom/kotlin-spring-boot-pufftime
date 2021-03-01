@@ -19,8 +19,8 @@
 
             <h1>Add Nute</h1>
             <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.StrainDto"*/-->
-            <form th:action="@{/strains/add}" th:object="${strain}" method="post">
-                <input type="hidden" id="username" th:field="*{username}" >
+            <form th:action="@{/nutes/add}" th:object="${nute}" method="post">
+                <input type="hidden" id="userId" th:field="*{userId}" >
 
                 <p class="error-message"
                    th:if="${#fields.hasGlobalErrors()}"
@@ -48,9 +48,11 @@
                 </div>
                 <div class="form-group row" >
                     <label for="description" class="control-label">Manufacturer</label>
-
+                    <input id="name"
+                           class="form-control"
+                           th:field="*{manufacturer}"/>
                     <span class="red" th:if="${#fields.hasErrors('manufacturer')}"
-                          th:errors="*{description}"></span>
+                          th:errors="*{manufacturer}"></span>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-success">Create</button>
