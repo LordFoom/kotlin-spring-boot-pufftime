@@ -1,6 +1,7 @@
 package improbableotter.sideprojects.pufftime.user
 
 import improbableotter.sideprojects.pufftime.grow.Grow
+import improbableotter.sideprojects.pufftime.lights.Light
 import improbableotter.sideprojects.pufftime.nute.Nute
 import improbableotter.sideprojects.pufftime.plant.Plant
 import improbableotter.sideprojects.pufftime.strain.Strain
@@ -40,11 +41,14 @@ class User(
     val grows: MutableList<Grow> = mutableListOf(),
     @OneToMany(mappedBy = "user", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
     val nutes: MutableSet<Nute> = mutableSetOf(),
+    @OneToMany(mappedBy = "user", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
+    val lights: MutableSet<Light> = mutableSetOf(),
 //        @Column
     @get:NotBlank
     val role: String,
 //        @Column
-    val created: Date = Date()
+    val created: Date = Date(),
+    val updated: Date = Date(),
 ) {
 
     fun toDto(): UserDto = UserDto(

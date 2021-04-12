@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::head">
+    <title >Edit Light</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <!--/*@thymesVar id="light" type="improbableotter.sideprojects.pufftime.lights.Light"*/-->
+    <div class="row">
+        <h1>Light '<span th:text="${light.name}" class="alert-info"></span>' </h1>
+    </div>
+
+    <div class="row border-dark">
+        <label>Brand</label>
+        <span th:text="${light.brand}"></span>
+    </div>
+    <div class="row border-dark">
+        <label>Power</label>
+        <span th:text="${light.power}"></span>
+    </div>
+    <div class="row border-dark">
+        <label>Temperature Color</label>
+        <span th:text="${light.temperatureColor}"></span>
+    </div>
+    <div class="row">
+        <label>Purchase Date</label>
+        <span th:text="${#dates.format(light.purchaseDate, 'yyyy-MM-dd')}"></span>
+    </div>
+    <div class="row border-dark">
+        <label>Notes</label>
+        <span th:text="${light.notes}"></span>
+    </div>
+    <div class="row">
+        <label>Create Date</label>
+        <span th:text="${#dates.format(light.createDate, 'yyyy-MM-dd')}"></span>
+    </div>
+    <div class="row">
+        <label>Last Update</label>
+        <span th:text="${#dates.format(light.lastUpdate, 'yyyy-MM-dd')}"></span>
+    </div>
+    <div class="row">
+        <span ><a th:href="@{/lights/{id}/edit(id=${light.id})}">Edit</a></span>
+    </div>
+</div>
+<div th:replace="fragments/footer::footer"></div>
+</body>

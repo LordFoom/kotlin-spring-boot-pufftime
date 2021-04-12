@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::head">
+    <title>View Lights</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <table class="table table-bordered tableMain">
+            <thead>
+            <tr>
+                <th>Light</th>
+                <th>Power</th>
+                <th>Color Temperatur</th>
+                <th>Brand</th>
+                <th>Created</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--/*@thymesVar id="light" type="improbableotter.sideprojects.pufftime.lights.Light"*/-->
+            <tr th:each="light : ${lights}">
+                <td th:text="${light.name}"></td>
+                <td th:text="${light.power}"></td>
+                <td th:text="${light.temperatureColor}"></td>
+                <td th:text="${#dates.format(light.createDate, 'yyyy-MM-dd')}"></td>
+                <td th:text="${#dates.format(light.updateDate, 'yyyy-MM-dd')}"></td>
+                <td ><a th:href="@{/lights/{id}(id=${light.id})}">View</a></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="row">
+            <a type="button" class="btn btn-outline-success" th:href="@{/lights/add}" >Add Light</a>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer::footer"></div>
+</body>
+</html>

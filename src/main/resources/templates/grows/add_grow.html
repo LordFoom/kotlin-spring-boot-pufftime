@@ -37,16 +37,16 @@
                        th:each="error: ${#fields.errors('name')}"
                        th:text="${error}">Validation error</p>
                 </div>
-                <div class="form-group row"
-                     th:classappend="${#fields.hasErrors('name')}? 'has-error':''">
-                    <label for="name" class="control-label">Name</label>
-                    <select id="type" name="type" class="form-control" >
-                        <option th:each="${}"
-                    </select>
-                    <p class="error-message"
-                       th:each="error: ${#fields.errors('type')}"
-                       th:text="${error}">Validation error</p>
-                </div>
+<!--                <div class="form-group row"-->
+<!--                     th:classappend="${#fields.hasErrors('name')}? 'has-error':''">-->
+<!--                    <label for="name" class="control-label">Name</label>-->
+<!--                    <select id="type" name="type" class="form-control" >-->
+<!--                        <option th:each="${}"-->
+<!--                    </select>-->
+<!--                    <p class="error-message"-->
+<!--                       th:each="error: ${#fields.errors('type')}"-->
+<!--                       th:text="${error}">Validation error</p>-->
+<!--                </div>-->
                 <div class="form-group row" >
                     <label for="description" class="control-label">Description</label>
                     <textarea id="description"

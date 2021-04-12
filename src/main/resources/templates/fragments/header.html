@@ -74,6 +74,17 @@
                         <a class="dropdown-item" href="#" th:href="@{/nutes/add}">Add Nutrient</a>
                     </div>
                 </li>
+                <li class="nav-item dropdown" aria-labelledby="lightsDropdown"
+                    th:classappend="${module == 'light' ? 'active' : ''}">
+                    <a class="nav-link dropdown-toggle" href="#" id="lightsDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Lights
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="lightsDropdown">
+                        <a class="dropdown-item" href="#" th:href="@{/lights}">Lights</a>
+                        <a class="dropdown-item" href="#" th:href="@{/lights/add}">Add Light</a>
+                    </div>
+                </li>
                 <li class="nav-item" th:classappend="${module == 'review' ? 'active' : ''}">
                     <a class="nav-link" href="#" th:href="@{/reviews}" title="Plant reviews">Reviews</a>
                 </li>

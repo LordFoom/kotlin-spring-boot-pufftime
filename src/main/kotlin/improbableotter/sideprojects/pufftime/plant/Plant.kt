@@ -32,6 +32,7 @@ class Plant(
         var notes: List<Note>? = ArrayList(),
         @get:NotNull
         val createDate: Date = Date(),
+        val lastUpdate: Date = Date(),
         var startDate: Date? = null,
         var flowerDate: Date? = null,
         var harvestDate: Date? = null,

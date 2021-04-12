@@ -221,7 +221,14 @@ class GrowKontroller(
         return "redirect:/grows/${growId}?harvesting_success"
     }
 
-    @PostMapping("/{growId}/watering")
+    @GetMapping("/{growId}/water")
+    fun getWateringForm(@PathVariable("growId") growId:Long, model: Model):String{
+        val grow = growRepo.findByIdOrNull(growId)!!
+        model["grow"] = grow
+        model["plants"] = grow.plants
+        return "water/water_grow"
+    }
+    @PostMapping("/{growId}/water")
     fun waterPlants(@PathVariable("growId") growId: Long,
                    @RequestParam(required = false) strWateringDate:String?,
                    @RequestParam(required = false) notes: String?):String {
