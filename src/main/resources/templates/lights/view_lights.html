@@ -23,7 +23,7 @@
                 <td th:text="${light.power}"></td>
                 <td th:text="${light.temperatureColor}"></td>
                 <td th:text="${#dates.format(light.createDate, 'yyyy-MM-dd')}"></td>
-                <td th:text="${#dates.format(light.updateDate, 'yyyy-MM-dd')}"></td>
+                <td th:text="${#dates.format(light.lastUpdate, 'yyyy-MM-dd')}"></td>
                 <td ><a th:href="@{/lights/{id}(id=${light.id})}">View</a></td>
             </tr>
             </tbody>

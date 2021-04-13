@@ -4,13 +4,11 @@ import improbableotter.sideprojects.pufftime.lights.LightDto
 import improbableotter.sideprojects.pufftime.lights.LightRepository
 import improbableotter.sideprojects.pufftime.lights.LightService
 import improbableotter.sideprojects.pufftime.user.UserRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.security.Principal
 import java.text.SimpleDateFormat
@@ -28,6 +26,12 @@ class LightKontroller(
         val user = userRepo.findByUsername(principal.name)!!
         model["lights"] = lightsRepo.findAllByUserOrderByCreateDateDesc(user)
         return "lights/view_lights"
+    }
+
+    @GetMapping("/{lightId}")
+    fun viewLight(@PathVariable lightId:Long, model: Model):String{
+        model["light"] = lightsRepo.findByIdOrNull(lightId)!!
+        return "lights/view_light"
     }
 
     @GetMapping("/add")
