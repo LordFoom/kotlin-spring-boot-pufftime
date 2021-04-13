@@ -60,7 +60,7 @@ class LightKontroller(
 //        simpleDateFormat.parse(purchaseDate)
         val dto = LightDto(
             username = principal.name,
-            name = "name",
+            name = name,
             brand = brand,
             power = power,
             temperatureColor = temperatureColor,
