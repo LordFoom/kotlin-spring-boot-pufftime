@@ -1,5 +1,6 @@
 package improbableotter.sideprojects.pufftime.lights
 
+import improbableotter.sideprojects.pufftime.common.Status
 import improbableotter.sideprojects.pufftime.user.User
 import improbableotter.sideprojects.pufftime.user.UserDto
 import org.springframework.data.jpa.repository.JpaRepository
@@ -25,6 +26,7 @@ class Light(
     val purchaseDate: Date? = null,
     val createDate: Date = Date(),
     val lastUpdate: Date = Date(),
+    val statusId:Int = Status.ACTIVE.ordinal
  ){
 
     companion object {
@@ -43,6 +45,7 @@ class Light(
 
 interface LightRepository : JpaRepository<Light, Long> {
     fun findAllByUserOrderByCreateDateDesc(user: User):List<Light>
+    fun findAllByStatusIdOrderByIdDesc(statusId: Int):List<Light>
 }
 
 data class LightDto(

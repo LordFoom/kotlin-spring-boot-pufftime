@@ -25,6 +25,10 @@
                 <div class="alert alert-info">Successfully added plant!</div>
             </div>
 
+            <div th:if="${param.lightSuccess}">
+                <div class="alert alert-info">Successfully added light!</div>
+            </div>
+
             <div th:if="${param.pic_success}">
                 <div class="alert alert-info">Successfully added pic!</div>
             </div>            <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.GrowDto"*/-->
@@ -106,6 +110,11 @@
             </div>
             <br>
             <div class="row">
+
+                <button type="button" class="btn btn-info">
+                    <a th:href="@{/grows/{id}/lights/add(id=${grow.id})}" class="btn btn-info">Add Light</a>
+                </button>
+                &nbsp;
                 <button type="button" class="btn btn-info">
                     <a th:href="@{/grows/{id}/plants/add(id=${grow.id})}" class="btn btn-info">Add Plant</a>
                 </button>
@@ -121,10 +130,16 @@
                       data-note-plant-id="0" href="" class="btn btn-info">Add note</a>
                 </button>
                 &nbsp;
+            </div>
+            <br/>
+            <div class="row">
                 <button type="button" class="btn btn-info">
                     <a th:href="@{/grows/{growId}/water(growId=${grow.id})}" class="btn btn-info">Water!</a>
                 </button>
+
+
             </div>
+
 
             <!--/*@thymesVar id="note" type="improbableotter.sideprojects.pufftime.note.Note"*/-->
             <br/>

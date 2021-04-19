@@ -5,6 +5,10 @@ import improbableotter.sideprojects.pufftime.grow.GrowDto
 import improbableotter.sideprojects.pufftime.grow.GrowRepository
 import improbableotter.sideprojects.pufftime.grow.GrowService
 import improbableotter.sideprojects.pufftime.grow.GrowStatus
+import improbableotter.sideprojects.pufftime.lights.GrowLightDto
+import improbableotter.sideprojects.pufftime.lights.GrowLightService
+import improbableotter.sideprojects.pufftime.lights.LightDto
+import improbableotter.sideprojects.pufftime.lights.LightRepository
 import improbableotter.sideprojects.pufftime.note.Note
 import improbableotter.sideprojects.pufftime.note.NoteRepository
 import improbableotter.sideprojects.pufftime.picture.Picture
@@ -46,6 +50,8 @@ class GrowKontroller(
     val storageService: StorageService,
     val noteRepo: NoteRepository,
     val wateringHistoryRepo: WateringHistoryRepo,
+    val lightRepo: LightRepository,
+    val growLightService: GrowLightService,
 ) {
 
     @GetMapping("")
@@ -113,6 +119,29 @@ class GrowKontroller(
         return "plants/add_plant"
     }
 
+    @GetMapping("/{growId}/lights/add")
+    fun getAddLightToGrowForm(@PathVariable growId: Long, model: Model, principal: Principal): String {
+        val user = userRepo.findByUsername(principal.name)!!
+        model["grow"] = growRepo.findByIdOrNull(growId)!!
+        model["lights"] = lightRepo.findAllByStatusIdOrderByIdDesc(Status.ACTIVE.ordinal)
+        model["growLight"] = GrowLightDto(userId=user.id!!)
+
+        return "lights/add_light_to_grow"
+    }
+
+    @PostMapping("/{growId}/lights/add")
+    fun addLightToGrow(
+        @PathVariable growId: Long,
+        @ModelAttribute @Valid dto: GrowLightDto,
+        result: BindingResult,
+        model: Model
+    ): String {
+        val growLight = growLightService.create(dto)
+        model["grow"] = growRepo.findByIdOrNull(growId)!!
+
+        return "redirect:/$growId?lightSuccess"
+    }
+
     @PostMapping("/{growId}/plants/add")
     fun addPlantToGrow(
         @PathVariable growId: Long,
@@ -123,6 +152,7 @@ class GrowKontroller(
         plantService.createPlants(dto)
         return "redirect:/$growId?plantSuccess"
     }
+
 
     @GetMapping("/{growId}/plants/{plantId}/delete")
     fun deletePlant(@PathVariable growId: Long, @PathVariable plantId: Long, model: Model): String {
