@@ -150,8 +150,32 @@
                     &nbsp;
                 </div>
             </div>
+
             <br/>
-            <table class="table table-bordered tableMain">
+            <table class="table table-bordered tableMain" th:unless="${#lists.isEmpty(growLights)}">
+                <thead>
+                <tr>
+                    <th>Light</th>
+                    <th>Brand</th>
+                    <th>Temp Color</th>
+                    <th>Power</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--/*@thymesVar id="growLights" type="java.util.List<GrowLight>"*/-->
+                <tr th:each="growLight :${growLights}">
+                    <td th:text="${growLight.light.name}"></td>
+                    <td th:text="${growLight.light.brand}"></td>
+                    <td th:text="${growLight.light.temperatureColor}"></td>
+                    <td th:text="${growLight.light.power}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+
+
+            <br/>
+            <table class="table table-bordered tableMain" th:unless="${#lists.isEmpty(plants)}">
                 <thead>
                 <tr>
                     <th>Strain</th>
