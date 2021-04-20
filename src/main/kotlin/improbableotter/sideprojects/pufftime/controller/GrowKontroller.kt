@@ -6,8 +6,8 @@ import improbableotter.sideprojects.pufftime.grow.GrowRepository
 import improbableotter.sideprojects.pufftime.grow.GrowService
 import improbableotter.sideprojects.pufftime.grow.GrowStatus
 import improbableotter.sideprojects.pufftime.lights.GrowLightDto
+import improbableotter.sideprojects.pufftime.lights.GrowLightRepository
 import improbableotter.sideprojects.pufftime.lights.GrowLightService
-import improbableotter.sideprojects.pufftime.lights.LightDto
 import improbableotter.sideprojects.pufftime.lights.LightRepository
 import improbableotter.sideprojects.pufftime.note.Note
 import improbableotter.sideprojects.pufftime.note.NoteRepository
@@ -52,6 +52,7 @@ class GrowKontroller(
     val wateringHistoryRepo: WateringHistoryRepo,
     val lightRepo: LightRepository,
     val growLightService: GrowLightService,
+    val growLighRepo: GrowLightRepository,
 ) {
 
     @GetMapping("")
@@ -59,8 +60,6 @@ class GrowKontroller(
         val user = userRepo.findByUsername(principal.name)!!
         model["grows"] = growRepo.findAllByUser(user)
         model["title"] = "Grows, grows, grows, grows"
-
-
         return "grows/view_grows"
     }
 
@@ -68,6 +67,7 @@ class GrowKontroller(
     fun viewGrow(@PathVariable growId: Long, model: Model): String {
         model["grow"] = growRepo.findByIdOrNull(growId)!!
         model["plants"] = plantRepo.findByGrowIdOrderByStrainDesc(growId)
+        model["growLights"] = growLighRepo.findByGrowIdOrderByCreateDate(growId)
         model["title"] = "Grow Watching"
         noteRepo.findTopByGrowIdOrderByIdDesc(growId)?.let { model["note"] = it }
         return "grows/view_grow"
@@ -124,7 +124,7 @@ class GrowKontroller(
         val user = userRepo.findByUsername(principal.name)!!
         model["grow"] = growRepo.findByIdOrNull(growId)!!
         model["lights"] = lightRepo.findAllByStatusIdOrderByIdDesc(Status.ACTIVE.ordinal)
-        model["growLight"] = GrowLightDto(userId=user.id!!)
+        model["growLight"] = GrowLightDto(userId=user.id!!, growId = growId)
 
         return "lights/add_light_to_grow"
     }
@@ -139,7 +139,7 @@ class GrowKontroller(
         val growLight = growLightService.create(dto)
         model["grow"] = growRepo.findByIdOrNull(growId)!!
 
-        return "redirect:/$growId?lightSuccess"
+        return "redirect:/grows/$growId?lightSuccess"
     }
 
     @PostMapping("/{growId}/plants/add")
