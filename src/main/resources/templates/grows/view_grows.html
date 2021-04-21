@@ -16,19 +16,17 @@
                 <th>Flower Date</th>
                 <th>Status</th>
                 <th></th>
-                <th></th>
             </tr>
             </thead>
             <tbody>
             <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.Grow"*/-->
             <!--/*@thymesVar id="grows" type="java.util.List<Grow>"*/-->
-            <tr th:each="grow : ${grows}">
-                <td th:text="${grow.name}"></td>
+            <tr th:each="grow : ${grows}" >
+                <td ><a th:href="@{/grows/{id}(id=${grow.id})}" th:text="${grow.name}"></a> </td>
                 <td th:text="${#dates.format(grow.createDate, 'yyyy-MM-dd')}"></td>
                 <td th:text="${#dates.format(grow.startDate, 'yyyy-MM-dd')}"></td>
                 <td th:text="${#dates.format(grow.flowerDate, 'yyyy-MM-dd')}"></td>
                 <td th:text="${grow.status}"></td>
-                <td ><a th:href="@{/grows/{id}(id=${grow.id})}">View</a></td>
                 <td ><a th:href="@{/grows/{id}/plants/add(id=${grow.id})}">Add plant</a></td>
             </tr>
             </tbody>
