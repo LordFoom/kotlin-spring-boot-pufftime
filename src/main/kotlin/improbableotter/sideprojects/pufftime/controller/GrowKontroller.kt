@@ -150,7 +150,7 @@ class GrowKontroller(
         model: Model
     ): String {
         plantService.createPlants(dto)
-        return "redirect:/$growId?plantSuccess"
+        return "redirect:/grows/$growId?plantSuccess"
     }
 
 
