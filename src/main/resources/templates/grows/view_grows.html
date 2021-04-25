@@ -11,7 +11,6 @@
             <thead>
             <tr>
                 <th>Grow</th>
-                <th>Created</th>
                 <th>Start Date</th>
                 <th>Flower Date</th>
                 <th>Status</th>
@@ -23,7 +22,6 @@
             <!--/*@thymesVar id="grows" type="java.util.List<Grow>"*/-->
             <tr th:each="grow : ${grows}" >
                 <td ><a th:href="@{/grows/{id}(id=${grow.id})}" th:text="${grow.name}"></a> </td>
-                <td th:text="${#dates.format(grow.createDate, 'yyyy-MM-dd')}"></td>
                 <td th:text="${#dates.format(grow.startDate, 'yyyy-MM-dd')}"></td>
                 <td th:text="${#dates.format(grow.flowerDate, 'yyyy-MM-dd')}"></td>
                 <td th:text="${grow.status}"></td>

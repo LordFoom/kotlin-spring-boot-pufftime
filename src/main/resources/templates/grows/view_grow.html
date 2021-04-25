@@ -136,7 +136,10 @@
                 <button type="button" class="btn btn-info">
                     <a th:href="@{/grows/{growId}/water(growId=${grow.id})}" class="btn btn-info">Water!</a>
                 </button>
-
+                &nbsp;
+                <button type="button" class="btn btn-info">
+                    <a th:href="@{/grows/{growId}/watering_history(growId=${grow.id})}" class="btn btn-info">Watering history</a>
+                </button>
 
             </div>
 
@@ -179,7 +182,7 @@
                 <thead>
                 <tr>
                     <th>Strain</th>
-                    <th>Created</th>
+                    <th>Start Date</th>
                     <th>Flower Date</th>
                     <th>Harvest Date</th>
                     <th>Cure Date</th>
@@ -196,7 +199,7 @@
                     <!--/*@thymesVar id="plant" type="improbableotter.sideprojects.pufftime.plant.Plant"*/-->
                     <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.Strain"*/-->
                     <td th:text="${plant.strain.name}"></td>
-                    <td th:text="${#dates.format(plant.createDate, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${#dates.format(plant.startDate, 'yyyy-MM-dd')}"></td>
                     <td th:text="${#dates.format(plant.flowerDate, 'yyyy-MM-dd')}"></td>
                     <td th:text="${#dates.format(plant.harvestDate, 'yyyy-MM-dd')}"></td>
                     <td th:text="${#dates.format(plant.cureDate, 'yyyy-MM-dd')}"></td>
