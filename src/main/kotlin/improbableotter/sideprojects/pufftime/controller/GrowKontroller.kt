@@ -277,4 +277,21 @@ class GrowKontroller(
         return "redirect:/grows/${growId}?watering_success"
 
     }
+
+    @GetMapping("/{growId}/waters")
+    fun getGrowWateringHistoryList(@PathVariable("growId") growId: Long,
+                                @RequestParam startDate:String,
+                                @RequestParam endDate:String): MutableSet<WateringHistory> {
+        val grow = growRepo.findByIdOrNull(growId)!!
+
+        return grow.wateringHistory
+
+    }
+
+    @GetMapping("/{growId}/waters")
+    fun getGrowWateringHistoryPage(@PathVariable("growId") growId:Long, model: Model):String{
+        model["grow"] = growRepo.findByIdOrNull(growId)!!
+
+       return "water/grow_water_history"
+    }
 }
