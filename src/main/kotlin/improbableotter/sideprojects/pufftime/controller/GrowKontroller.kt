@@ -264,10 +264,8 @@ class GrowKontroller(
                    @RequestParam(required = false) notes: String?):String {
 
         val wateringDate = strWateringDate?.let {
-            if(strWateringDate.length>8)
-                simpleDateFormat.parse(it)
-            else
-                Date()
+            if(strWateringDate.length>8) simpleDateFormat.parse(it)
+            else Date()
         } ?: Date()
         val grow = growRepo.findByIdOrNull(growId)!!
 
@@ -278,17 +276,8 @@ class GrowKontroller(
 
     }
 
-    @GetMapping("/{growId}/waters")
-    fun getGrowWateringHistoryList(@PathVariable("growId") growId: Long,
-                                @RequestParam startDate:String,
-                                @RequestParam endDate:String): MutableSet<WateringHistory> {
-        val grow = growRepo.findByIdOrNull(growId)!!
 
-        return grow.wateringHistory
-
-    }
-
-    @GetMapping("/{growId}/waters")
+    @GetMapping("/{growId}/watering_history")
     fun getGrowWateringHistoryPage(@PathVariable("growId") growId:Long, model: Model):String{
         model["grow"] = growRepo.findByIdOrNull(growId)!!
 

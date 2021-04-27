@@ -27,8 +27,24 @@ class WateringHistory(
         var pH: Double? = 7.0,
         var createDate: Date = Date(),
 
-        )
+        ){
+        fun title():String{
+                return "Watering"
+        }
+}
+
+/**
+ * We use this class to get a nice calendar view using fullcaledar.js at the time of writing
+ */
+data class WateringHistoryEvent(
+        val id:Long,
+        val start:Date,
+        val title:String,
+
+)
 
 interface WateringHistoryRepo: JpaRepository<WateringHistory, Long>{
-        fun findAllByGrowOrderByCreateDateDesc(grow: Grow?)
+        fun findAllByGrowOrderByCreateDateDesc(grow: Grow):List<WateringHistory>
+        fun findAllByGrowAndWateringDateBetween(grow:Grow, start:Date, end:Date):List<WateringHistory>
 }
+
