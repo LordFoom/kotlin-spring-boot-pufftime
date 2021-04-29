@@ -54,6 +54,10 @@ class Plant(
                 return startDate?.let { simpleDateFormat.format(it)  } ?: ""
         }
 
+        fun getMostRecentPicture():Picture?{
+                return pictures?.last()
+        }
+
 
         companion object{
                 fun fromDto(dto: PlantDto, strain: Strain)=Plant(

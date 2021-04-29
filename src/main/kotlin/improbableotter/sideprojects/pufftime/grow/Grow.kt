@@ -50,6 +50,17 @@ class Grow(
         return dateFormatter.format(createDate)
     }
 
+    /**
+     * Return list of pictures that aren't plant specific
+     */
+    fun getAllGrowPics():List<Picture>{
+       return pictures.filter { it.plant == null }
+    }
+
+    fun getMostRecentPicture():Picture{
+        return getAllGrowPics().last()
+    }
+
     companion object {
         fun fromDto(dto: GrowDto): Grow = Grow(
             dto.id,

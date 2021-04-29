@@ -90,6 +90,9 @@
                 <span id="harvestDate" class="form-control" th:text="${#dates.format(grow.harvestDate, 'yyyy-MM-dd')}"></span>
             </div>
 
+            <br/>
+            <img th:unless="${#lists.isEmpty(grow.allGrowPics)}" th:src="@{${grow.mostRecentPicture?.filePath}}" style="widows: 160px; height: 160px">
+            <br/>
 
             <br>
             <div class="row">
@@ -165,7 +168,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!--/*@thymesVar id="growLights" type="java.util.List<GrowLight>"*/-->
+                <!--/*@thymesVar id="growLight" type="java.util.List<GrowLight>"*/-->
                 <tr th:each="growLight :${growLights}">
                     <td th:text="${growLight.light.name}"></td>
                     <td th:text="${growLight.light.brand}"></td>
@@ -204,7 +207,7 @@
                     <td th:text="${#dates.format(plant.harvestDate, 'yyyy-MM-dd')}"></td>
                     <td th:text="${#dates.format(plant.cureDate, 'yyyy-MM-dd')}"></td>
                     <td>
-                        <img th:unless="${#lists.isEmpty(plant.pictures)}" th:src="@{${plant?.pictures[0]?.filePath}}" style="widows: 80px; height: 80px">
+                        <img th:unless="${#lists.isEmpty(plant.pictures)}" th:src="@{${plant?.mostRecentPicture?.filePath}}" style="widows: 80px; height: 80px">
                     </td>
                     <td><a data-toggle="modal" data-target="#waterHistoryModal" th:data-water-plant-id="${plant.id}" href="" >Water Plant</a></td>
                     <td><a data-toggle="modal" data-target="#picUploadModal" th:data-plant-id="${plant.id}" href="" >Add pic</a></td>

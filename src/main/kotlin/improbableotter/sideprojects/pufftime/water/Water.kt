@@ -33,15 +33,7 @@ class WateringHistory(
         }
 }
 
-/**
- * We use this class to get a nice calendar view using fullcaledar.js at the time of writing
- */
-data class WateringHistoryEvent(
-        val id:Long,
-        val start:Date,
-        val title:String,
 
-)
 
 interface WateringHistoryRepo: JpaRepository<WateringHistory, Long>{
         fun findAllByGrowOrderByCreateDateDesc(grow: Grow):List<WateringHistory>
