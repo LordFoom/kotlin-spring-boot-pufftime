@@ -11,6 +11,7 @@ import improbableotter.sideprojects.pufftime.lights.GrowLightService
 import improbableotter.sideprojects.pufftime.lights.LightRepository
 import improbableotter.sideprojects.pufftime.note.Note
 import improbableotter.sideprojects.pufftime.note.NoteRepository
+import improbableotter.sideprojects.pufftime.nute.Nute
 import improbableotter.sideprojects.pufftime.picture.Picture
 import improbableotter.sideprojects.pufftime.picture.PictureRepository
 import improbableotter.sideprojects.pufftime.plant.PlantDto
@@ -19,6 +20,7 @@ import improbableotter.sideprojects.pufftime.plant.PlantService
 import improbableotter.sideprojects.pufftime.storage.StorageService
 import improbableotter.sideprojects.pufftime.strain.StrainRepository
 import improbableotter.sideprojects.pufftime.user.UserRepository
+import improbableotter.sideprojects.pufftime.water.NuteStatus
 import improbableotter.sideprojects.pufftime.water.WateringHistory
 import improbableotter.sideprojects.pufftime.water.WateringHistoryRepo
 import org.springframework.data.repository.findByIdOrNull
@@ -167,7 +169,7 @@ class GrowKontroller(
         model["grow"] = growRepo.findByIdOrNull(growId)!!
         model["plant"] = plantRepo.findByIdOrNull(plantId)!!
 
-        return "plants/view_plant"
+        return "plants/view_plant_pics"
 //        return "grows/view_grow"
     }
 
@@ -181,7 +183,7 @@ class GrowKontroller(
 
     @PostMapping("/{growId}/pics")
     fun uploadPic(
-        @PathVariable growId: Long, @RequestParam("plantId", required = false) plantId: Long,
+        @PathVariable growId: Long, @RequestParam("plantId", required = false) plantId: Long?,
         @RequestParam("file") file: MultipartFile, @RequestParam("notes") notes: String?,
         attributes: RedirectAttributes
     ): String {
@@ -193,7 +195,7 @@ class GrowKontroller(
         val picFilePath = storageService.store(file)
         attributes.addFlashAttribute("message", "Sucessfully uploaded pic!")
         //could be a pic for either the entire grow or just a plant
-        val plant = plantRepo.findByIdOrNull(plantId)
+        val plant = plantId?.let{plantRepo.findByIdOrNull(plantId)}
         //but we have to have a grow
         val grow = growRepo.findByIdOrNull(growId) ?: throw IllegalStateException("No grow found for id $growId")
         val pic = Picture(filePath = picFilePath, plant = plant, grow = grow, notes = notes)
@@ -258,9 +260,26 @@ class GrowKontroller(
         model["plants"] = grow.plants
         return "water/water_grow"
     }
+
+
+    /**
+     * If we want to select the plant in the drop list this is the one we select
+     */
+    @GetMapping("/{growId}/water/{plantId}")
+    fun getWateringFormWithPlant(@PathVariable("growId") growId:Long,
+                        @PathVariable("plantId") plantId:Long,
+                        model: Model):String{
+        val grow = growRepo.findByIdOrNull(growId)!!
+        plantRepo.findByIdOrNull(plantId)?.let { model["plant"] = it }
+        model["grow"] = grow
+        model["plants"] = grow.plants
+
+        return "water/water_grow"
+    }
     @PostMapping("/{growId}/water")
     fun waterPlants(@PathVariable("growId") growId: Long,
                    @RequestParam(required = false) strWateringDate:String?,
+                    @RequestParam(required = false) hasNutes:Boolean?,
                    @RequestParam(required = false) notes: String?):String {
 
         val wateringDate = strWateringDate?.let {
@@ -269,8 +288,12 @@ class GrowKontroller(
         } ?: Date()
         val grow = growRepo.findByIdOrNull(growId)!!
 
+        val nuteStatus = hasNutes?.let{if(hasNutes) NuteStatus.NUTES else NuteStatus.NONE}?:NuteStatus.NONE
         //TODO get the feed in here
-        wateringHistoryRepo.save(WateringHistory(wateringDate = wateringDate, grow = grow, notes = notes))
+        wateringHistoryRepo.save(WateringHistory(wateringDate = wateringDate,
+            grow = grow,
+            notes = notes,
+            nutes = nuteStatus))
 
         return "redirect:/grows/${growId}?watering_success"
 

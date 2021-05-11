@@ -35,10 +35,11 @@ dependencies {
     implementation ( "org.webjars:webjars-locator:0.40" )
     implementation ("org.webjars:font-awesome:5.11.2")
     implementation ("org.webjars:bootstrap-datepicker:1.9.0")
-
     implementation ( "org.webjars:fullcalendar:5.6.0" )
+    implementation ( "org.webjars.npm:lightbox2:2.11.1" )
+
 // https://mvnrepository.com/artifact/org.webjars.npm/moment
-    implementation (group= "org.webjars.npm", name= "moment", version= "2.29.1")
+//    implementation (group= "org.webjars.npm", name= "moment", version= "2.29.1")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("mysql:mysql-connector-java")

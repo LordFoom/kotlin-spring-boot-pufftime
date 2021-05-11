@@ -56,7 +56,11 @@
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
-            events: "/wateringhistory/[[${grow.id}]]"
+            eventTimeFormat: {
+                meridiem: false
+            },
+            events: "/wateringhistory/[[${grow.id}]]",
+
         });
         calendar.render();
     });

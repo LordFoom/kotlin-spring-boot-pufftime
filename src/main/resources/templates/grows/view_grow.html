@@ -5,6 +5,9 @@
     <title >View Grow</title>
 </head>
 <body>
+
+<link th:rel="stylesheet" th:href="@{/webjars/lightbox2/src/css/lightbox.css}"/>
+
 <div th:replace="fragments/header :: header">&nbsp;</div>
 <div class="container">
     <div class="row">
@@ -91,7 +94,10 @@
             </div>
 
             <br/>
-            <img th:unless="${#lists.isEmpty(grow.allGrowPics)}" th:src="@{${grow.mostRecentPicture?.filePath}}" style="widows: 160px; height: 160px">
+            <a th:unless="${#lists.isEmpty(grow.allGrowPics)}" th:href="@{${grow.mostRecentPicture?.filePath}}" data-lightbox="grow-image">
+                <img th:unless="${#lists.isEmpty(grow.allGrowPics)}"
+                     th:src="@{${grow.mostRecentPicture?.filePath}}" style="widows: 160px; height: 160px">
+            </a>
             <br/>
 
             <br>
@@ -206,13 +212,18 @@
                     <td th:text="${#dates.format(plant.flowerDate, 'yyyy-MM-dd')}"></td>
                     <td th:text="${#dates.format(plant.harvestDate, 'yyyy-MM-dd')}"></td>
                     <td th:text="${#dates.format(plant.cureDate, 'yyyy-MM-dd')}"></td>
+
                     <td>
-                        <img th:unless="${#lists.isEmpty(plant.pictures)}" th:src="@{${plant?.mostRecentPicture?.filePath}}" style="widows: 80px; height: 80px">
+                        <a th:unless="${#lists.isEmpty(plant.pictures)}"
+                           th:href="@{${plant?.mostRecentPicture?.filePath}}" data-lightbox="plant-image">
+                            <img th:unless="${#lists.isEmpty(plant.pictures)}"
+                                 th:src="@{${plant?.mostRecentPicture?.filePath}}" style="widows: 80px; height: 80px">
+                        </a>
                     </td>
-                    <td><a data-toggle="modal" data-target="#waterHistoryModal" th:data-water-plant-id="${plant.id}" href="" >Water Plant</a></td>
+                    <td><a th:href="@{/grows/{growId}/water/{plantId}(growId=${grow.id}, plantId=${plant.id})}">Water Plant</a></td>
                     <td><a data-toggle="modal" data-target="#picUploadModal" th:data-plant-id="${plant.id}" href="" >Add pic</a></td>
+                    <td><a th:href="@{/grows/{id}/plants/{plantId}/pics(id=${grow.id}, plantId=${plant.id})}">Pics</a></td>
                     <td><a data-toggle="modal" data-target="#noteUploadModal" th:data-note-plant-id="${plant.id}" href="" >Add note</a></td>
-                    <td><a th:href="@{/grows/{id}/plants/{plantId}(id=${grow.id}, plantId=${plant.id})}">Deets</a></td>
                     <td><a th:href="@{/grows/{id}/plants/{plantId}/delete(id=${grow.id}, plantId=${plant.id})}">Delete</a></td>
 
                 </tr>
@@ -243,13 +254,28 @@
                             <option th:each="plant_sel : ${ plants}" th:value="${plant_sel.id}" th:text="${plant_sel.displayName}"></option>
                         </select>
                     </div>
+
+
+
                     <div class="row border-dark">
                         <label for="file" class="control-label">File</label>
                         <input type="file" id="file" name="file" class="form-control-file"/>
                     </div>
-                    <div class="row border-dark">
-                        <label for="notes" class="control-label">Notes</label>
-                        <textarea id="notes" name="notes" class="form-control" ></textarea>
+
+                <div class="form-group row">
+                    <label for="picDate" title="Defaults to now">Pic date</label>
+                    <div class="input-group date" data-provider="datepicker">
+                        <input id="picDate" name="picDate" class="form-control small-width" />
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row border-dark">
+                            <label for="notes" class="control-label">Notes</label>
+                            <textarea id="notes" name="notes" class="form-control" ></textarea>
                     </div>
             </div>
             <div class="modal-footer">
@@ -275,7 +301,10 @@
                     <div>
                         <select id="notePlantId" name="notePlantId">
                             <option value="0">Grow Note</option>
-                            <option th:each="plant_sel : ${ plants}" th:value="${plant_sel.id}" th:text="${plant_sel.displayName}"></option>
+                            <option th:each="plant_sel : ${ plants}"
+                                    th:value="${plant_sel.id}"
+                                    th:text="${plant_sel.displayName}"
+                                    ></option>
                         </select>
                     </div>
                     <div class="row border-dark">
@@ -362,6 +391,7 @@
 
 </script>
 
+<script th:src="@{/webjars/lightbox2/src/js/lightbox.js}"></script>
 <div th:replace="fragments/footer::footer"></div>
 </body>
 </html>

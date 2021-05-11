@@ -15,8 +15,12 @@
                     <div class=" form-group row">
                         <select id="waterPlantId" name="waterPlantId">
                             <option value="0">Water Entire Grow</option>
-                            <option th:each="plant_sel : ${ plants}" th:value="${plant_sel.id}"
-                                    th:text="${plant_sel.displayName}"></option>
+                            <option th:each="plant_sel : ${ plants}"
+                                    th:value="${plant_sel.id}"
+                                    th:text="${plant_sel.displayName}"
+                                    th:selected="${plant_sel.id == plant?.id}"
+                            >
+                            </option>
                         </select>
                     </div>
                     <!--                    <div class="row border-dark">-->
@@ -29,15 +33,21 @@
                         <label for="amount" title="Liter is what I had in mind">Amount in liter</label>
                         <input id="amount" name="amount" class="form-control small-width" type="number" min="0"/>
                     </div>
+
                     <div class="form-group row">
-                    <label for="strWateringDate" title="Defaults to now">Watering date</label>
-                    <div class="input-group date" data-provider="datepicker">
-                        <input id="strWateringDate" name="strWateringDate" class="form-control small-width" />
-                        <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-th"></span>
+                        <label for="hasNutes" title="">Contains nutes?</label>
+                        <input type="checkbox" id="hasNutes" name="hasNutes" />
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="strWateringDate" title="Defaults to now">Watering date</label>
+                        <div class="input-group date" data-provider="datepicker">
+                            <input id="strWateringDate" name="strWateringDate" class="form-control small-width" />
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
                 <div class="row border-dark">
                     <label for="wateringNotes" class="control-label">Notes</label>
                     <textarea id="wateringNotes" name="notes" class="form-control" ></textarea>

@@ -26,11 +26,16 @@ class WateringHistory(
         var notes: String? = null,
         var pH: Double? = 7.0,
         var createDate: Date = Date(),
+        var nutes: NuteStatus = NuteStatus.NONE,
 
         ){
         fun title():String{
                 return "Watering"
         }
+}
+
+enum class NuteStatus{
+        NONE, NUTES
 }
 
 
