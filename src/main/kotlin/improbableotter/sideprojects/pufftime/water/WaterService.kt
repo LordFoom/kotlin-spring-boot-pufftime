@@ -18,14 +18,14 @@ class WaterService(private val growRepository: GrowRepository, private val water
         val historyOfWater =
             wateringHistoryRepo.findAllByGrowAndWateringDateBetween(grow, start, end)
         return historyOfWater.map {
-            Event(id = it.id!!, start = it.wateringDate ?: Date(), title = it.title())
+            Event(id = it.id!!, start = it.getAppropriateDate(), title = it.title())
         }
     }
 
     fun findGrowWateringHistory(growId: Long): List<Event> {
         return growRepository.findByIdOrNull(growId)!!
             .wateringHistory
-            .map { Event(id = it.id!!, start = it.wateringDate!!, title = it.title()) }
+            .map { Event(id = it.id!!, start = it.getAppropriateDate(), title = it.title()) }
     }
 
 //    fun findWateringHistoryBefore(growId: Long, end:Date):List<WateringHistoryEvent>{

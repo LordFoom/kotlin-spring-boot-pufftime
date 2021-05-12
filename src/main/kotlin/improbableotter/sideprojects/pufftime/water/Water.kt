@@ -3,6 +3,7 @@ package improbableotter.sideprojects.pufftime.water
 import improbableotter.sideprojects.pufftime.nute.Feed
 import improbableotter.sideprojects.pufftime.grow.Grow
 import org.springframework.data.jpa.repository.JpaRepository
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.persistence.*
 
@@ -30,7 +31,22 @@ class WateringHistory(
 
         ){
         fun title():String{
-                return "Watering"
+                return "Watered"
+        }
+
+        @Transient
+        val nuteDateFmt = SimpleDateFormat("yyyy-MM-dd")
+        @Transient
+        val nonNoteDateFmt = SimpleDateFormat("yyyy-MM-dd'T12:00'")
+        /**
+         * This will make nute waterings stand out from non-nute waterings
+         */
+        fun getAppropriateDate():String{
+            if(nutes == NuteStatus.NUTES)
+                    return nuteDateFmt.format(wateringDate?:createDate)
+
+            return nonNoteDateFmt.format(wateringDate?:createDate)
+
         }
 }
 

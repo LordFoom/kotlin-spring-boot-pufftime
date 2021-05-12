@@ -57,7 +57,10 @@
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             eventTimeFormat: {
-                meridiem: false
+                // month: '0-digit',
+                // year: '0-digit',
+                // day: '0-digit',
+                // meridiem: false
             },
             events: "/wateringhistory/[[${grow.id}]]",
 

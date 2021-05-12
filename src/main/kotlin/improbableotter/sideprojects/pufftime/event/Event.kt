@@ -7,7 +7,7 @@ import java.util.*
  */
 data class Event(
         val id:Long,
-        val start: Date,
+        val start: String,
         val title:String,
 
         )
