@@ -31,7 +31,7 @@ class WateringHistory(
 
         ){
         fun title():String{
-                return "Watered"
+                return "Watered ${literAmount}"
         }
 
         @Transient
