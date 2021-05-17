@@ -57,6 +57,11 @@ class GrowKontroller(
     val growLighRepo: GrowLightRepository,
 ) {
 
+    @ModelAttribute("module")
+    fun module():String{
+        return "grow"
+    }
+
     @GetMapping("")
     fun viewAllGrows(model: Model, principal: Principal): String {
         val user = userRepo.findByUsername(principal.name)!!
