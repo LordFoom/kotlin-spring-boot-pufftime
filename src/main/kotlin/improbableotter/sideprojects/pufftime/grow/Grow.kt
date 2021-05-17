@@ -40,7 +40,7 @@ class Grow(
     var startDate: Date? = null,
     var flowerDate: Date? = null,
     var harvestDate: Date? = null,
-    var type: GrowType = GrowType.INDOOR//a default that suits me, don'cha know
+    var type: GrowType = GrowType.INDOOR,//a default that suits me, don'cha know
 ) {
 
     @Transient
@@ -97,6 +97,25 @@ class Grow(
             harvestDate = harvestDate,
             flowerDate = flowerDate
         )
+    }
+
+    fun getDisplayStartDate(): String {
+        return displayDate(startDate)
+    }
+
+    fun getDisplayFloweringDate(): String {
+        return displayDate(startDate)
+    }
+
+    fun getDisplayHarvestDate(): String {
+        return displayDate(harvestDate)
+    }
+
+    /**
+     * Will do yyyy-MM-dd for date, or "unknown" if null
+     */
+    fun displayDate(dateToDisplay: Date?): String{
+        return dateToDisplay?.let{ dateFormatter.format(it)}?: "unknown"
     }
 }
 
