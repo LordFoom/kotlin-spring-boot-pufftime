@@ -36,6 +36,7 @@ class WateringHistory(
 
         @Transient
         val nuteDateFmt = SimpleDateFormat("yyyy-MM-dd")
+
         @Transient
         val nonNoteDateFmt = SimpleDateFormat("yyyy-MM-dd'T12:00'")
         /**
@@ -57,7 +58,9 @@ enum class NuteStatus{
 
 
 interface WateringHistoryRepo: JpaRepository<WateringHistory, Long>{
-        fun findAllByGrowOrderByCreateDateDesc(grow: Grow):List<WateringHistory>
-        fun findAllByGrowAndWateringDateBetween(grow:Grow, start:Date, end:Date):List<WateringHistory>
+        fun findByGrowOrderByWateringDateDesc(grow: Grow):List<WateringHistory>
+        fun findByGrowAndWateringDateBetween(grow:Grow, start:Date, end:Date):List<WateringHistory>
+        fun findAllByGrowAndWateringDateGreaterThan(grow:Grow, start:Date):List<WateringHistory>
+        fun findByGrowAndWateringDateLessThan(grow:Grow, end:Date):List<WateringHistory>
 }
 
