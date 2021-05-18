@@ -17,6 +17,11 @@ import javax.validation.Valid
 class StrainKontroller(val strainRepo: StrainRepository,
                        val strainService: StrainService
                         ) {
+    @ModelAttribute("module")
+    fun module():String{
+        return "strain"
+    }
+
 
     @GetMapping
     fun viewStrains(model: Model): String {

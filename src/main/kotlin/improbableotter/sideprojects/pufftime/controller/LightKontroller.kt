@@ -21,6 +21,11 @@ class LightKontroller(
     val lightService: LightService
 ) {
 
+    @ModelAttribute("module")
+    fun module():String{
+        return "light"
+    }
+
     @GetMapping
     fun viewLights(model: Model, principal: Principal): String {
         val user = userRepo.findByUsername(principal.name)!!

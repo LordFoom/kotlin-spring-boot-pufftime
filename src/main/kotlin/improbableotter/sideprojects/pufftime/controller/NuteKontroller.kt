@@ -21,6 +21,11 @@ class NuteKontroller(
     val nuteService: NuteService
 ) {
 
+    @ModelAttribute("module")
+    fun module():String{
+        return "nute"
+    }
+
     @GetMapping
     fun viewNutes(model: Model, principal: Principal): String {
         val user = userRepo.findByUsername(principal.name)!!
