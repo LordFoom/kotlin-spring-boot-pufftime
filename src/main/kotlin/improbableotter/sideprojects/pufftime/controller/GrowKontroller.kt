@@ -285,7 +285,7 @@ class GrowKontroller(
     fun waterPlants(@PathVariable("growId") growId: Long,
                    @RequestParam(required = false) strWateringDate:String?,
                     @RequestParam(required = false) hasNutes:Boolean?,
-                    @RequestParam(required = false) literAmount:Double?,
+                    @RequestParam(required = false) amount:Double?,
                    @RequestParam(required = false) notes: String?):String {
 
         val wateringDate = strWateringDate?.let {
@@ -297,7 +297,7 @@ class GrowKontroller(
         val nuteStatus = hasNutes?.let{if(hasNutes) NuteStatus.NUTES else NuteStatus.NONE}?:NuteStatus.NONE
         //TODO get the feed in here
         wateringHistoryRepo.save(WateringHistory(wateringDate = wateringDate,
-            literAmount = literAmount?:0.0,
+            literAmount = amount?:0.0,
             grow = grow,
             notes = notes,
             nutes = nuteStatus))
