@@ -191,11 +191,8 @@
                 <thead>
                 <tr>
                     <th>Strain</th>
-                    <th>Start Date</th>
-                    <th>Flower Date</th>
-                    <th>Harvest Date</th>
-                    <th>Cure Date</th>
                     <th>Most recent pic</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -204,14 +201,10 @@
                 </thead>
                 <tbody>
 <!--                TODO Paginate this-->
-                <tr th:each="plant : ${plants}">
                     <!--/*@thymesVar id="plant" type="improbableotter.sideprojects.pufftime.plant.Plant"*/-->
+                    <tr th:each="plant : ${plants}">
                     <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.Strain"*/-->
                     <td th:text="${plant.strain.name}"></td>
-                    <td th:text="${#dates.format(plant.startDate, 'yyyy-MM-dd')}"></td>
-                    <td th:text="${#dates.format(plant.flowerDate, 'yyyy-MM-dd')}"></td>
-                    <td th:text="${#dates.format(plant.harvestDate, 'yyyy-MM-dd')}"></td>
-                    <td th:text="${#dates.format(plant.cureDate, 'yyyy-MM-dd')}"></td>
 
                     <td>
                         <a th:unless="${#lists.isEmpty(plant.pictures)}"
@@ -224,7 +217,8 @@
                     <td><a data-toggle="modal" data-target="#picUploadModal" th:data-plant-id="${plant.id}" href="" >Add pic</a></td>
                     <td><a th:href="@{/grows/{id}/plants/{plantId}/pics(id=${grow.id}, plantId=${plant.id})}">Pics</a></td>
                     <td><a data-toggle="modal" data-target="#noteUploadModal" th:data-note-plant-id="${plant.id}" href="" >Add note</a></td>
-                    <td><a th:href="@{/grows/{id}/plants/{plantId}/delete(id=${grow.id}, plantId=${plant.id})}">Delete</a></td>
+                    <td><a th:href="@{/plants/{plantId}(id=${grow.id}, plantId=${plant.id})}">Details</a></td>
+                    <td><a th:href="@{/grows/{id}/plants/{plantId}/delete(id=${grow.id}, plantId=${plant.id})}" onclick="return confirm('Really delete?');">Delete</a></td>
 
                 </tr>
                 </tbody>
