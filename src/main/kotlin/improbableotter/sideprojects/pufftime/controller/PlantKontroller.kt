@@ -31,4 +31,10 @@ class PlantKontroller(val userRepo: UserRepository,
         model["header"] = "Plants for Grow: ${grow.id}, started: ${grow.getDisplayCreateDate()}"
         return "plants/view_plants"
     }
+
+    @GetMapping("{id}")
+    fun viewPlant(model: Model, @PathVariable("id") id:Long):String{
+        model["plant"] = plantRepo.findByIdOrNull(id)!!
+        return "plants/view_plant"
+    }
 }
