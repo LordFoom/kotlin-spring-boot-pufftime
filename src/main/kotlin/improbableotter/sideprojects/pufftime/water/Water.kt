@@ -31,7 +31,11 @@ class WateringHistory(
 
         ){
         fun title():String{
-                return "Watered ${literAmount}"
+                var strNute = ""
+                if(nutes == NuteStatus.NUTES)
+                        strNute = " with nutes "
+
+                return  "Watered ${literAmount} ${strNute}"
         }
 
         @Transient

@@ -32,14 +32,13 @@ class EventService(val growRepository: GrowRepository, val wateringHistoryRepo: 
 
         val allEvents = mutableListOf<Event>()
         allEvents.addAll(events)
-        allEvents.add(Event(id="start"+grow.id, start = grow.getDisplayStartDate(), title = "Switched to Flower",  ))
         //add the date grow started
-        events +
+        allEvents.add(Event(id="start"+grow.id, start = grow.getDisplayStartDate(), title = "Switched to Flower",  ))
         //add the date grow flipped to flower
         events + Event(id="flower"+grow.id, start = grow.getDisplayFloweringDate(), title = "Switched to Flower",  )
         //add the date we harvested
         grow.harvestDate?.let {
-            events + Event(id = "harvest" + grow.id, start = grow.getDisplayFloweringDate(), title = "Switched to Flower",)
+            events + Event(id = "harvest" + grow.id, start = grow.getDisplayHarvestDate(), title = "Harvested",)
         }
 
 
