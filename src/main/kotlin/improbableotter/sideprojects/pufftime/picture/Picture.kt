@@ -17,6 +17,7 @@ class Picture(
     @ManyToOne
     val grow: Grow?,
     val filePath: String? = null,
+    val smallFilePath: String? = null,
     val notes: String? = null,
     @NotNull
     val createDate: Date = Date(),

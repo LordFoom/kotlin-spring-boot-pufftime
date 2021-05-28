@@ -37,7 +37,7 @@ dependencies {
     implementation ("org.webjars:bootstrap-datepicker:1.9.0")
     implementation ( "org.webjars:fullcalendar:5.6.0" )
     implementation ( "org.webjars.npm:lightbox2:2.11.1" )
-
+//    implementation("net.coobird:thumbnailator:0.4.14" )
 // https://mvnrepository.com/artifact/org.webjars.npm/moment
 //    implementation (group= "org.webjars.npm", name= "moment", version= "2.29.1")
 

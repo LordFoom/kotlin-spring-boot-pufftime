@@ -96,7 +96,7 @@
             <br/>
             <a th:unless="${#lists.isEmpty(grow.allGrowPics)}" th:href="@{${grow.mostRecentPicture?.filePath}}" data-lightbox="grow-image">
                 <img th:unless="${#lists.isEmpty(grow.allGrowPics)}"
-                     th:src="@{${grow.mostRecentPicture?.filePath}}" style="widows: 160px; height: 160px">
+                     th:src="@{${grow.mostRecentPicture?.smallFilePath}}" style="widows: 160px; height: 160px">
             </a>
             <br/>
 
@@ -210,7 +210,7 @@
                         <a th:unless="${#lists.isEmpty(plant.pictures)}"
                            th:href="@{${plant?.mostRecentPicture?.filePath}}" data-lightbox="plant-image">
                             <img th:unless="${#lists.isEmpty(plant.pictures)}"
-                                 th:src="@{${plant?.mostRecentPicture?.filePath}}" style="widows: 80px; height: 80px">
+                                 th:src="@{${plant?.mostRecentPicture?.smallFilePath}}" style="widows: 80px; height: 80px">
                         </a>
                     </td>
                     <td><a th:href="@{/grows/{growId}/water/{plantId}(growId=${grow.id}, plantId=${plant.id})}">Water Plant</a></td>
@@ -315,57 +315,6 @@
     </div>
 </div>
 
-<!--<div class="modal fade in" id="waterHistoryModal" tabindex="-1"  role="form">-->
-<!--    <div class="modal-dialog">-->
-<!--        <div class="modal-content">-->
-<!--            <form action="#" th:action="@{/grows/{growId}/watering(growId=${grow.id})}"-->
-<!--                  method="post" >-->
-<!--                <div class="modal-header">-->
-<!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                        <span aria-hidden="true">×</span></button>-->
-<!--                    <h5 class="modal-title">Water!</h5>-->
-<!--                </div>-->
-<!--                <div class="modal-body">-->
-<!--                    <div class=" form-group row">-->
-<!--                        <select id="waterPlantId" name="waterPlantId">-->
-<!--                            <option value="0">Water Entire Grow</option>-->
-<!--                            <option th:each="plant_sel : ${ plants}" th:value="${plant_sel.id}" th:text="${plant_sel.displayName}"></option>-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!--&lt;!&ndash;                    <div class="row border-dark">&ndash;&gt;-->
-<!--&lt;!&ndash;                        <label for="" class="control-label">Notes</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <textarea id="notes" name="notes" class="form-control" ></textarea>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;                    here we put the pH&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    here we put feed option? how that going to work...? &ndash;&gt;-->
-<!--                    <div class="form-group row">-->
-<!--                        <label for="amount" title="Liter is what I had in mind">Amount in liter</label>-->
-<!--                            <input id="amount" name="amount" class="form-control small-width" type="number" min="0"/>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="form-group row">-->
-<!--                        <label for="strWateringDate" title="Defaults to now">Watering date</label>-->
-<!--                        <div class="input-group date" data-provider="datepicker">-->
-<!--                            <input id="strWateringDate" name="strWateringDate" class="form-control small-width" />-->
-<!--                            <div class="input-group-addon">-->
-<!--                                <span class="glyphicon glyphicon-th"></span>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="row border-dark">-->
-<!--                        <label for="wateringNotes" class="control-label">Notes</label>-->
-<!--                        <textarea id="wateringNotes" name="notes" class="form-control" ></textarea>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="modal-footer">-->
-<!--                    <input type="submit" class="btn btn-outline-primary pull-left" value="Save"/>-->
-<!--                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>-->
-<!--                </div>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 <script>
     $('.input-group.date').datepicker({
         autoclose: true,

@@ -11,7 +11,6 @@ import improbableotter.sideprojects.pufftime.lights.GrowLightService
 import improbableotter.sideprojects.pufftime.lights.LightRepository
 import improbableotter.sideprojects.pufftime.note.Note
 import improbableotter.sideprojects.pufftime.note.NoteRepository
-import improbableotter.sideprojects.pufftime.nute.Nute
 import improbableotter.sideprojects.pufftime.picture.Picture
 import improbableotter.sideprojects.pufftime.picture.PictureRepository
 import improbableotter.sideprojects.pufftime.plant.PlantDto
@@ -197,13 +196,13 @@ class GrowKontroller(
             return "redirect:/grows/${growId}"
         }
 
-        val picFilePath = storageService.store(file)
+        val picFilePaths = storageService.store(file)
         attributes.addFlashAttribute("message", "Sucessfully uploaded pic!")
         //could be a pic for either the entire grow or just a plant
         val plant = plantId?.let{plantRepo.findByIdOrNull(plantId)}
         //but we have to have a grow
         val grow = growRepo.findByIdOrNull(growId) ?: throw IllegalStateException("No grow found for id $growId")
-        val pic = Picture(filePath = picFilePath, plant = plant, grow = grow, notes = notes)
+        val pic = Picture(filePath = picFilePaths.first, smallFilePath = picFilePaths.second, plant = plant, grow = grow, notes = notes)
         val savedPic = plantPicRepo.save(pic)
         attributes["pic"] = savedPic;
         return "redirect:/grows/${growId}?pic_success"
