@@ -34,7 +34,7 @@
 
             <div th:if="${param.pic_success}">
                 <div class="alert alert-info">Successfully added pic!</div>
-            </div>            <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.GrowDto"*/-->
+            </div>
 
             <div th:if="${param.note_success}">
                 <div class="alert alert-info">Successfully added note!</div>
@@ -66,7 +66,7 @@
                     Grow is already harvested
                 </div>
             </div>
-
+            <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.GrowDto"*/-->
             <h1>Grow: "<span th:text="${grow.name}"></span>"</h1>
                 <div class="border-dark row">
                     <label for="name" class="control-label ">Name</label><br/>
