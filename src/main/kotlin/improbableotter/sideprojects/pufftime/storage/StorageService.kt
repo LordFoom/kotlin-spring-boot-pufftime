@@ -31,7 +31,7 @@ class StorageService {
             val path = Paths.get("$dirPath/$fileName")
             Files.copy(file.inputStream, path, StandardCopyOption.REPLACE_EXISTING)
             val filePath = path.toString().removePrefix(".")
-            val thumbnailPath = storeThumbNail(path)
+            val thumbnailPath = storeThumbNail(path).removePrefix(".")
             return Pair(filePath, thumbnailPath)
         } catch (ioe: IOException) {
             ioe.printStackTrace()
@@ -68,8 +68,8 @@ class StorageService {
         g2d.drawImage(image, 0, 0, dWidth, dHeight, null)
         //write it to the filesystem
 
-        val newFileName = originalImgFile.nameWithoutExtension + "_thumb." + originalImgFile.extension
-        val newFilePath = originalImgFile.parentFile.path + "/" + newFileName
+        val newFileName = "${originalImgFile.nameWithoutExtension}_thumb.${originalImgFile.extension}"
+        val newFilePath = "${originalImgFile.parentFile.path}/${newFileName}"
         ImageIO.write(scaledImg, originalImgFile.extension, File(newFilePath))
 
         //get the filename and return it
