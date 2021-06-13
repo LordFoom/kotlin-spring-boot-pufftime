@@ -43,10 +43,9 @@ class Grow(
     var type: GrowType = GrowType.INDOOR,//a default that suits me, don'cha know
 ) {
 
-    @Transient
-    val dateFormatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
     fun getDisplayCreateDate(): String {
+        val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
         return dateFormatter.format(createDate)
     }
 
@@ -115,8 +114,10 @@ class Grow(
      * Will do yyyy-MM-dd for date, or "unknown" if null
      */
     fun displayDate(dateToDisplay: Date?): String{
+        val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
         return dateToDisplay?.let{ dateFormatter.format(it)}?: "unknown"
     }
+
 }
 
 enum class GrowStatus {
