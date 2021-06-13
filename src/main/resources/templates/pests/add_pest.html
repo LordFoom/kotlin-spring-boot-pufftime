@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragments/header::head">
+    <title >Add Pest</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <div th:if="${param.success}">
+                <div class="alert alert-info">
+                    Pest successfully added! <span th:text="${pest.name}"></span>
+                </div>
+            </div>
+
+            <h1>Add Pest</h1>
+            <!--/*@thymesVar id="pesticide" type="improbableotter.sideprojects.pufftime.pesticide.PesticideDto"*/-->
+            <form th:action="@{/pest/add}" th:object="${pest}" method="post">
+
+                <p class="error-message"
+                   th:if="${#fields.hasGlobalErrors()}"
+                   th:each="error : ${#fields.errors('global')}"
+                   th:text="${error}">Validation error</p>
+
+                <div class="form-group row" th:classappend="${#fields.hasErrors('name')}? 'has-error':''">
+                    <label for="name" class="control-label">Name</label>
+                    <input id="name" class="form-control" th:field="*{name}"/>
+                    <p class="error-message" th:each="error: ${#fields.errors('name')}" th:text="${error}">Validation error</p>
+                </div>
+
+                <div class="form-group row" >
+                    <label for="description" class="control-label">Notes</label>
+                    <textarea id="description" class="form-control" th:field="*{notes}"></textarea>
+                    <span class="red" th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $('.input-group.date').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy-mm-dd'
+    });
+</script>
+<div th:replace="fragments/footer::footer"></div>
+</body>
+</html>

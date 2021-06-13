@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header::head">
-    <title>View Pesticides</title>
+    <title>View Pests</title>
 </head>
 <body>
 <div th:replace="fragments/header :: header">&nbsp;</div>
@@ -10,26 +10,24 @@
         <table class="table table-bordered tableMain">
             <thead>
             <tr>
-                <th>Pesticide</th>
-                <th>Brand</th>
-                <th>Created</th>
+                <th>Pest</th>
+                <th>Added</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.pesticide.Pesticide"*/-->
             <!--/*@thymesVar id="strains" type="java.util.List<Strain>"*/-->
-            <tr th:each="pesticide : ${pesticides}">
-                <td th:text="${pesticide.name}"></td>
-                <td th:text="${pesticide.brand}"></td>
-                <td th:text="${#dates.format(pesticide.createDate, 'yyyy-MM-dd')}"></td>
-                <td ><a th:href="@{/pesticides/{id}(id=${pesticide.id})}">View</a></td>
+            <tr th:each="pest : ${pest}">
+                <td th:text="${pest.name}"></td>
+                <td th:text="${#dates.format(pest.createDate, 'yyyy-MM-dd')}"></td>
+                <td ><a th:href="@{/pest/{id}(id=${strain.id})}">View</a></td>
             </tr>
             </tbody>
         </table>
     </div>
     <div class="row">
-        <a type="button" class="btn btn-outline-success" th:href="@{/pesticides/add}" >Add Pesticide</a>
+        <a type="button" class="btn btn-outline-success" th:href="@{/pest/add}" >Add Pest</a>
     </div>
 </div>
 

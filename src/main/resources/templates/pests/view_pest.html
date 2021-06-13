@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="fragments/header::head">
+    <title>Add Pesticide</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <div th:if="${param.success}">
+                <div class="alert alert-info">
+                    Pest successfully added! <span th:text="${pest.name}"></span>
+                </div>
+            </div>
+
+            <div th:if="${param.edit_success}">
+                <div class="alert alert-info">
+                    Pest successfully edited!
+                </div>
+            </div>
+
+            <h1>View Pest</h1>
+            <!--/*@thymesVar id="pesticide" type="improbableotter.sideprojects.pufftime.pesticide.Pesticide"*/-->
+
+            <p class="error-message"
+               th:if="${#fields.hasGlobalErrors()}"
+               th:each="error : ${#fields.errors('global')}"
+               th:text="${error}">Validation error</p>
+
+            <div class="form-group row border border-dark">
+                <div class="col-2 bg-light">
+                    <span class=" text-dark">Name: </span>
+                </div>
+                <div class="col-8 ">
+                    <span th:text="${pest.name}"></span>
+                </div>
+            </div>
+
+            <div class="form-group row border border-dark">
+                <div class="col-2 bg-light">
+                    <span class="control-label">Notes: </span><br/>
+                </div>
+                <div class="col-8">
+                    <span th:text="${pest.notes}"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <span><a th:href="@{/pest/{id}/edit(id=${pest.id})}">Edit</a></span>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer::footer"></div>
+</body>
+</html>

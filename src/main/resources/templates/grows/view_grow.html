@@ -226,7 +226,7 @@
 
             <div class="row">
                 <button type="button" class="btn btn-primary" th:href="@{/grows/{id}/edit(id=${grow.id})}" value="Edit">Edit</button>&nbsp;
-                <button type="button"  class="btn btn-primary" th:href="@{/grows/{id}/plants/add(id=${grow.id})}" value="Add Plant">Add Plant</button>
+                <button type="button"  class="btn btn-primary" value="Add Plant"><a class="btn btn-primary" th:href="@{/grows/{id}/plants/add(id=${grow.id})}">Add Plant</a></button>
             </div>
         </div>
     </div>
