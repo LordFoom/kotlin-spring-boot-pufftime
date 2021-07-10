@@ -2,6 +2,7 @@ package improbableotter.sideprojects.pufftime.strain
 
 import improbableotter.sideprojects.pufftime.common.Status
 import improbableotter.sideprojects.pufftime.plant.Plant
+import improbableotter.sideprojects.pufftime.strain.clone.Clone
 import improbableotter.sideprojects.pufftime.user.User
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
@@ -12,19 +13,21 @@ import javax.validation.constraints.NotNull
 @Entity
 @Table(name = "strain")
 data class Strain(
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long? = null,
-        @get:NotBlank
+    @get:NotBlank
         val name: String = "",
-        val description: String = "",
-        @ManyToOne
+    val description: String = "",
+    @ManyToOne
         @JoinColumn(name = "user_id")
         val createdBy: User,
-        @OneToMany(mappedBy = "strain", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "strain", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+        val clones: MutableList<Clone> = mutableListOf(),
+    @OneToMany(mappedBy = "strain", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
         val plants: MutableList<Plant> = mutableListOf(),
-        @get:NotNull
+    @get:NotNull
         val createDate: Date = Date(),
-        val statusId: Int = Status.ACTIVE.ordinal
+    val statusId: Int = Status.ACTIVE.ordinal
 ) {
 
     companion object {
@@ -49,6 +52,6 @@ data class StrainDto(
 
 interface StrainRepository: JpaRepository<Strain, Long> {
     fun findByName(name: String):Strain?
-    fun findByStatusIdEquals(statusId: Int):List<Strain>
+    fun findByStatusIdEqualsOrderByName(statusId: Int):List<Strain>
 }
 
