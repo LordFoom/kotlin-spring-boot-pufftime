@@ -32,6 +32,7 @@ class Grow(
     @OneToMany(mappedBy = "grow", cascade = [CascadeType.ALL])
     val plants: MutableSet<Plant> = mutableSetOf(),
     @OneToMany(mappedBy = "grow", cascade = [CascadeType.ALL])
+    @OrderBy("picDate DESC")
     val pictures: MutableList<Picture> = mutableListOf<Picture>(),
     @OneToMany(mappedBy = "grow", cascade = [CascadeType.ALL])
     val notes: MutableSet<Note> = mutableSetOf(),
@@ -57,7 +58,7 @@ class Grow(
     }
 
     fun getMostRecentPicture():Picture{
-        return getAllGrowPics().last()
+        return getAllGrowPics().first()//ordered by picDate desc
     }
 
     companion object {
