@@ -128,6 +128,7 @@
                     <a th:href="@{/grows/{id}/plants/add(id=${grow.id})}" class="btn btn-info">Add Plant</a>
                 </button>
                 &nbsp;
+                &nbsp;
                 <button type="button" class="btn btn-info">
                     <a data-toggle="modal" data-target="#picUploadModal"
                                                               data-plant-id="0" href="" class="btn btn-info">Add pic</a>
@@ -215,6 +216,7 @@
                     </td>
                     <td><a th:href="@{/grows/{growId}/water/{plantId}(growId=${grow.id}, plantId=${plant.id})}">Water Plant</a></td>
                     <td><a data-toggle="modal" data-target="#picUploadModal" th:data-plant-id="${plant.id}" href="" >Add pic</a></td>
+                    <td><a data-toggle="modal" data-target="#addClonesModal" th:data-plant-id="${plant.id}" href="" >Take Clones</a></td>
                     <td><a th:href="@{/grows/{id}/plants/{plantId}/pics(id=${grow.id}, plantId=${plant.id})}">Pics</a></td>
                     <td><a data-toggle="modal" data-target="#noteUploadModal" th:data-note-plant-id="${plant.id}" href="" >Add note</a></td>
                     <td><a th:href="@{/plants/{plantId}(id=${grow.id}, plantId=${plant.id})}">Details</a></td>
@@ -299,6 +301,40 @@
                                     th:value="${plant_sel.id}"
                                     th:text="${plant_sel.displayName}"
                                     ></option>
+                        </select>
+                    </div>
+                    <div class="row border-dark">
+                        <label for="notes" class="control-label">Notes</label>
+                        <textarea id="notes" name="notes" class="form-control" ></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-outline-primary pull-left" value="Save"/>
+                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="addClonesModal" tabindex="-1"  role="form">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="#" th:action="@{/grows/{growId}/clones(growId=${grow.id})}"
+                  method="post" >
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h5 class="modal-title">Clone creation</h5>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <select id="notePlantId" name="notePlantId">
+                            <option value="0">Grow Note</option>
+                            <option th:each="strain_sel : ${strains}"
+                                    th:value="${strain_sel.id}"
+                                    th:text="${strain_sel.name}"
+                            ></option>
                         </select>
                     </div>
                     <div class="row border-dark">
