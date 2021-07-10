@@ -32,7 +32,7 @@ class Grow(
     @OneToMany(mappedBy = "grow", cascade = [CascadeType.ALL])
     val plants: MutableSet<Plant> = mutableSetOf(),
     @OneToMany(mappedBy = "grow", cascade = [CascadeType.ALL])
-    val pictures: MutableSet<Picture> = mutableSetOf(),
+    val pictures: MutableList<Picture> = mutableListOf<Picture>(),
     @OneToMany(mappedBy = "grow", cascade = [CascadeType.ALL])
     val notes: MutableSet<Note> = mutableSetOf(),
     val createDate: Date = Date(),

@@ -55,7 +55,8 @@ class Plant(
         }
 
         fun getMostRecentPicture():Picture?{
-                return pictures?.last()
+//                return pictures?.last()
+                return pictures?.first()//it's ordered by DESC, so most recent first, doh
         }
 
 
