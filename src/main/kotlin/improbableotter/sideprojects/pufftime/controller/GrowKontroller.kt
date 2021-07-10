@@ -73,6 +73,7 @@ class GrowKontroller(
     fun viewGrow(@PathVariable growId: Long, model: Model): String {
         model["grow"] = growRepo.findByIdOrNull(growId)!!
         model["plants"] = plantRepo.findByGrowIdOrderByStrainDesc(growId)
+        model["strains"] = strainRepo.findByStatusIdEqualsOrderByName(Status.ACTIVE.ordinal)
         model["growLights"] = growLighRepo.findByGrowIdOrderByCreateDate(growId)
         model["title"] = "Grow Watching"
         noteRepo.findTopByGrowIdOrderByIdDesc(growId)?.let { model["note"] = it }
@@ -119,7 +120,7 @@ class GrowKontroller(
     fun getAddPlantToGrowForm(@PathVariable growId: Long, model: Model, principal: Principal): String {
         val user = userRepo.findByUsername(principal.name)!!
         model["grow"] = growRepo.findByIdOrNull(growId)!!
-        model["strains"] = strainRepo.findByStatusIdEquals(Status.ACTIVE.ordinal)
+        model["strains"] = strainRepo.findByStatusIdEqualsOrderByName(Status.ACTIVE.ordinal)
         model["plant"] = PlantDto(userId = user.id, growId = growId)
 
         return "plants/add_plant"
