@@ -6,6 +6,7 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header">&nbsp;</div>
+<link th:rel="stylesheet" th:href="@{/webjars/lightbox2/src/css/lightbox.css}"/>
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -29,52 +30,22 @@
             </div>
 
             <div class="border-dark row" th:each="pic: ${plant.pictures}">
-                <img th:src="${pic.filePath}" th:alt="${pic.createDate}" />
+                
+                <a th:href="@{${pic.filePath}}" data-lightbox="plant-image">
+                    <img th:src="@{${pic.smallFilePath}}" style="widows: 80px; height: 80px"  alt="" src="/"/>
+                </a>
+                <br/>
             </div>
+            
 
         </div>
     </div>
 </div>
 
-<div class="modal fade in" id="picUploadModal" tabindex="-1"  role="form">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span></button>
-                <h5 class="modal-title">Upload Pic</h5>
-            </div>
-            <div class="modal-body">
 
-                <form th:action="@{/grows/{growId}/plants/{plantId}/pics/upload(growId=${grow.id}, plantId=${plant.id})}"
-                      method="post" enctype="multipart/form-data">
-                    <div class="row border-dark">
-                        <label for="file" class="control-label">File</label>
-                        <input type="file" id="file" name="file" class="form-control-file">
-                    </div>
 
-                    <div class="row border-dark">
-                        <label for="notes" class="control-label">Notes</label>
-                        <textarea id="notes" name="notes" class="form-control" ></textarea>
-                    </div>
-                </form>
 
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-outline-primary pull-left" >Upload</button>
-                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    $('.input-group.date').datepicker({
-        autoclose: true,
-        todayHighlight: true,
-        format: 'yyyy-mm-dd'
-    });
-</script>
+<script th:src="@{/webjars/lightbox2/src/js/lightbox.js}"></script>
 
 <div th:replace="fragments/footer::footer"></div>
 </body>
