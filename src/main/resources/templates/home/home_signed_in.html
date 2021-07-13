@@ -17,7 +17,16 @@
         Welcome, Grower!
     </h1>
     <h2>This is a toy app to learn kotlin and track growing magical plants</h2>
+    <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.Grow"*/-->
+    <div th:unless="${grow eq null}" class="text-center">
+        <h2 >
+        <a th:href="@{/grows/{growId}(growId=${grow.id})}" class="alert-info">Latest grow</a>
+        </h2>
+        <br/>
+    </div>
+
 </div>
+
 <div th:replace="fragments/footer::footer"></div>
 </body>
 </html>
