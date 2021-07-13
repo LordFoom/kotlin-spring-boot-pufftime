@@ -38,8 +38,14 @@ class WebController(
 ) {
 
     @GetMapping
-    fun index(principal: Principal?): String {
+    fun index(model: Model, principal: Principal?): String {
         principal ?: return "home/home_signed_out"
+
+        val grows = growRepo.findAllByUserUsernameOrderByStartDateDesc(principal.name)
+        if(grows.size>0)
+            model["grow"] = grows[0]
+
+
         return "home/home_signed_in"
     }
 
