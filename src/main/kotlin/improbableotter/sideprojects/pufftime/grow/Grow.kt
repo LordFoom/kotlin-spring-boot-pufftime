@@ -167,4 +167,5 @@ data class GrowDto(
 interface GrowRepository : JpaRepository<Grow, Long> {
     fun findAllByUser(user: User): List<Grow>
     fun findAllByUserId(userId: Long): List<Grow>
+    fun findAllByUserUsernameOrderByStartDateDesc(userName: String): List<Grow>
 }
