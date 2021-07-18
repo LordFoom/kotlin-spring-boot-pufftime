@@ -1,5 +1,6 @@
-package improbableotter.sideprojects.pufftime.storage
+package improbableotter.sideprojects.pufftime.util
 
+import improbableotter.sideprojects.pufftime.storage.StorageService
 import java.sql.DriverManager
 import java.util.*
 
@@ -13,7 +14,7 @@ class ThumbnailCreator {
         //connect to the database
         val props = Properties()
         props["user"] = "root"
-        props["password"] = "zxcvbnm"
+        props["password"] = "qwerty"
 
         val storageService = StorageService()
         val pathPrefix = "/home/lordfoom/IdeaProjects/kotlin-spring-boot-pufftime"
