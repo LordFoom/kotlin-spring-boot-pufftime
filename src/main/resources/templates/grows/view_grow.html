@@ -13,6 +13,12 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
 
+            <div th:if="${grow.flowerDate != null}" class="alert alert-success">
+                <span >Days Flowering
+                    <span id="flowerNumbers" class="alert-danger" th:text="${grow.daysFlowering}"></span>
+                </span>
+            </div>
+
             <div th:if="${param.success}">
                 <div class="alert alert-info">
                     Grow successfully created!
@@ -66,7 +72,7 @@
                     Grow is already harvested
                 </div>
             </div>
-            <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.GrowDto"*/-->
+            <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.Grow"*/-->
             <h1>Grow: "<span th:text="${grow.name}"></span>"</h1>
                 <div class="border-dark row">
                     <label for="name" class="control-label ">Name</label><br/>
@@ -83,12 +89,12 @@
                 <span id="startDate" class="form-control" th:text="${#dates.format(grow.startDate, 'yyyy-MM-dd')}"></span>
             </div>
 
-            <div class="border-dark row" >
+            <div class="border-dark row" th:if="${grow.flowerDate != null}">
                 <label for="flowerDate" class="control-label">Flower Date</label>
                 <span id="flowerDate" class="form-control" th:text="${#dates.format(grow.flowerDate, 'yyyy-MM-dd')}"></span>
             </div>
 
-            <div class="border-dark row" >
+            <div class="border-dark row" th:if="${grow.harvestDate != null}">
                 <label for="harvestDate" class="control-label">Harvest Date</label>
                 <span id="harvestDate" class="form-control" th:text="${#dates.format(grow.harvestDate, 'yyyy-MM-dd')}"></span>
             </div>
@@ -99,8 +105,6 @@
                      th:src="@{${grow.mostRecentPicture?.smallFilePath}}" style="widows: 160px; height: 160px">
             </a>
             <br/>
-
-            <br>
             <div class="row">
                 <button type="button" class="btn btn-success">
                     <a th:href="@{/grows/{id}/edit(id=${grow.id})}" class="btn-success">Edit</a>

@@ -10,7 +10,9 @@ import org.springframework.format.annotation.DateTimeFormat
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
+import java.time.Period
 import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
@@ -44,6 +46,15 @@ class Grow(
     var type: GrowType = GrowType.INDOOR,//a default that suits me, don'cha know
 ) {
 
+    fun getDaysFlowering(): Long {
+        return flowerDate?.let {
+            val fd= Instant
+                .ofEpochMilli(it.time)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+            ChronoUnit.DAYS.between(fd, LocalDate.now())
+        } ?: 0
+    }
 
     fun getDisplayCreateDate(): String {
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
@@ -53,11 +64,11 @@ class Grow(
     /**
      * Return list of pictures that aren't plant specific
      */
-    fun getAllGrowPics():List<Picture>{
-       return pictures.filter { it.plant == null }
+    fun getAllGrowPics(): List<Picture> {
+        return pictures.filter { it.plant == null }
     }
 
-    fun getMostRecentPicture():Picture{
+    fun getMostRecentPicture(): Picture {
         return getAllGrowPics().first()//ordered by picDate desc
     }
 
@@ -114,9 +125,9 @@ class Grow(
     /**
      * Will do yyyy-MM-dd for date, or "unknown" if null
      */
-    fun displayDate(dateToDisplay: Date?): String{
+    fun displayDate(dateToDisplay: Date?): String {
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
-        return dateToDisplay?.let{ dateFormatter.format(it)}?: "unknown"
+        return dateToDisplay?.let { dateFormatter.format(it) } ?: "unknown"
     }
 
 }
@@ -154,6 +165,12 @@ data class GrowDto(
             Date.from(it.atStartOfDay()?.atZone(ZoneId.systemDefault())?.toInstant())
         }
 
+    }
+
+    fun getDaysFlowering(): Int {
+        return flowerDate?.let {
+            Period.between(it, LocalDate.now()).days
+        } ?: 0
     }
 
     fun getConvertedHarvestDate(): Date? {
