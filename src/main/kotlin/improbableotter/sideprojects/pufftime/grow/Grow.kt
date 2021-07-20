@@ -33,9 +33,10 @@ class Grow(
     val wateringHistory: MutableSet<WateringHistory> = mutableSetOf(),
     @OneToMany(mappedBy = "grow", cascade = [CascadeType.ALL])
     val plants: MutableSet<Plant> = mutableSetOf(),
-    @OneToMany(mappedBy = "grow", cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "grow")
+//    @OneToMany(mappedBy = "grow", cascade = [CascadeType.ALL])
     @OrderBy("picDate DESC")
-    val pictures: MutableList<Picture> = mutableListOf<Picture>(),
+    val pictures: MutableList<Picture> = mutableListOf(),
     @OneToMany(mappedBy = "grow", cascade = [CascadeType.ALL])
     val notes: MutableSet<Note> = mutableSetOf(),
     val createDate: Date = Date(),

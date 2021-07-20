@@ -14,7 +14,7 @@ class ThumbnailCreator {
         //connect to the database
         val props = Properties()
         props["user"] = "root"
-        props["password"] = "zxcvbnm"
+        props["password"] = "qwerty"
 
         val storageService = StorageService()
         val pathPrefix = "/home/lordfoom/IdeaProjects/kotlin-spring-boot-pufftime"

@@ -12,10 +12,23 @@ import javax.validation.constraints.NotNull
 class Picture(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+
     @ManyToOne
-    val plant: Plant? = null,
-    @ManyToOne
+    @JoinTable(
+        name = "grow_picture",
+        joinColumns = arrayOf(JoinColumn(name="picture_id")),
+        inverseJoinColumns = arrayOf(JoinColumn(name="grow_id")),
+    )
     val grow: Grow?,
+
+    @ManyToOne
+    @JoinTable(
+        name = "plant_picture",
+        joinColumns = arrayOf(JoinColumn(name="picture_id")),
+        inverseJoinColumns = arrayOf(JoinColumn(name="plant_id")),
+    )
+    val plant: Plant?,
+
     val filePath: String? = null,
     val smallFilePath: String? = null,
     val notes: String? = null,
