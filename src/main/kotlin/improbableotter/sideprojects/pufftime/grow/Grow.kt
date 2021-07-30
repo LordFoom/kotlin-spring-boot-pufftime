@@ -53,7 +53,7 @@ class Grow(
                 .ofEpochMilli(it.time)
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate()
-            ChronoUnit.DAYS.between(fd, LocalDate.now())
+            return ChronoUnit.DAYS.between(fd, LocalDate.now())+2
         } ?: 0
     }
 
