@@ -122,6 +122,19 @@
 
             </div>
             <br>
+
+            <br/>
+            <div class="row">
+                <button type="button" class="btn btn-info">
+                    <a th:href="@{/grows/{growId}/water(growId=${grow.id})}" class="btn btn-info">Water!</a>
+                </button>
+                &nbsp;
+                <button type="button" class="btn btn-info">
+                    <a th:href="@{/grows/{growId}/watering_history(growId=${grow.id})}" class="btn btn-info">Watering history</a>
+                </button>
+
+            </div>
+
             <div class="row">
 
                 <button type="button" class="btn btn-info">
@@ -135,28 +148,16 @@
                 &nbsp;
                 <button type="button" class="btn btn-info">
                     <a data-toggle="modal" data-target="#picUploadModal"
-                                                              data-plant-id="0" href="" class="btn btn-info">Add pic</a>
+                       data-plant-id="0" href="" class="btn btn-info">Add pic</a>
                 </button>
                 &nbsp;
                 <button type="button" class="btn btn-info">
                     <a data-toggle="modal"
                        data-target="#noteUploadModal"
-                      data-note-plant-id="0" href="" class="btn btn-info">Add note</a>
+                       data-note-plant-id="0" href="" class="btn btn-info">Add note</a>
                 </button>
                 &nbsp;
             </div>
-            <br/>
-            <div class="row">
-                <button type="button" class="btn btn-info">
-                    <a th:href="@{/grows/{growId}/water(growId=${grow.id})}" class="btn btn-info">Water!</a>
-                </button>
-                &nbsp;
-                <button type="button" class="btn btn-info">
-                    <a th:href="@{/grows/{growId}/watering_history(growId=${grow.id})}" class="btn btn-info">Watering history</a>
-                </button>
-
-            </div>
-
 
             <!--/*@thymesVar id="note" type="improbableotter.sideprojects.pufftime.note.Note"*/-->
             <br/>
