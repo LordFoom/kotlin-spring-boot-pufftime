@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="fragments/header::head">
+    <title>Plant Gallery</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<link th:rel="stylesheet" th:href="@{/webjars/lightbox2/src/css/lightbox.css}"/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.Grow"*/-->
+            <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.Strain"*/-->
+            <!--/*@thymesVar id="plant" type="improbableotter.sideprojects.pufftime.plant.PlantDto"*/-->
+
+            <div th:if="${param.picSuccess}">
+                <div class="alert alert-info">
+                    Successfully added pic.
+                </div>
+
+            </div>
+            <input type="hidden" id="growId" th:field="*{grow.id}">
+
+            <div class="border-dark row">
+                <label class="control-label">Gallery</label>
+            </div>
+
+            <div class="border-dark row" th:each="pic: ${grow.pictures}">
+                
+                <a th:href="@{${pic.filePath}}" data-lightbox="plant-image">
+                    <img th:src="@{${pic.smallFilePath}}" style="widows: 80px; height: 80px"  alt="" src="/"/>
+                </a>
+                <br/>
+            </div>
+            
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script th:src="@{/webjars/lightbox2/src/js/lightbox.js}"></script>
+
+<div th:replace="fragments/footer::footer"></div>
+</body>
+</html>

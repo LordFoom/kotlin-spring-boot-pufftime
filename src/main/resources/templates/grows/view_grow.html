@@ -106,6 +106,9 @@
             </a>
             <br/>
             <div class="row">
+                <button type="button" class ="btn btn-success">
+                    <a th:href="@{/grows/{id}/pics(id=${grow.id})}" class="btn-success">View Pics</a>
+                </button>
                 <button type="button" class="btn btn-success">
                     <a th:href="@{/grows/{id}/edit(id=${grow.id})}" class="btn-success">Edit</a>
                 </button>
@@ -132,7 +135,6 @@
                 <button type="button" class="btn btn-info">
                     <a th:href="@{/grows/{growId}/watering_history(growId=${grow.id})}" class="btn btn-info">Watering history</a>
                 </button>
-
             </div>
 
             <div class="row">

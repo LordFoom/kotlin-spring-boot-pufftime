@@ -169,8 +169,9 @@ class GrowKontroller(
 //        return "grows/view_grow"
     }
 
+    //TODO move this to plants kontroller
     @GetMapping("/{growId}/plants/{plantId}/pics")
-    fun getPlantGallery(@PathVariable growId: Long, @PathVariable plantId: Long, model: Model): String {
+    fun viewPlantGallery(@PathVariable growId: Long, @PathVariable plantId: Long, model: Model): String {
         model["grow"] = growRepo.findByIdOrNull(growId)!!
         model["plant"] = plantRepo.findByIdOrNull(plantId)!!
 
@@ -178,6 +179,13 @@ class GrowKontroller(
 //        return "grows/view_grow"
     }
 
+    @GetMapping("/{growId}/pics")
+    fun viewGrowGallery(@PathVariable growId: Long, model: Model): String {
+        model["grow"] = growRepo.findByIdOrNull(growId)!!
+
+        return "grows/view_grow_pics"
+//        return "grows/view_grow"
+    }
 //    @GetMapping("/{growId}/plants/{plantId}/pics/upload")
 //    fun getPlantPicUploadForm(@PathVariable growId: Long, @PathVariable plantId: Long, model: Model):String {
 //        model["grow"] = growRepo.findByIdOrNull(growId)!!
