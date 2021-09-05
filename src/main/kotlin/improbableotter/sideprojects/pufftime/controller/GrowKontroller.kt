@@ -32,7 +32,12 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.security.Principal
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.Period
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 import java.util.*
+import java.util.concurrent.ConcurrentSkipListMap
 import javax.validation.Valid
 
 /**
@@ -321,4 +326,38 @@ class GrowKontroller(
 
        return "water/grow_water_history"
     }
+
+    @GetMapping("/{growId}/chart")
+    fun getGrowWateringChart(@PathVariable("growId") growId:Long, model: Model):String{
+        val grow = growRepo.findByIdOrNull(growId)!!
+        model["grow"] = grow
+        //from flower start to end we get the date
+        val startDate = grow.flowerDate?:Date()
+        val beginning = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+        val endDate = grow.harvestDate?:Date()
+        val end = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+        //get number of days
+        val days = beginning.until(end, ChronoUnit.DAYS).toInt()
+
+        val dayWaterMap = ConcurrentSkipListMap<Int, Double>()
+        val waterHistoryList = wateringHistoryRepo.findByGrowOrderByWateringDateAsc(grow)
+        //initialize the map
+        //how do I sort watering into dates
+
+        var whc = 0
+        for(i in 0..days){
+            val wateringDate = waterHistoryList[whc].wateringDate!!.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            dayWaterMap[i] = when{
+                beginning.plusDays(i.toLong()).isEqual(wateringDate) -> {
+                    whc += 1
+                    waterHistoryList[whc-1].literAmount?:1.0
+                }
+                else -> 0.0
+            }
+        }
+        model["day_labels"] = dayWaterMap.keys
+        model["day_values"] = dayWaterMap.values
+        return "water/grow_water_chart"
+    }
+
 }

@@ -30,7 +30,7 @@ class Grow(
     @JoinColumn(name = "user_id")
     val user: User,
     @OneToMany(mappedBy = "grow", cascade = [CascadeType.ALL])
-    val wateringHistory: MutableSet<WateringHistory> = mutableSetOf(),
+    val wateringHistory: MutableList<WateringHistory> = mutableListOf(),
     @OneToMany(mappedBy = "grow", cascade = [CascadeType.ALL])
     val plants: MutableSet<Plant> = mutableSetOf(),
     @OneToMany(mappedBy = "grow")
@@ -53,7 +53,10 @@ class Grow(
                 .ofEpochMilli(it.time)
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate()
-            return ChronoUnit.DAYS.between(fd, LocalDate.now())+2
+            val hd = harvestDate?.let{ endDate ->
+                    endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                }?: LocalDate.now()
+            return ChronoUnit.DAYS.between(fd, hd)+2
         } ?: 0
     }
 

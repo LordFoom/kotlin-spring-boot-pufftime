@@ -63,6 +63,7 @@ enum class NuteStatus{
 
 interface WateringHistoryRepo: JpaRepository<WateringHistory, Long>{
         fun findByGrowOrderByWateringDateDesc(grow: Grow):List<WateringHistory>
+        fun findByGrowOrderByWateringDateAsc(grow: Grow):List<WateringHistory>
         fun findByGrowAndWateringDateBetween(grow:Grow, start:Date, end:Date):List<WateringHistory>
         fun findAllByGrowAndWateringDateGreaterThan(grow:Grow, start:Date):List<WateringHistory>
         fun findByGrowAndWateringDateLessThan(grow:Grow, end:Date):List<WateringHistory>

@@ -3,13 +3,22 @@ package improbableotter.sideprojects.pufftime.controller
 import improbableotter.sideprojects.pufftime.event.Event
 import improbableotter.sideprojects.pufftime.grow.GrowRepository
 import improbableotter.sideprojects.pufftime.water.WaterService
+import improbableotter.sideprojects.pufftime.water.WateringHistoryRepo
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.ui.Model
+import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
 import java.text.SimpleDateFormat
+import java.time.Period
+import java.time.ZoneId
 import java.util.*
+import java.util.concurrent.ConcurrentSkipListMap
 
 @RestController
 @RequestMapping("/wateringhistory")
-class WateringHistoryKontroller(val growRepo: GrowRepository, val waterService: WaterService) {
+class WateringHistoryKontroller(val growRepo: GrowRepository,
+                                val wateringHistoryRepo: WateringHistoryRepo,
+                                val waterService: WaterService) {
     @GetMapping("/{growId}")
     fun getGrowWateringHistoryList(@PathVariable("growId") growId: Long,
                                    @RequestParam(required = false) start:String?,
@@ -23,4 +32,5 @@ class WateringHistoryKontroller(val growRepo: GrowRepository, val waterService: 
         return waterService.findGrowWateringHistory(growId)
 
     }
+
 }
