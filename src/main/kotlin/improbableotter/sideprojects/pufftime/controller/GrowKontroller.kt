@@ -346,6 +346,10 @@ class GrowKontroller(
 
         var whc = 0
         for(i in 0..days){
+            if (whc >= waterHistoryList.size) {
+                dayWaterMap[i]=0.0
+                continue
+            }
             val wateringDate = waterHistoryList[whc].wateringDate!!.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
             dayWaterMap[i] = when{
                 beginning.plusDays(i.toLong()).isEqual(wateringDate) -> {
