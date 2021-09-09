@@ -32,8 +32,6 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.security.Principal
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.Period
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.util.*
@@ -345,22 +343,39 @@ class GrowKontroller(
         //how do I sort watering into dates
 
         var whc = 0
+        val dayColors = mutableListOf<String>()
+        val dayBorders = mutableListOf<String>()
         for(i in 0..days){
             if (whc >= waterHistoryList.size) {
                 dayWaterMap[i]=0.0
+                dayColors.add("rgba(54, 162, 235, 0.2)")
+                dayBorders.add("rgba(54, 162, 235, 1)")
                 continue
             }
             val wateringDate = waterHistoryList[whc].wateringDate!!.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
             dayWaterMap[i] = when{
                 beginning.plusDays(i.toLong()).isEqual(wateringDate) -> {
+                    if(waterHistoryList[whc].nutes == NuteStatus.NUTES){
+                        dayColors.add("rgba(255, 99, 132, 0.2)")
+                        dayBorders.add("rgba(255, 99, 132, 1)")
+                    }else{
+                        dayColors.add("rgba(54, 162, 235, 0.2)")
+                        dayBorders.add("rgba(54, 162, 235, 1)")
+                    }
                     whc += 1
                     waterHistoryList[whc-1].literAmount?:1.0
                 }
-                else -> 0.0
+                else -> {
+                    dayColors.add("rgba(54, 162, 235, 0.2)")
+                    dayBorders.add("rgba(54, 162, 235, 1)")
+                    0.0
+                }
             }
         }
         model["day_labels"] = dayWaterMap.keys
         model["day_values"] = dayWaterMap.values
+        model["day_colors"] = dayColors
+        model["day_borders"] = dayBorders
         return "water/grow_water_chart"
     }
 
