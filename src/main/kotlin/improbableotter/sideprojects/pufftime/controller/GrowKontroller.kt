@@ -16,6 +16,7 @@ import improbableotter.sideprojects.pufftime.picture.PictureRepository
 import improbableotter.sideprojects.pufftime.plant.PlantDto
 import improbableotter.sideprojects.pufftime.plant.PlantRepository
 import improbableotter.sideprojects.pufftime.plant.PlantService
+import improbableotter.sideprojects.pufftime.plant.PlantStatus
 import improbableotter.sideprojects.pufftime.storage.StorageService
 import improbableotter.sideprojects.pufftime.strain.StrainRepository
 import improbableotter.sideprojects.pufftime.user.UserRepository
@@ -169,7 +170,6 @@ class GrowKontroller(
         model["grow"] = growRepo.findByIdOrNull(growId)!!
         plantRepo.deleteById(plantId)
         return "redirect:/grows/$growId"
-//        return "grows/view_grow"
     }
 
     //TODO move this to plants kontroller
@@ -179,7 +179,6 @@ class GrowKontroller(
         model["plant"] = plantRepo.findByIdOrNull(plantId)!!
 
         return "plants/view_plant_pics"
-//        return "grows/view_grow"
     }
 
     @GetMapping("/{growId}/pics")
@@ -187,15 +186,7 @@ class GrowKontroller(
         model["grow"] = growRepo.findByIdOrNull(growId)!!
 
         return "grows/view_grow_pics"
-//        return "grows/view_grow"
     }
-//    @GetMapping("/{growId}/plants/{plantId}/pics/upload")
-//    fun getPlantPicUploadForm(@PathVariable growId: Long, @PathVariable plantId: Long, model: Model):String {
-//        model["grow"] = growRepo.findByIdOrNull(growId)!!
-//        model["plant"] = plantRepo.findByIdOrNull(plantId)!!
-//
-//        return "plants/upload_plant_pic"
-//    }
 
     @PostMapping("/{growId}/pics")
     fun uploadPic(
@@ -379,4 +370,14 @@ class GrowKontroller(
         return "water/grow_water_chart"
     }
 
+    /**
+     * Pests got your plant? Sorry :(
+     */
+    @PostMapping("/{growId}/plants/{plantId}/spoil")
+    fun spoilPlant(@PathVariable("growId") growId: Long, @PathVariable plantId: Long):String {
+        val plant = plantRepo.findByIdOrNull(plantId)!!
+        plant.status = PlantStatus.SPOILED
+        plantRepo.save(plant)
+        return "redirect:grows/${growId}?spoil_success"
+    }
 }

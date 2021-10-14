@@ -37,7 +37,7 @@ class Plant(
         var flowerDate: Date? = null,
         var harvestDate: Date? = null,
         var cureDate: Date? = null,
-        val status: PlantStatus = PlantStatus.VEGGING,
+        var status: PlantStatus = PlantStatus.VEGGING,
 
         ){
         @Transient val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
