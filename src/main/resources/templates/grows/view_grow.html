@@ -19,6 +19,9 @@
                 </span>
             </div>
 
+<!--            //TODO TODO TODO turn fold all these messages into these flash attribute display-->
+            <div class="alert-info alert-primary" role="alert" th:text="${info_message}" th:if="${info_message}"></div>
+            <div class="alert-danger alert-primary" role="alert" th:text="${error_message}" th:if="${error_message}"></div>
             <div th:if="${param.success}">
                 <div class="alert alert-info">
                     Grow successfully created!
@@ -346,7 +349,7 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <select id="notePlantId" name="notePlantId">
+                        <select id="clonePlantId" name="clonePlantId">
                             <option value="0">Grow Note</option>
                             <option th:each="strain_sel : ${strains}"
                                     th:value="${strain_sel.id}"
@@ -370,7 +373,7 @@
 <div class="modal fade in" id="spoilPlantModal" tabindex="-1"  role="form">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="#" th:action="@{/grows/{growId}/plants/{plantId}/spoil(id=${grow.id}, plantId=${plant.id})}"
+            <form action="#" th:action="@{/grows/{growId}/spoil(id=${grow.id})}"
                   method="post" >
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -379,7 +382,7 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <select id="notePlantId" name="notePlantId">
+                        <select id="spoilPlantId" name="notePlantId">
                             <option value="0">Spoiled plant</option>
                             <option th:each="plant_sel : ${ plants}"
                                     th:value="${plant_sel.id}"
@@ -389,7 +392,7 @@
                     </div>
                     <div class="row border-dark">
                         <label for="notes" class="control-label">Notes</label>
-                        <textarea id="notes" name="notes" class="form-control" ></textarea>
+                        <textarea id="spoilNotes" name="spoilNotes" class="form-control" ></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -415,6 +418,11 @@
 
     $('#noteUploadModal').on('show.bs.modal', function(e) {
         let plantId= $(e.relatedTarget).data('note-plant-id');
+        $('#notePlantId').val(plantId);
+    });
+
+    $('#spoilPlantModal').on('show.bs.modal', function(e) {
+        let plantId= $(e.relatedTarget).data('spoil-plant-id');
         $('#notePlantId').val(plantId);
     });
 

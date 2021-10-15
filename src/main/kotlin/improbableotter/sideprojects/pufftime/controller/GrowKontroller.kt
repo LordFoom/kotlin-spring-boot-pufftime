@@ -207,7 +207,7 @@ class GrowKontroller(
         val grow = growRepo.findByIdOrNull(growId) ?: throw IllegalStateException("No grow found for id $growId")
         val pic = Picture(filePath = picFilePaths.first, smallFilePath = picFilePaths.second, plant = plant, grow = grow, notes = notes)
         val savedPic = plantPicRepo.save(pic)
-        attributes["pic"] = savedPic;
+        attributes["pic"] = savedPic
         return "redirect:/grows/${growId}?pic_success"
 
     }
@@ -373,11 +373,13 @@ class GrowKontroller(
     /**
      * Pests got your plant? Sorry :(
      */
-    @PostMapping("/{growId}/plants/{plantId}/spoil")
-    fun spoilPlant(@PathVariable("growId") growId: Long, @PathVariable plantId: Long):String {
+    @PostMapping("/{growId}/spoil")
+
+    fun spoilPlant(@PathVariable("growId") growId: Long, @RequestParam plantId: Long, attributes: RedirectAttributes):String {
         val plant = plantRepo.findByIdOrNull(plantId)!!
         plant.status = PlantStatus.SPOILED
         plantRepo.save(plant)
-        return "redirect:grows/${growId}?spoil_success"
+        attributes.addFlashAttribute("info_message", "Please select file to upload.")
+        return "redirect:/grows/${growId}"
     }
 }
