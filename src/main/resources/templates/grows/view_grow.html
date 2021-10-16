@@ -236,7 +236,7 @@
                     <td><a th:href="@{/grows/{growId}/water/{plantId}(growId=${grow.id}, plantId=${plant.id})}">Water Plant</a></td>
                     <td><a data-toggle="modal" data-target="#picUploadModal" th:data-plant-id="${plant.id}" href="" >Add pic</a></td>
                     <td><a data-toggle="modal" data-target="#addClonesModal" th:data-plant-id="${plant.id}" href="" >Take Clones</a></td>
-                    <td><a data-toggle="modal" data-target="#spoilPlantModal" th:data-plant-id="${plant.id}" href="" >Spoil :(</a></td>
+                    <td><a data-toggle="modal" data-target="#spoilPlantModal" th:data-spoil-plant-id="${plant.id}" href="" >Spoil :(</a></td>
                     <td><a th:href="@{/grows/{id}/plants/{plantId}/pics(id=${grow.id}, plantId=${plant.id})}">Pics</a></td>
                     <td><a data-toggle="modal" data-target="#noteUploadModal" th:data-note-plant-id="${plant.id}" href="" >Add note</a></td>
                     <td><a th:href="@{/plants/{plantId}(id=${grow.id}, plantId=${plant.id})}">Details</a></td>
@@ -373,7 +373,7 @@
 <div class="modal fade in" id="spoilPlantModal" tabindex="-1"  role="form">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="#" th:action="@{/grows/{growId}/spoil(id=${grow.id})}"
+            <form action="#" th:action="@{/grows/{growId}/spoil(growId=${grow.id})}"
                   method="post" >
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -382,7 +382,7 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <select id="spoilPlantId" name="notePlantId">
+                        <select id="spoilPlantId" name="spoilPlantId">
                             <option value="0">Spoiled plant</option>
                             <option th:each="plant_sel : ${ plants}"
                                     th:value="${plant_sel.id}"
@@ -423,7 +423,7 @@
 
     $('#spoilPlantModal').on('show.bs.modal', function(e) {
         let plantId= $(e.relatedTarget).data('spoil-plant-id');
-        $('#notePlantId').val(plantId);
+        $('#spoilPlantId').val(plantId);
     });
 
 </script>
