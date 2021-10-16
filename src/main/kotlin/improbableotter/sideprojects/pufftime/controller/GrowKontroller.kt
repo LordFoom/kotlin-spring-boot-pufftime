@@ -336,6 +336,7 @@ class GrowKontroller(
         var whc = 0
         val dayColors = mutableListOf<String>()
         val dayBorders = mutableListOf<String>()
+
         for(i in 0..days){
             if (whc >= waterHistoryList.size) {
                 dayWaterMap[i]=0.0

@@ -211,6 +211,7 @@
                 <thead>
                 <tr>
                     <th>Strain</th>
+                    <th>Status</th>
                     <th>Most recent pic</th>
                     <th></th>
                     <th></th>
@@ -225,7 +226,7 @@
                     <tr th:each="plant : ${plants}">
                     <!--/*@thymesVar id="strain" type="improbableotter.sideprojects.pufftime.strain.Strain"*/-->
                     <td th:text="${plant.strain.name}"></td>
-
+                    <td th:text="${plant.status}"></td>
                     <td>
                         <a th:unless="${#lists.isEmpty(plant.pictures)}"
                            th:href="@{${plant?.mostRecentPicture?.filePath}}" data-lightbox="plant-image">
