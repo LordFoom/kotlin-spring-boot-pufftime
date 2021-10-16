@@ -375,11 +375,11 @@ class GrowKontroller(
      */
     @PostMapping("/{growId}/spoil")
 
-    fun spoilPlant(@PathVariable("growId") growId: Long, @RequestParam plantId: Long, attributes: RedirectAttributes):String {
-        val plant = plantRepo.findByIdOrNull(plantId)!!
+    fun spoilPlant(@PathVariable("growId") growId: Long, @RequestParam spoilPlantId: Long, attributes: RedirectAttributes):String {
+        val plant = plantRepo.findByIdOrNull(spoilPlantId)!!
         plant.status = PlantStatus.SPOILED
         plantRepo.save(plant)
-        attributes.addFlashAttribute("info_message", "Please select file to upload.")
+        attributes.addFlashAttribute("info_message", "Plant was spoiled....sorry")
         return "redirect:/grows/${growId}"
     }
 }
