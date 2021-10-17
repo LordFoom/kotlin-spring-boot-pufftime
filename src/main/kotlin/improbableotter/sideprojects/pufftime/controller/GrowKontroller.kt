@@ -250,6 +250,7 @@ class GrowKontroller(
 
         grow.flowerDate = flowerDate
         grow.status = GrowStatus.FLOWERING
+        grow.plants.forEach{ it.status = PlantStatus.FLOWERING }
         growRepo.save(grow)
         attributes.addFlashAttribute("info_message", "Note success")
         return "redirect:/grows/${growId}"
