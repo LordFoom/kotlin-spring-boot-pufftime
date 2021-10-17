@@ -22,63 +22,8 @@
 <!--            //TODO TODO TODO turn fold all these messages into these flash attribute display-->
             <div class="alert-info alert-primary" role="alert" th:text="${info_message}" th:if="${info_message}"></div>
             <div class="alert-danger alert-primary" role="alert" th:text="${error_message}" th:if="${error_message}"></div>
-            <div th:if="${param.success}">
-                <div class="alert alert-info">
-                    Grow successfully created!
-                </div>
-            </div>
-            <div th:if="${param.success_edit}">
-                <div class="alert alert-info">
-                    Grow successfully edited!
-                </div>
-            </div>
-
-            <div th:if="${param.plantSuccess}">
-                <div class="alert alert-info">Successfully added plant!</div>
-            </div>
-
-            <div th:if="${param.plantSuccess}">
-                <div class="alert alert-info">Plant "successfully" marked as spoiled</div>
-            </div>
-
-            <div th:if="${param.lightSuccess}">
-                <div class="alert alert-info">Successfully added light!</div>
-            </div>
-
-            <div th:if="${param.pic_success}">
-                <div class="alert alert-info">Successfully added pic!</div>
-            </div>
-
-            <div th:if="${param.note_success}">
-                <div class="alert alert-info">Successfully added note!</div>
-            </div>
 
 
-
-
-            <div th:if="${param.flowering_success}">
-                <div class="alert alert-info">Flowering!!</div>
-            </div>
-
-            <div th:if="${param.harvesting_success}">
-                <div class="alert alert-info">Harvested!!</div>
-            </div>
-
-            <div th:if="${param.watering_success}">
-                <div class="alert alert-info">Watered!!</div>
-            </div>
-
-            <div th:if="${param.already_flowering}">
-                <div class="alert alert-info">
-                    Grow is already flowering
-                </div>
-            </div>
-
-            <div th:if="${param.already_harvested}">
-                <div class="alert alert-info">
-                    Grow is already harvested
-                </div>
-            </div>
             <!--/*@thymesVar id="grow" type="improbableotter.sideprojects.pufftime.grow.Grow"*/-->
             <h1>Grow: "<span th:text="${grow.name}"></span>"</h1>
                 <div class="border-dark row">

@@ -97,12 +97,14 @@ class GrowKontroller(
         @ModelAttribute @Valid grow: GrowDto,
         result: BindingResult,
         model: Model,
-        principal: Principal
+        principal: Principal,
+        attributes: RedirectAttributes
     ): String {
         grow.id = growId
         grow.user = userRepo.findByUsername(principal.name)
         model["grow"] = growService.update(grow).toDto()
-        return "redirect:/grows/$growId?success_edit"
+        attributes.addFlashAttribute("info_message", "Grow successfully edited")
+        return "redirect:/grows/$growId"
     }
 
     @GetMapping("/add")
@@ -112,12 +114,13 @@ class GrowKontroller(
     }
 
     @PostMapping("/add")
-    fun addGrow(@ModelAttribute @Valid dto: GrowDto, result: BindingResult): String {
+    fun addGrow(@ModelAttribute @Valid dto: GrowDto, result: BindingResult, attributes: RedirectAttributes): String {
         if (result.hasErrors()) {
             return "grows/add_grow"
         }
         val grow = growService.create(dto)
-        return "redirect:/grows/${grow.id}?success"
+        attributes.addFlashAttribute("info_message", "Grow successfully created!")
+        return "redirect:/grows/${grow.id}"
     }
 
     @GetMapping("/{growId}/plants/add")
@@ -145,12 +148,14 @@ class GrowKontroller(
         @PathVariable growId: Long,
         @ModelAttribute @Valid dto: GrowLightDto,
         result: BindingResult,
-        model: Model
+        model: Model,
+        attributes: RedirectAttributes
     ): String {
         val growLight = growLightService.create(dto)
         model["grow"] = growRepo.findByIdOrNull(growId)!!
+        attributes.addFlashAttribute("info_message", "Light added")
 
-        return "redirect:/grows/$growId?lightSuccess"
+        return "redirect:/grows/$growId"
     }
 
     @PostMapping("/{growId}/plants/add")
@@ -158,10 +163,13 @@ class GrowKontroller(
         @PathVariable growId: Long,
         @ModelAttribute @Valid dto: PlantDto,
         result: BindingResult,
-        model: Model
+        model: Model,
+        attributes: RedirectAttributes
     ): String {
         plantService.createPlants(dto)
-        return "redirect:/grows/$growId?plantSuccess"
+
+        attributes.addFlashAttribute("info_message", "Plant added")
+        return "redirect:/grows/$growId"
     }
 
 
@@ -208,7 +216,8 @@ class GrowKontroller(
         val pic = Picture(filePath = picFilePaths.first, smallFilePath = picFilePaths.second, plant = plant, grow = grow, notes = notes)
         val savedPic = plantPicRepo.save(pic)
         attributes["pic"] = savedPic
-        return "redirect:/grows/${growId}?pic_success"
+        attributes.addFlashAttribute("info_message","Successfully added pic" )
+        return "redirect:/grows/${growId}"
 
     }
 
@@ -221,43 +230,51 @@ class GrowKontroller(
         val grow = growRepo.findByIdOrNull(growId) ?: throw IllegalStateException("No grow found for id $growId")
         val noteEntity = Note(plant = plant, grow = grow, note = note)
         noteRepo.save(noteEntity)
-        return "redirect:/grows/${growId}?note_success"
+        attributes.addFlashAttribute("info_message", "Note success")
+        return "redirect:/grows/${growId}"
     }
 
     val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
     @GetMapping("/{growId}/flower")
-    fun switchToFlower(
-        @PathVariable("growId") growId: Long, @RequestParam(required = false) strFlowerDate: String? ): String {
+    fun switchToFlower( @PathVariable("growId") growId: Long,
+                        @RequestParam(required = false) strFlowerDate: String? , attributes: RedirectAttributes): String {
         val flowerDate = strFlowerDate?.let { simpleDateFormat.parse(it) } ?: Date()
 
         val grow = growRepo.findByIdOrNull(growId)!!
         //bale out if
         grow.flowerDate?.let {
-            return "redirect:/grows/${growId}?already_flowering"
+            attributes.addFlashAttribute("error_message", "Grow is already flowering")
+            return "redirect:/grows/${growId}"
         }
 
         grow.flowerDate = flowerDate
         grow.status = GrowStatus.FLOWERING
         growRepo.save(grow)
-        return "redirect:/grows/${growId}?flowering_success"
+        attributes.addFlashAttribute("info_message", "Note success")
+        return "redirect:/grows/${growId}"
     }
 
 
     @GetMapping("/{growId}/harvest")
     fun switchToHarvested(
-        @PathVariable("growId") growId: Long, @RequestParam(required = false) strHarvestDate: String? ): String {
+        @PathVariable("growId") growId: Long, @RequestParam(required = false) strHarvestDate: String? , attributes: RedirectAttributes): String {
         val harvestDate = strHarvestDate?.let { simpleDateFormat.parse(it) } ?: Date()
 
         val grow = growRepo.findByIdOrNull(growId)!!
         grow.harvestDate?.let {
-            return "redirect:/grows/${growId}?already_harvested"
+            attributes.addFlashAttribute("error_message", "Already harvested")
+            return "redirect:/grows/${growId}"
         }
 
         grow.harvestDate = harvestDate
         grow.status = GrowStatus.HARVESTED
+        grow.plants.forEach { it.status = PlantStatus.HARVESTED }
+        //cascade should do this for us right?
         growRepo.save(grow)
-        return "redirect:/grows/${growId}?harvesting_success"
+
+        attributes.addFlashAttribute("info_message", "Harvested")
+        return "redirect:/grows/${growId}"
     }
 
     @GetMapping("/{growId}/water")
@@ -285,10 +302,11 @@ class GrowKontroller(
     }
     @PostMapping("/{growId}/water")
     fun waterPlants(@PathVariable("growId") growId: Long,
-                   @RequestParam(required = false) strWateringDate:String?,
+                    @RequestParam(required = false) strWateringDate:String?,
                     @RequestParam(required = false) hasNutes:Boolean?,
                     @RequestParam(required = false) amount:Double?,
-                   @RequestParam(required = false) notes: String?):String {
+                    @RequestParam(required = false) notes: String?,
+                    attributes:RedirectAttributes):String {
 
         val wateringDate = strWateringDate?.let {
             if(strWateringDate.length>8) simpleDateFormat.parse(it)
@@ -304,7 +322,8 @@ class GrowKontroller(
             notes = notes,
             nutes = nuteStatus))
 
-        return "redirect:/grows/${growId}?watering_success"
+        attributes.addFlashAttribute("info_message", "Watered!!")
+        return "redirect:/grows/${growId}"
 
     }
 
