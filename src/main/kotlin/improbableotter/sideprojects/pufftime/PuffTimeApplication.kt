@@ -28,27 +28,27 @@ class ApplicationSecurityConfig() : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity?) {
         http
-                ?.authorizeRequests()
-                ?.antMatchers(
-                        "/registration",
-                        "/register",
-                        "/js/**",
-                        "/css/**",
-                        "/img/**",
-                        "/webjars/**")?.permitAll()
-                ?.antMatchers("/", "/home")?.permitAll()
-                ?.antMatchers("/users/**")?.hasAuthority("ROLE_ADMIN")
-                ?.anyRequest()?.authenticated()
-                ?.and()
-                    ?.formLogin()
-                    ?.loginPage("/login")
-                    ?.permitAll()
-                ?.and()
-                    ?.logout()
-                        ?.invalidateHttpSession(true)
-                        ?.clearAuthentication(true)
-                        ?.logoutRequestMatcher(AntPathRequestMatcher("/logout"))
-                        ?.permitAll()
+            ?.authorizeRequests()
+            ?.antMatchers(
+                "/registration",
+                "/register",
+                "/js/**",
+                "/css/**",
+                "/img/**",
+                "/webjars/**")?.permitAll()
+            ?.antMatchers("/", "/home")?.permitAll()
+            ?.antMatchers("/users/**")?.hasAuthority("ROLE_ADMIN")
+            ?.anyRequest()?.authenticated()
+            ?.and()
+            ?.formLogin()
+            ?.loginPage("/login")
+            ?.permitAll()
+            ?.and()
+            ?.logout()
+            ?.invalidateHttpSession(true)
+            ?.clearAuthentication(true)
+            ?.logoutRequestMatcher(AntPathRequestMatcher("/logout"))
+            ?.permitAll()
     }
 
     @Bean
