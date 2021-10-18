@@ -27,8 +27,7 @@ class ApplicationSecurityConfig() : WebSecurityConfigurerAdapter() {
     }
 
     override fun configure(http: HttpSecurity?) {
-        http
-            ?.authorizeRequests()
+        http?.authorizeRequests()
             ?.antMatchers(
                 "/registration",
                 "/register",
