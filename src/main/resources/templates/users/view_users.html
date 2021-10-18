@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::head">
+    <title>View Plants</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <div class="row">
+        <table class="table table-bordered tableMain">
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Created</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--/*@thymesVar id="user" type="improbableotter.sideprojects.pufftime.user.User"*/-->
+            <!--/*@thymesVar id="users" type="java.util.List<User>"*/-->
+            <tr th:each="user : ${users}" >
+                <td ><a th:href="@{/users/{id}(id=${user.id})}" th:text="${user}"></a> </td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.role}"></td>
+                <td th:text="${#dates.format(user.createDate, 'yyyy-MM-dd')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <a type="button" class="btn btn-outline-success" th:href="@{/grows/add}" >Add Grow</a>
+    </div>
+</div>
+</body>
+</html>
