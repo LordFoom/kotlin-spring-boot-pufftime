@@ -79,13 +79,21 @@ class WebController(
 
         var user = userDto.username?.let { userRepo.findByUsername(it) }
 
-        user = user?:userDto.username?.let{userRepo.findByUsername(it) }
-        user?.let{
-            result.reject("emal", "Email already in use")
-        }?: run {
-            val fromDto = User.fromDto(userDto)
-            model["registered"] = userRepo.save(fromDto)
-        }
+         user?:userDto
+            .username
+            ?.let{userRepo.findByUsername(it) }
+            ?.let{ result.reject("username", "Username taken") }
+            ?: run {
+             userDto.email
+                 ?.let {
+                     userRepo.findByEmail(it)
+                         ?.let { result.reject("email", "Email already in user") }
+                         ?: {
+                             val fromDto = User.fromDto(userDto)
+                             model["registered"] = userRepo.save(fromDto)
+                         }
+                 }
+         }
 //        if (null == user) {
 //            if (null != userDto.email) {
 //                user = userDto.email?.let { userRepo.findByUsername(it) }
@@ -105,9 +113,5 @@ class WebController(
         }
         return "home/home_signed_in"
     }
-
-
-
-
 
 }
