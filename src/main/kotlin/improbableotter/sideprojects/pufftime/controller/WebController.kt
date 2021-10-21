@@ -77,9 +77,7 @@ class WebController(
             return "home/registration"
         }
 
-        var user = userDto.username?.let { userRepo.findByUsername(it) }
-
-         user?:userDto
+         userDto
             .username
             ?.let{userRepo.findByUsername(it) }
             ?.let{ result.reject("username", "Username taken") }
