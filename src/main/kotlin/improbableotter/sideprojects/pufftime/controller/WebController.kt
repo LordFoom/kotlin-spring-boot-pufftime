@@ -77,21 +77,28 @@ class WebController(
             return "home/registration"
         }
 
-        var user: User? = userDto.username?.let { userRepo.findByUsername(it) }
+        var user = userDto.username?.let { userRepo.findByUsername(it) }
 
-        if (null == user) {
-            if (null != userDto.email) {
-                user = userDto.email?.let { userRepo.findByUsername(it) }
-                if (null == user) {
-                    val fromDto = User.fromDto(userDto)
-                    model["registered"] = userRepo.save(fromDto)
-                } else {
-                    result.reject("email", "Email already in use")
-                }
-            }
-        } else {
-            result.reject("username", "Username taken.")
+        user = user?:userDto.username?.let{userRepo.findByUsername(it) }
+        user?.let{
+            result.reject("emal", "Email already in use")
+        }?: run {
+            val fromDto = User.fromDto(userDto)
+            model["registered"] = userRepo.save(fromDto)
         }
+//        if (null == user) {
+//            if (null != userDto.email) {
+//                user = userDto.email?.let { userRepo.findByUsername(it) }
+//                if (null == user) {
+//                    val fromDto = User.fromDto(userDto)
+//                    model["registered"] = userRepo.save(fromDto)
+//                } else {
+//                    result.reject("email", "Email already in use")
+//                }
+//            }
+//        } else {
+//            result.reject("username", "Username taken.")
+//        }
 
         if (result.hasErrors()) {
             return "home/registration"
