@@ -26,15 +26,7 @@ import javax.validation.Valid
 @RequestMapping("/")
 class WebController(
     val userRepo: UserRepository,
-    val plantRepo: PlantRepository,
-    val plantPicRepo: PictureRepository,
-    val plantService: PlantService,
     val growRepo: GrowRepository,
-    val growService: GrowService,
-    val strainRepo: StrainRepository,
-    val strainService: StrainService,
-    val storageService: StorageService,
-    val noteRepo: NoteRepository,
 ) {
 
     @GetMapping
@@ -89,7 +81,7 @@ class WebController(
                              val fromDto = User.fromDto(userDto)
                              model["registered"] = userRepo.save(fromDto)
                          }
-                 }
+                 }?: result.reject("email", "Need an email address")
 
 //        if (null == user) {
 //            if (null != userDto.email) {
