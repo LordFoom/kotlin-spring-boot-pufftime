@@ -51,6 +51,7 @@ dependencies {
     }
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("com.h2database:h2" )
+    testImplementation("io.mockk:mockk:1.8.8")
 }
 
 tasks.withType<Test> {
