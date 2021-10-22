@@ -24,7 +24,7 @@ import javax.validation.Valid
 
 @Controller
 @RequestMapping("/")
-class WebController(
+class WebKontroller(
     val userRepo: UserRepository,
     val growRepo: GrowRepository,
 ) {
