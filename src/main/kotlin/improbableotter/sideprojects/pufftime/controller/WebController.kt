@@ -81,8 +81,7 @@ class WebController(
             .username
             ?.let{userRepo.findByUsername(it) }
             ?.let{ result.reject("username", "Username taken") }
-            ?: run {
-             userDto.email
+            ?: userDto.email
                  ?.let {
                      userRepo.findByEmail(it)
                          ?.let { result.reject("email", "Email already in user") }
@@ -91,7 +90,7 @@ class WebController(
                              model["registered"] = userRepo.save(fromDto)
                          }
                  }
-         }
+
 //        if (null == user) {
 //            if (null != userDto.email) {
 //                user = userDto.email?.let { userRepo.findByUsername(it) }
