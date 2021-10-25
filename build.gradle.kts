@@ -2,9 +2,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 var springBootVersion  = project.properties["springBootVersion"];
 plugins {
-    val kotlinVersion = "1.4.10"
-    id("org.springframework.boot") version "2.3.4.RELEASE"
-    id("io.spring.dependency-management") version "1.0.10.RELEASE"
+    val kotlinVersion = "1.4.32"
+    id("org.springframework.boot") version "2.4.4"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.jetbrains.kotlin.plugin.jpa") version "$kotlinVersion"
     kotlin("jvm") version "$kotlinVersion"
     kotlin("plugin.spring") version "$kotlinVersion"
@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "improbableotter.sideprojects"
-version = "0.0.1-EARLY-DAZE"
+version = "0.1.1-BLAZE-AND-LAZE"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
@@ -48,10 +48,14 @@ dependencies {
     runtimeOnly("mysql:mysql-connector-java")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+        exclude(module = "mockito-core")
     }
-    testImplementation("org.springframework.security:spring-security-test")
-    testImplementation("com.h2database:h2" )
-    testImplementation("io.mockk:mockk:1.8.8")
+    testImplementation("org.junit.jupiter:junit-jupiter")
+//    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+//    testImplementation("org.junit.platform:junit-platform-commons:1.6.0")
+//    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    testImplementation("com.ninja-squad:springmockk:3.0.1")
+    testRuntimeOnly("com.h2database:h2" )
 }
 
 tasks.withType<Test> {
